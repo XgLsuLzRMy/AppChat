@@ -1,0 +1,52 @@
+@startuml
+actor User
+participant Client
+participant Server
+database UserList_PassWordList
+
+User -> Client : Séléctionne "créer un compte"
+activate Client
+
+Client -> Server : connexion()
+activate Server
+Server -> Client
+deactivate Server
+
+Client -> User : Affiche zone de texte\npour rentrer le login
+deactivate Client
+
+User -> Client : Entre son login
+activate Client
+
+Client -> Server : sendLogin(login)
+activate Server
+
+Server -> UserList_PassWordList : checkLogin(login)
+activate UserList_PassWordList
+UserList_PassWordList -> Server
+deactivate UserList_PassWordList
+
+Server -> Client
+deactivate Server
+
+Client -> User : affiche une zone de texte\npour entrer le mot de passe
+deactivate Client
+
+User -> Client : Entre son mot de passe
+activate Client
+
+Client -> Server : createAccount(login, password)
+activate Server
+
+Server -> UserList_PassWordList : addUser(login, password)
+activate UserList_PassWordList
+
+UserList_PassWordList -> Server
+deactivate UserList_PassWordList
+
+Server -> Client
+deactivate Server
+
+Client -> User : Accès au compte
+deactivate Client
+@enduml
