@@ -1,0 +1,34 @@
+@startuml
+actor User
+participant Client
+participant Server
+collections UserList
+
+User -> Client : Se connecte (login + password)\n(voir schémas précédents)
+activate Client
+
+Client -> Server : accessAccount()
+activate Server
+Server -> Client
+deactivate Server
+
+Client -> User : Affiche zone de texte\npour écrire le message
+deactivate Client
+
+User -> Client : écrit le message puis appuie sur "envoyer"
+activate Client
+
+Client -> Server : sendMessage(message)
+activate Server
+
+Server -> UserList : updateMessageList(message)
+activate UserList
+UserList -> Server
+deactivate UserList
+
+Server -> Client
+deactivate Server
+
+Client -> User
+deactivate Client
+@enduml

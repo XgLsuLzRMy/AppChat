@@ -4,7 +4,7 @@ participant Client
 participant Server
 database login_Password_List
 
-User -> Client : Séléctionne "créer un compte"
+User -> Client : Séléctionne "connexion"
 activate Client
 
 Client -> Server : connexion()
@@ -18,27 +18,12 @@ deactivate Client
 User -> Client : Entre son login
 activate Client
 
-Client -> Server : sendLogin(login)
-activate Server
-
-Server -> login_Password_List : checkLogin(login)
-activate login_Password_List
-login_Password_List -> Server
-deactivate login_Password_List
-
-Server -> Client
-deactivate Server
-
-Client -> User : affiche une zone de texte\npour entrer le mot de passe
-deactivate Client
-
 User -> Client : Entre son mot de passe
-activate Client
 
-Client -> Server : createAccount(login, password)
+Client -> Server : signin(login, password)
 activate Server
 
-Server -> login_Password_List : addUser(login, password)
+Server -> login_Password_List : checkUser(login, password)
 activate login_Password_List
 
 login_Password_List -> Server
