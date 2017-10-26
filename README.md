@@ -7,7 +7,14 @@ Les schémas UML sont dans le dossier UML. Des liens pour les compiler sur le si
 
 Lien des schémas UML : 
 
---> PlantUML :
-	[Création d'un compte](http://www.plantuml.com/plantuml/uml/nLJ1JW8n4BttAoQSCD4Vu60WnXi74sAyc9ZQ3jAuj9jsYiGlShzZVypfKc2HIf2Bnvs-zsRUctR7WQIdkAo4LEGyF0RqekQIKQQMbk2kCcZfe3H3lsAKbYHVPS2ECpM1NXva24_Ew_GXH2h3pMrMW17CsgPg6qN6MOimKBvj614jABUi2GTf1BEIXDkc8bDPPDEJHLGYhrbYUBN7vuaoQDTJQFm9wKbsyurWCfyRjK3uT3oKHY1S4pxRsaKFdg6UKHL2vTwCxGjkPpooUPyu49pDd7DS1RHwcj33ZdDihUUj67TAPe7glInItb1PQ3TMt-mlAxueS9a3ZxOS-ZxpfQDqM7DF_6Fq1zIpxfL7HaoKSj7I9i3hZlx1RY_QXzGw7PtGEl5m_c4lxBtz2Y1ZVe-5nCTyJVbVyGq0)
+<ul>
+<li> PlantUML :
+	<ul>
+	<li>[Création d'un compte](http://www.plantuml.com/plantuml/uml/nLH1JiCm4Bpx5QkUYWGVw06rGjnwGAgu8LN6tbABn8xiTQbu4Nb7FiOwTTkKMgZqmjMUcPsPTJ8D93t5kX9IaVFm7D2BXe-CCesq10-LGKidHmlq6qPfIV9L1eJAlHcxV98XV3YlbtCJI8Wa17VtcGyJM7HjrRMAZBCMOQHyrp8YMb2kRWX7oO3PICBzI96fBBARo28gaRSiCRuvuhEV33hC51f_GWQIlRy9p5OhezO8duvDQGJ2BU6BRLpqu1dg6LNbY4F1lSUpc8-90y7PpBaaLK2hvmazxZddqGRP2cMdNjQetiiIfUsKH0w6XZ6BgxsgQ9cBZhPSzh7hsb6wR7We_h7o4-f5xyaZ8sPAkMXfLzrjJqznhzY3r3hP-qMfsEW_x8CpTry1PCpVNw7fAJzB_ZDy0m00)</li>
+	<li>[Connexion au compte](http://www.plantuml.com/plantuml/uml/dLB1IWCn4BtdAuQUAkWFz20LyUP1ADw44hFJDfYTX6Is5h_8ViV-c9CrNLSR13s5XFVUl7aloyGwSjSwfGtx28y9emhoP8qDcXXkdKNYRqyhZ7j1DPhriqu8pcyjhHzqIgy-DkjxcrYfB0HNruKF2rZrHzSV3LjFX30p-JZ8PPOdsxrcFCrIXIFipr727k7pYozyCL90up3Lu4_8H78mje2RpSQQ7SAR5pSD0kE1yOc2xo94WKP1kRBRLF3ayMo_kyo1vAbm_i9eFMSFGIB4wlh9RidIV52-770vwlCe9bbKMiavxj2yP2U_Q5NxhCcD3gS1LTd_gyYO_Zs1xgJzDZ1MQbWYDV9vFm00)</li>
+	<li>[Envoie d'un message](http://www.plantuml.com/plantuml/uml/bP8zRiCm38LtdOB8vA3e1J8K2RgsKz4jYq0nYG1P4aJP_RcHp-6BbNOKLsqoj9C5udsFZwItd7NANUkKnXmIl38b5QLaqKRjCpmwIpx_ABrGwaM5mJd2R8Fd6Nkod9MQNd3_K3ZOY1emU2zAWiQ5e_Lm1r4pluLardlVzC4cO3oDGwiPOXe770SZCA-dKBRNGfOOgjXAWtCAQQ0HYNc763gVcuefEOjmoQGC_PPKjdF-3UmE1uidWi_W2Gn1flTCUnz3bq029fi8744hdVMHQijBqgj5p5YkA8YTPT1HFWGinYloVVYWjFhJt4pUF9-Tck9uFNmr_UL6WdRHYAR0K-s6mNBIXLkQr-D-N_x_UxwnjgqC9N_Z5m00)</li>
+	</ul>
+</li>
 
---> [Google doc (ancienne version)](https://docs.google.com/presentation/d/1BCJ2X_qPnMWmMd2bntis_Sc9sNvZcfbuY4LvZ7GNqfc/edit?usp=sharing)
+<li> [Google doc (ancienne version)](https://docs.google.com/presentation/d/1BCJ2X_qPnMWmMd2bntis_Sc9sNvZcfbuY4LvZ7GNqfc/edit?usp=sharing)
+</li>
