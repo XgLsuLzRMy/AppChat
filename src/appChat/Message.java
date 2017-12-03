@@ -1,5 +1,7 @@
 package appChat;
 
+import java.util.Date;
+
 public class Message {
 	
 	String contenu;
