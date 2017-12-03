@@ -9,5 +9,8 @@ public class MessageList {
 	public MessageList() {
 		this.list = new LinkedList<Message>();
 	}
-
+	
+	public void ajouterMessage(Message m){
+		this.list.add(m);
+	}
 }

@@ -5,12 +5,15 @@ import appChat.UtilisateurList;
 
 public class AppChat {
 	
-	public static int COMPTEUR_USER;
-	public static UtilisateurList ListUser;
+	public static int COMPTEUR_USER = 0;
+	public static UtilisateurList utilisateurList = new UtilisateurList();
 	
 	public AppChat (){
-		AppChat.ListUser = new UtilisateurList();
 		
+	}
+	
+	public static void ajouterUtilisateur(Utilisateur u) {
+		AppChat.utilisateurList.ajouterUtilisateur(u);
 	}
 	
 	public void creerCompte (Utilisateur u) {
@@ -29,7 +32,11 @@ public class AppChat {
 	}
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		AppChat appChat = new AppChat();
+		Utilisateur u1 = new Utilisateur("U1");
+		AppChat.ajouterUtilisateur(u1);
+		Utilisateur u2 = new Utilisateur("U2");
+		AppChat.ajouterUtilisateur(u2);
 	}
 
 }
