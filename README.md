@@ -3,6 +3,8 @@ Projet Semestriel Java GM4
 
 Appchat est un réseau social dont le fonctionnement est similaire à Twitter.
 
+Archive jar à importer dans Eclipse : <a href="https://github.com/XgLsuLzRMy/AppChat/blob/master/AppChat.jar">AppChat.jar</a>
+
 Les schémas UML sont dans le dossier UML. Des liens pour les compiler sur le site de plantuml.com sont disponibles ci-dessous.
 
 Lien des schémas UML : 
