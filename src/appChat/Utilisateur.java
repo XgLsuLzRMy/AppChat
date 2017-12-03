@@ -1,18 +1,15 @@
 package appChat;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-
 public class Utilisateur {
 	
 	String NomUser;
-	ArrayList<Utilisateur> ListFollower;
+	UtilisateurList ListFollower;
 	MessageList ListMessageRecentAConsulter;
 	MessageList ListMessagesUtilisateur;
 	
 	public Utilisateur(String nomUser) {
 		this.NomUser = nomUser;
-		this.ListFollower = new ArrayList<Utilisateur>();
+		this.ListFollower = new UtilisateurList();
 		this.ListMessageRecentAConsulter =  new MessageList();
 		this.ListMessagesUtilisateur = new MessageList();
 	}

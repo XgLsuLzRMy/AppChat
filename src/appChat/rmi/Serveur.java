@@ -1,16 +1,15 @@
 package appChat.rmi;
-import java.util.LinkedList;
-
 import appChat.Utilisateur;
+import appChat.UtilisateurList;
 
 
 public class Serveur {
 	
 	public static int COMPTEUR_USER;
-	public static LinkedList<Utilisateur> ListUser;
+	public static UtilisateurList ListUser;
 	
 	public Serveur (){
-		Serveur.ListUser = new LinkedList<Utilisateur> ();
+		Serveur.ListUser = new UtilisateurList();
 		
 	}
 	
