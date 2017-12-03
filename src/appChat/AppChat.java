@@ -1,15 +1,15 @@
-package appChat.rmi;
+package appChat;
 import appChat.Utilisateur;
 import appChat.UtilisateurList;
 
 
-public class Serveur {
+public class AppChat {
 	
 	public static int COMPTEUR_USER;
 	public static UtilisateurList ListUser;
 	
-	public Serveur (){
-		Serveur.ListUser = new UtilisateurList();
+	public AppChat (){
+		AppChat.ListUser = new UtilisateurList();
 		
 	}
 	

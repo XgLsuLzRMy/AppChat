@@ -14,7 +14,21 @@ public class Date {
 	
 	// renvoie true si la date this est + ancienne que la date d
 	public boolean superieur(Date d) {
-		if ()
+		if (this.annee < d.getAnnee()) {
+			return true;
+		}else if (this.mois < d.getMois()) {
+			return true;
+		}else if (this.jour < d.getJour()) {
+			return true;
+		}else if (this.heure < d.getHeure()) {
+			return true;
+		}else if (this.minute < d.getMinute()) {
+			return true;
+		}else if (this.seconde < d.getSeconde()) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 	public int getAnnee() {
