@@ -43,10 +43,12 @@ public class UserConsoleDistante {
 
 		AppRMIServeur a;
 		try {
-			if (args.length > 0)
+			if (args.length > 0){
 				registry = LocateRegistry.getRegistry(args[0]);
-			else
-				registry = LocateRegistry.getRegistry();
+			}
+			else{
+				registry = LocateRegistry.getRegistry(1099);
+			}
 			a = (AppRMIServeur) registry.lookup(app);
 			UserConsoleDistante console = new UserConsoleDistante(nom, a);
 			console.run();
@@ -57,7 +59,7 @@ public class UserConsoleDistante {
 		}
 		lecture.close();
 	}
-	
+
 	public String getAuteur() {
 		return this.auteur;
 	}
