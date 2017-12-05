@@ -1,7 +1,6 @@
 package appChat;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Stack;
+import java.util.Hashtable;
 
 import appChat.Utilisateur;
 import appChat.UtilisateurList;
@@ -11,10 +10,10 @@ public class AppChat {
 
 	public static int COMPTEUR_USER = 0;
 	private static UtilisateurList utilisateurList = new UtilisateurList();
-	private static ArrayList<String> passwordList = new ArrayList<String>();
+	private static Hashtable<String, String> passwordTable = new Hashtable<String, String>();
 
 	public AppChat (){
-
+		
 	}
 
 	private static void ajouterUtilisateur(Utilisateur u) {
@@ -23,15 +22,25 @@ public class AppChat {
 
 	public void creerCompte (String nom,String mdp) {
 		AppChat.ajouterUtilisateur(new Utilisateur(nom));
-		AppChat.ajouterPassword(mdp);
+		AppChat.ajouterPassword(nom, mdp);
 	}
-
-	private static void ajouterPassword(String mdp) {
-		AppChat.passwordList.add(mdp);
+	
+	/**
+	 * Sauvegarde le mot de passe mdp de l'utilisateur nom
+	 * @param nom le nom de l'utilisateur dont le mot de passe est stocké
+	 * @param mdp le mot de passe à stocker
+	 */
+	private static void ajouterPassword(String nom, String mdp) {
+		AppChat.passwordTable.put(nom, mdp);
+	}
+	
+	public boolean verifierMdp(String nom, String mdp) {
+		return AppChat.passwordTable.get(nom).equals(mdp);
 	}
 
 	public void supprimerCompte(Utilisateur u) {
-
+		AppChat.utilisateurList.retirerUtilisateur(u);
+		AppChat.passwordTable.remove(u.getNom());
 	}
 
 	public void Connexion (){
@@ -52,7 +61,7 @@ public class AppChat {
 	 */
 	public void publieMessage(Message m) {
 		String nomAuteur = m.getAuteur();
-		Utilisateur auteur = this.utilisateurList.getUtilisateur(nomAuteur);
+		Utilisateur auteur = AppChat.utilisateurList.getUtilisateur(nomAuteur);
 		auteur.ajouterMessageUtilisateur(m);
 		auteur.getFollowerList().ajouterMessage(m);
 	}

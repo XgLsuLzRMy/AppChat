@@ -30,7 +30,7 @@ public class UserConsoleDistante {
 			if (choix == 1) {
 				System.out.print("Ecrire le contenu du tweet à publier : ");
 				String str = lecture.nextLine();
-
+				System.out.println("Utilisateur : " + this.utilisateur);
 				appDistant.publieMessage(new Message(str, this.utilisateur.getNom()));
 			}
 		}
@@ -71,6 +71,7 @@ public class UserConsoleDistante {
 				mdp = lecture.nextLine();
 				a.ajouterUtilisateur(nom, mdp);
 			}
+			System.out.println("Utilisateur : " + utilisateur);
 			UserConsoleDistante console = new UserConsoleDistante(utilisateur, a);
 			console.run();
 		} catch (RemoteException ex) {

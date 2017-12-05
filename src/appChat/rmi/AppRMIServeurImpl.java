@@ -40,13 +40,18 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 
 	@Override
 	public boolean utilisateurDejaExistant(String nom) {
-		// TODO Auto-generated method stub
-		return false;
+		if(AppChat.getUtilisateurList().getUtilisateur(nom) != null) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	@Override
 	public Utilisateur login(String nom, String mdp) {
-		// TODO Auto-generated method stub
+		if(this.app.verifierMdp(nom, mdp)) {
+			return AppChat.getUtilisateurList().getUtilisateur(nom);
+		}
 		return null;
 	}
 
