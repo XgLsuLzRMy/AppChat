@@ -55,10 +55,10 @@ public class UserConsoleDistante {
 			a = (AppRMIServeur) registry.lookup("App");
 
 			boolean correct = false; // vaut false si le mdp ne correspond pas au nom et true sinon
-			if (a.utilisateurDejaExistant(nom)) { // Si l'utilisateur existe dﾃｩjﾃ� dans la liste d'utilisateurs alors on
+			if (a.utilisateurDejaExistant(nom)) { // Si l'utilisateur existe déjà dans la liste d'utilisateurs alors on
 													// lit le mot de passe et on essaie de se connecter
 				while (!correct) { // on boucle pour avoir plusieurs tentatives (dans l'ihm il faudrait un moyen de
-									// changer le nom si on s'est trompﾃｩ)
+									// changer le nom si on s'est trompé)
 					System.out.print("Entrer votre mot de passe : ");
 					mdp = lecture.nextLine();
 					utilisateur = a.login(nom, mdp);
@@ -70,8 +70,10 @@ public class UserConsoleDistante {
 				System.out.print("Creer votre mot de passe : ");
 				mdp = lecture.nextLine();
 				a.ajouterUtilisateur(nom, mdp);
+				utilisateur = a.login(nom, mdp);
 			}
 			System.out.println("Utilisateur : " + utilisateur);
+			System.out.println("Liste des utilisateurs : " + a.getUtilisateurList());
 			UserConsoleDistante console = new UserConsoleDistante(utilisateur, a);
 			console.run();
 		} catch (RemoteException ex) {

@@ -8,6 +8,7 @@ import java.rmi.server.UnicastRemoteObject;
 import appChat.AppChat;
 import appChat.Message;
 import appChat.Utilisateur;
+import appChat.UtilisateurList;
 
 public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServeur {
 
@@ -49,10 +50,14 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 
 	@Override
 	public Utilisateur login(String nom, String mdp) {
+		System.out.println("Dans login");
 		if(this.app.verifierMdp(nom, mdp)) {
+			System.out.println("utilisateur trouvé");
 			return AppChat.getUtilisateurList().getUtilisateur(nom);
+		}else {
+			System.out.println("utilisateur pas trouvé");
+			return null;
 		}
-		return null;
 	}
 
 	@Override
@@ -83,5 +88,10 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 		} catch (RemoteException ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	@Override
+	public UtilisateurList getUtilisateurList() {
+		return AppChat.getUtilisateurList();
 	}
 }

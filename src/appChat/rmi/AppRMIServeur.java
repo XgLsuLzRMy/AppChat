@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 
 import appChat.Message;
 import appChat.Utilisateur;
+import appChat.UtilisateurList;
 
 public interface AppRMIServeur extends Remote {
 	
@@ -42,5 +43,7 @@ public interface AppRMIServeur extends Remote {
 	 * @throws RemoteException
 	 */
 	public void publieMessage(Message m) throws RemoteException;
+
+	public UtilisateurList getUtilisateurList() throws RemoteException;
 		
 }
