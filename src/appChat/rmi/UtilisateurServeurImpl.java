@@ -13,11 +13,8 @@ public class UtilisateurServeurImpl extends UnicastRemoteObject implements Utili
 		super();
 	}
 
-	@Override
-	public void login(Utilisateur u) throws RemoteException{
-		// TODO Auto-generated method stub
-		
-	}
+
+	
 	
 	
 

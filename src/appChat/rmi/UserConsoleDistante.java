@@ -40,23 +40,39 @@ public class UserConsoleDistante {
 	public static void main(String[] args) {
 		Registry registry = null;
 		Utilisateur utilisateur = null;
+		AppRMIServeur a = null;
+		UtilisateurServeurImpl utilisateurServeur = null;
 		String mdp, nom;
 		Scanner lecture = new Scanner(System.in);
-		System.out.print("Entrer votre nom : ");
-		nom = lecture.nextLine();
-
-		AppRMIServeur a;
+		
+		System.out.print("On cherche le registre... ");
 		try {
 			if (args.length > 0) {
 				registry = LocateRegistry.getRegistry(args[0]);
 			} else {
 				registry = LocateRegistry.getRegistry(1099);
 			}
+			System.out.println("OK");
+			System.out.print("On récupère le registre... ");
 			a = (AppRMIServeur) registry.lookup("App");
-
+			System.out.println("OK");
+			
+			System.out.print("On instancie le serveur de l'utilisateur... ");
+			utilisateurServeur = new UtilisateurServeurImpl();
+			System.out.println("OK\n");
+			
+			System.out.print("Entrer votre nom : ");
+			nom = lecture.nextLine();
+			
+			System.out.print("On ajoute le serveur de l'utilisateur au registre... ");
+			registry.rebind(nom, utilisateurServeur);
+			System.out.println("OK");
+			
+			
 			boolean correct = false; // vaut false si le mdp ne correspond pas au nom et true sinon
 			if (a.utilisateurDejaExistant(nom)) { // Si l'utilisateur existe déjà dans la liste d'utilisateurs alors on
 													// lit le mot de passe et on essaie de se connecter
+				System.out.println("Utilisateur existant --> Connexion au compte");
 				while (!correct) { // on boucle pour avoir plusieurs tentatives (dans l'ihm il faudrait un moyen de
 									// changer le nom si on s'est trompé)
 					System.out.print("Entrer votre mot de passe : ");
@@ -67,13 +83,13 @@ public class UserConsoleDistante {
 					}
 				}
 			} else { // Si l'utilisateur n'a pas encore de compte
+				System.out.println("Utilisateur inexistant --> Création d'un compte");
 				System.out.print("Creer votre mot de passe : ");
 				mdp = lecture.nextLine();
 				a.ajouterUtilisateur(nom, mdp);
-				utilisateur = a.login(nom, mdp);
+				a.login(nom, mdp);
 			}
-			System.out.println("Utilisateur : " + utilisateur);
-			System.out.println("Liste des utilisateurs : " + a.getUtilisateurList());
+			
 			UserConsoleDistante console = new UserConsoleDistante(utilisateur, a);
 			console.run();
 		} catch (RemoteException ex) {

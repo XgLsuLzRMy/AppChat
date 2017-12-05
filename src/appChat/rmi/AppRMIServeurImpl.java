@@ -1,5 +1,7 @@
 package appChat.rmi;
 
+import java.rmi.AccessException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -38,7 +40,7 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 		}
 
 	}
-
+	
 	@Override
 	public boolean utilisateurDejaExistant(String nom) {
 		if(AppChat.getUtilisateurList().getUtilisateur(nom) != null) {
@@ -62,8 +64,7 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 
 	@Override
 	public Utilisateur getUtilisateur(String nom) {
-		// TODO Auto-generated method stub
-		return null;
+		return AppChat.getUtilisateurList().getUtilisateur(nom);
 	}
 
 

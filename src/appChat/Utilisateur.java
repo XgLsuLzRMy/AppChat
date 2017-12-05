@@ -1,6 +1,8 @@
 package appChat;
 
-public class Utilisateur {
+import java.io.Serializable;
+
+public class Utilisateur implements Serializable{
 	
 	private String nom;
 	private UtilisateurList listFollower;
