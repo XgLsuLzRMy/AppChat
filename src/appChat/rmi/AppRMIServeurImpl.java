@@ -6,6 +6,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.ExportException;
 import java.rmi.server.UnicastRemoteObject;
 import appChat.AppChat;
+import appChat.Message;
 import appChat.Utilisateur;
 
 public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServeur {
@@ -21,16 +22,17 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	}
 
 	@Override
-	public void publieMessage(String m) throws RemoteException {
-		// TODO Auto-generated method stub
-
+	public void publieMessage(Message m) throws RemoteException {
+		this.app.publieMessage(m);
 	}
 
-	
+
 
 	@Override
 	public void ajouterUtilisateur(String nom, String mdp) {
-		// TODO Auto-generated method stub
+		if(!this.utilisateurDejaExistant(nom)){
+			this.app.creerCompte(nom, mdp);
+		}
 
 	}
 
@@ -51,9 +53,9 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
+
+
+
 	public static void main(String[] args) {
 		try {
 			Registry registry = null;

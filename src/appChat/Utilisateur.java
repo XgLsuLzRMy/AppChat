@@ -62,5 +62,13 @@ public class Utilisateur {
 	public int getFollowCount() {
 		return this.listFollow.length();
 	}
+	
+	public UtilisateurList getFollowerList(){
+		return this.listFollower;
+	}
+
+	public void ajouterMessage(Message m) {
+		this.listMessagesRecents.ajouterMessage(m);
+	}
 
 }

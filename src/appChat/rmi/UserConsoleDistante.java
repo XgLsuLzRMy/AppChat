@@ -6,6 +6,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
 
+import appChat.Message;
 import appChat.Utilisateur;
 
 public class UserConsoleDistante {
@@ -30,7 +31,7 @@ public class UserConsoleDistante {
 				System.out.print("Ecrire le contenu du tweet à publier : ");
 				String str = lecture.nextLine();
 
-				appDistant.publieMessage(str);
+				appDistant.publieMessage(new Message(str, this.utilisateur.getNom()));
 			}
 		}
 		lecture.close();
@@ -54,10 +55,10 @@ public class UserConsoleDistante {
 			a = (AppRMIServeur) registry.lookup("App");
 
 			boolean correct = false; // vaut false si le mdp ne correspond pas au nom et true sinon
-			if (a.utilisateurDejaExistant(nom)) { // Si l'utilisateur existe déjà dans la liste d'utilisateurs alors on
+			if (a.utilisateurDejaExistant(nom)) { // Si l'utilisateur existe dﾃｩjﾃ� dans la liste d'utilisateurs alors on
 													// lit le mot de passe et on essaie de se connecter
 				while (!correct) { // on boucle pour avoir plusieurs tentatives (dans l'ihm il faudrait un moyen de
-									// changer le nom si on s'est trompé)
+									// changer le nom si on s'est trompﾃｩ)
 					System.out.print("Entrer votre mot de passe : ");
 					mdp = lecture.nextLine();
 					utilisateur = a.login(nom, mdp);
