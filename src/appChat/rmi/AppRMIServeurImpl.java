@@ -1,20 +1,14 @@
 package appChat.rmi;
 
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import com.sun.corba.se.spi.activation.Server;
-
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.ExportException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import appChat.AppChat;
+import appChat.Utilisateur;
 
-public class AppRMIServeurImpl extends UnicastRemoteObject implements
-		AppRMIServeur {
+public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServeur {
 
 	private static final long serialVersionUID = 1L;
 	private AppChat app;
@@ -26,11 +20,40 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements
 		this.registry = registry;
 	}
 
+	@Override
 	public void publieMessage(String m) throws RemoteException {
 		// TODO Auto-generated method stub
 
 	}
 
+	
+
+	@Override
+	public void ajouterUtilisateur(String nom, String mdp) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean utilisateurDejaExistant(String nom) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Utilisateur login(String nom, String mdp) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Utilisateur getUtilisateur(String nom) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	
 	public static void main(String[] args) {
 		try {
 			Registry registry = null;
@@ -51,6 +74,4 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements
 			ex.printStackTrace();
 		}
 	}
-
-
 }

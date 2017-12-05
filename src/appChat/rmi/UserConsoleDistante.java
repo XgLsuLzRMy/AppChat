@@ -6,13 +6,15 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
 
+import appChat.Utilisateur;
+
 public class UserConsoleDistante {
 
-	private String auteur;
+	private Utilisateur utilisateur;
 	private AppRMIServeur appDistant;
 
-	public UserConsoleDistante(String u, AppRMIServeur a) {
-		this.auteur = u;
+	public UserConsoleDistante(Utilisateur utilisateur, AppRMIServeur a) {
+		this.utilisateur = utilisateur;
 		this.appDistant = a;
 	}
 
@@ -25,8 +27,9 @@ public class UserConsoleDistante {
 			System.out.println("1 - Publier un tweet");
 			choix = Integer.parseInt(lecture.nextLine());
 			if (choix == 1) {
-				System.out.print("Ecrire le contenu du tweet ﾃ� publier : ");
+				System.out.print("Ecrire le contenu du tweet à publier : ");
 				String str = lecture.nextLine();
+
 				appDistant.publieMessage(str);
 			}
 		}
@@ -34,23 +37,40 @@ public class UserConsoleDistante {
 	}
 
 	public static void main(String[] args) {
-		Registry registry;
+		Registry registry = null;
+		Utilisateur utilisateur = null;
+		String mdp, nom;
 		Scanner lecture = new Scanner(System.in);
-		System.out.print("Entrer votre nom ");
-		String nom = lecture.nextLine();
-		System.out.print("Entrer le nom de l'App: ");
-		String app = lecture.nextLine();
+		System.out.print("Entrer votre nom : ");
+		nom = lecture.nextLine();
 
 		AppRMIServeur a;
 		try {
-			if (args.length > 0){
+			if (args.length > 0) {
 				registry = LocateRegistry.getRegistry(args[0]);
-			}
-			else{
+			} else {
 				registry = LocateRegistry.getRegistry(1099);
 			}
-			a = (AppRMIServeur) registry.lookup(app);
-			UserConsoleDistante console = new UserConsoleDistante(nom, a);
+			a = (AppRMIServeur) registry.lookup("App");
+
+			boolean correct = false; // vaut false si le mdp ne correspond pas au nom et true sinon
+			if (a.utilisateurDejaExistant(nom)) { // Si l'utilisateur existe déjà dans la liste d'utilisateurs alors on
+													// lit le mot de passe et on essaie de se connecter
+				while (!correct) { // on boucle pour avoir plusieurs tentatives (dans l'ihm il faudrait un moyen de
+									// changer le nom si on s'est trompé)
+					System.out.print("Entrer votre mot de passe : ");
+					mdp = lecture.nextLine();
+					utilisateur = a.login(nom, mdp);
+					if (utilisateur != null) {
+						correct = true;
+					}
+				}
+			} else { // Si l'utilisateur n'a pas encore de compte
+				System.out.print("Creer votre mot de passe : ");
+				mdp = lecture.nextLine();
+				a.ajouterUtilisateur(nom, mdp);
+			}
+			UserConsoleDistante console = new UserConsoleDistante(utilisateur, a);
 			console.run();
 		} catch (RemoteException ex) {
 			ex.printStackTrace();
@@ -60,8 +80,8 @@ public class UserConsoleDistante {
 		lecture.close();
 	}
 
-	public String getAuteur() {
-		return this.auteur;
+	public Utilisateur getUtilisateur() {
+		return this.utilisateur;
 	}
 
 }
