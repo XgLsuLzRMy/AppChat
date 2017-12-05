@@ -4,6 +4,10 @@ import java.util.LinkedList;
 
 public class MessageList {
 	
+	/*
+	 * Il faudrait faire une classe abstraite MessageListAbstraite puis 2 classes MessageList (pour une liste normale) et MessageListRecent (pour une liste avec un nombre maximal de messages pour ne pas submerger l'utilisateur de trop de messages lorsqu'il se connecte) ?
+	 */
+	
 	private LinkedList<Message> list;
 	private int nbMessage, nbMaxMessage;
 	

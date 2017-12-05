@@ -53,6 +53,7 @@ public class AppChat {
 	public void publieMessage(Message m) {
 		String nomAuteur = m.getAuteur();
 		Utilisateur auteur = this.utilisateurList.getUtilisateur(nomAuteur);
+		auteur.ajouterMessageUtilisateur(m);
 		auteur.getFollowerList().ajouterMessage(m);
 	}
 

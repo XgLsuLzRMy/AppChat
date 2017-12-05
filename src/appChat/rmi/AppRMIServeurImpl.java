@@ -17,7 +17,9 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 
 	public AppRMIServeurImpl(Registry registry) throws RemoteException {
 		super();
+		System.out.println("Dans le constructeur du serveur");
 		this.app = new AppChat();
+		System.out.println("Instance de AppChat créée !");
 		this.registry = registry;
 	}
 
@@ -66,12 +68,13 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 			} catch (RemoteException ex) {
 				ex.printStackTrace();
 			}
-
+			System.out.println("Registre crée !");
+			
 			AppRMIServeurImpl a = new AppRMIServeurImpl(registry);
-
+			System.out.println("AppRMIServeurImpl instancié !");
+			
 			registry.rebind("App", a);
-
-			System.out.println("L'application est enregistre");
+			System.out.println("L'application est enregistrée");
 		} catch (RemoteException ex) {
 			ex.printStackTrace();
 		}

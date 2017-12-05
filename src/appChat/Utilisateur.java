@@ -70,5 +70,9 @@ public class Utilisateur {
 	public void ajouterMessage(Message m) {
 		this.listMessagesRecents.ajouterMessage(m);
 	}
+	
+	public void ajouterMessageUtilisateur(Message m) {
+		this.listMessagesUtilisateur.ajouterMessage(m);
+	}
 
 }
