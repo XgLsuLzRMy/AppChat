@@ -53,4 +53,8 @@ public class MessageList implements Serializable{
 	public int getNbMaxMessage() {
 		return this.nbMaxMessage;
 	}
+	
+	public String toString() {
+		return this.nbMessage +" msg :\n" + this.list.toString();
+	}
 }

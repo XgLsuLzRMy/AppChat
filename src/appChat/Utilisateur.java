@@ -3,7 +3,8 @@ package appChat;
 import java.io.Serializable;
 
 public class Utilisateur implements Serializable{
-	
+
+	private static final long serialVersionUID = 1L;
 	private String nom;
 	private UtilisateurList listFollower;
 	private UtilisateurList listFollow;
@@ -75,6 +76,14 @@ public class Utilisateur implements Serializable{
 	
 	public void ajouterMessageUtilisateur(Message m) {
 		this.listMessagesUtilisateur.ajouterMessage(m);
+	}
+	
+	public MessageList getListMessagesRecents() {
+		return this.listMessagesRecents;
+	}
+	
+	public MessageList getListMessages() {
+		return this.listMessagesUtilisateur;
 	}
 
 }

@@ -48,5 +48,8 @@ public class Message implements Serializable{
 		this.retweetCount++;
 	}
 
+	public String toString() {
+		return this.auteur + " dit : \n--------------\n" + this.contenu + "\n--------------";
+	}
 	
 }

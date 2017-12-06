@@ -52,6 +52,11 @@ public class UtilisateurList implements Serializable {
 		
 		return null;
 	}
+	
+	public ArrayList<Utilisateur> getUtilisateurList() {
+		return this.utilisateurList;
+	}
+	
 	/**
 	 * Ajoute le message m dans la liste des messages de chaque utilisateurs dans cette liste (utile pour envoyer un message à tous ses follower) 
 	 * @param m

@@ -1,10 +1,13 @@
 package appChat.rmi;
 
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.ExportException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Iterator;
+
 import appChat.AppChat;
 import appChat.Message;
 import appChat.Utilisateur;
@@ -27,6 +30,19 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	@Override
 	public void publieMessage(Message m) throws RemoteException {
 		this.app.publieMessage(m);
+		
+		// On notifie les follower
+		
+		Iterator<Utilisateur> it = this.getUtilisateur(m.getAuteur()).getFollowerList().getUtilisateurList().iterator();
+		UtilisateurServeur u = null;
+		while(it.hasNext()) {
+			try {
+				u = (UtilisateurServeur) this.registry.lookup(it.next().getNom());
+				u.notification(m);
+			} catch (NotBoundException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 
@@ -95,5 +111,16 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	@Override
 	public UtilisateurList getUtilisateurList() {
 		return AppChat.getUtilisateurList();
+	}
+
+	@Override
+	public void logout(Utilisateur utilisateur) throws RemoteException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void follow(String nom, String nom2) throws RemoteException {
+		this.getUtilisateur(nom).follow(this.getUtilisateur(nom2));
 	}
 }

@@ -26,12 +26,59 @@ public class UserConsoleDistante {
 			System.out.println("Que voulez-vous faire ?");
 			System.out.println("0 - Quitter");
 			System.out.println("1 - Publier un tweet");
+			System.out.println("2 - Voir les messages récents");
+			System.out.println("3 - Follow un utilisateur");
+			System.out.println("4 - Afficher les infos sur mon compte");
+			System.out.println("5 - Modifier le nombre max de messages récents");
 			choix = Integer.parseInt(lecture.nextLine());
-			if (choix == 1) {
+			String nom = "";
+			int nb = 0;
+			switch(choix) {
+			
+			case 0:
+				appDistant.logout(this.utilisateur);
+				break;
+				
+			case 1:
 				System.out.print("Ecrire le contenu du tweet à publier : ");
 				String str = lecture.nextLine();
 				System.out.println("Utilisateur : " + this.utilisateur);
 				appDistant.publieMessage(new Message(str, this.utilisateur.getNom()));
+				break;
+				
+			case 2:
+				System.out.println(this.utilisateur.getListMessagesRecents());
+				break;
+				
+			case 3:
+				System.out.println("Donner le nom de l'utilisateur : ");
+				nom = lecture.nextLine();
+				System.out.println("-" + nom + "-");
+				this.utilisateur.follow(appDistant.getUtilisateur(nom));
+				this.appDistant.follow(this.utilisateur.getNom(), nom);
+				break;
+				
+			case 4:
+				System.out.println("\nVous suivez " + this.utilisateur.getFollowCount() + " utilisateurs");
+				System.out.println("Vous êtes suivi par " + this.utilisateur.getFollowerCount() + " utilisateurs");
+				System.out.println("Vous avez posté " + this.utilisateur.getListMessages().getNbMessage() + " messages");
+				System.out.println("Vous avez fixé à " + this.utilisateur.getListMessagesRecents().getNbMaxMessage() + " le nombre maximal de messages récents\n");
+				break;
+				
+			case 5:
+				System.out.println("Le nombre max de messages récents est actuellement de " + this.utilisateur.getListMessagesRecents().getNbMaxMessage());
+				System.out.println("Donner le nouveau nombre max de messages récents : ");
+				nb = Integer.parseInt(lecture.nextLine());
+				if(nb>=0) {
+					this.utilisateur.getListMessagesRecents().setNbMaxMessage(nb);
+					this.appDistant.getUtilisateur(this.utilisateur.getNom()).getListMessagesRecents().setNbMaxMessage(nb);
+					System.out.println("OK");
+				}else {
+					System.out.println("Nombre incorrect, on ne change rien");
+				}
+			default:
+				System.out.println(choix + " n'est pas un chox correct");
+				break;
 			}
 		}
 		lecture.close();

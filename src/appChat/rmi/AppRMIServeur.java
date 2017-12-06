@@ -44,5 +44,15 @@ public interface AppRMIServeur extends Remote {
 	public void publieMessage(Message m) throws RemoteException;
 
 	public UtilisateurList getUtilisateurList() throws RemoteException;
+
+	public void logout(Utilisateur utilisateur) throws RemoteException;
+	
+	/**
+	 * L'utilisateur nom veut follow l'utilisateur nom2
+	 * @param nom
+	 * @param nom2
+	 * @throws RemoteException
+	 */
+	public void follow(String nom, String nom2) throws RemoteException;
 		
 }
