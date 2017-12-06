@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 
 import appChat.Message;
 import appChat.Utilisateur;
+import appChat.UtilisateurInexistantException;
 import appChat.UtilisateurList;
 
 public interface AppRMIServeur extends Remote {
@@ -33,8 +34,9 @@ public interface AppRMIServeur extends Remote {
 	 * 
 	 * @param nom le nom de l'utilisateur souhaitﾃｩ
 	 * @return l'utilisateur recherchﾃｩ
+	 * @throws UtilisateurInexistantException 
 	 */
-	public Utilisateur getUtilisateur(String nom) throws RemoteException;
+	public Utilisateur getUtilisateur(String nom) throws RemoteException, UtilisateurInexistantException;
 	
 	/**
 	 * 
@@ -52,7 +54,8 @@ public interface AppRMIServeur extends Remote {
 	 * @param nom
 	 * @param nom2
 	 * @throws RemoteException
+	 * @throws UtilisateurInexistantException 
 	 */
-	public void follow(String nom, String nom2) throws RemoteException;
+	public void follow(String nom, String nom2) throws RemoteException, UtilisateurInexistantException;
 		
 }

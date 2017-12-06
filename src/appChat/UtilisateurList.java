@@ -21,13 +21,15 @@ public class UtilisateurList implements Serializable {
 	 */
 	public void ajouterUtilisateur(Utilisateur u) {
 		// On vﾃｩrifie que l'utilisateur u n'est pas dﾃｩjﾃ� dans la liste
-		if(!this.utilisateurList.contains(u)) {
+		if((u!=null) && !this.utilisateurList.contains(u)) {
 			this.utilisateurList.add(u);
 		}
 	}
 
 	public void retirerUtilisateur(Utilisateur u) {
-		this.utilisateurList.remove(u);
+		if(u!=null) {
+			this.utilisateurList.remove(u);
+		}
 	}
 
 	public int length() {
@@ -38,7 +40,7 @@ public class UtilisateurList implements Serializable {
 		return this.utilisateurList.toString();
 	}
 
-	public Utilisateur getUtilisateur(String nomAuteur) {
+	public Utilisateur getUtilisateur(String nomAuteur) throws UtilisateurInexistantException {
 		
 		Utilisateur temp = null;
 		
@@ -49,8 +51,7 @@ public class UtilisateurList implements Serializable {
 				return temp;
 			}
 		}
-		
-		return null;
+		throw new UtilisateurInexistantException();
 	}
 	
 	public ArrayList<Utilisateur> getUtilisateurList() {
@@ -62,8 +63,10 @@ public class UtilisateurList implements Serializable {
 	 * @param m
 	 */
 	public void ajouterMessage(Message m) {
-		for(Utilisateur u : this.utilisateurList) {
-			u.ajouterMessage(m);
+		if(m!=null) {
+			for(Utilisateur u : this.utilisateurList) {
+				u.ajouterMessage(m);
+			}
 		}
 	}
 }

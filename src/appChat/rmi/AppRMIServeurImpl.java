@@ -11,6 +11,7 @@ import java.util.Iterator;
 import appChat.AppChat;
 import appChat.Message;
 import appChat.Utilisateur;
+import appChat.UtilisateurInexistantException;
 import appChat.UtilisateurList;
 
 public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServeur {
@@ -21,9 +22,7 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 
 	public AppRMIServeurImpl(Registry registry) throws RemoteException {
 		super();
-		System.out.println("Dans le constructeur du serveur");
 		this.app = new AppChat();
-		System.out.println("Instance de AppChat créée !");
 		this.registry = registry;
 	}
 
@@ -33,16 +32,22 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 		
 		// On notifie les follower
 		
-		Iterator<Utilisateur> it = this.getUtilisateur(m.getAuteur()).getFollowerList().getUtilisateurList().iterator();
-		UtilisateurServeur u = null;
-		while(it.hasNext()) {
-			try {
-				u = (UtilisateurServeur) this.registry.lookup(it.next().getNom());
-				u.notification(m);
-			} catch (NotBoundException e) {
-				e.printStackTrace();
+		Iterator<Utilisateur> it = null;
+		try {
+			it = this.getUtilisateur(m.getAuteur()).getFollowerList().getUtilisateurList().iterator();
+			UtilisateurServeur u = null;
+			while(it.hasNext()) {
+				try {
+					u = (UtilisateurServeur) this.registry.lookup(it.next().getNom());
+					u.notification(m);
+				} catch (NotBoundException e) {
+					e.printStackTrace();
+				}
 			}
+		} catch (UtilisateurInexistantException e1) {
+			e1.printStackTrace();
 		}
+		
 	}
 
 
@@ -57,30 +62,33 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	
 	@Override
 	public boolean utilisateurDejaExistant(String nom) throws RemoteException {
-		if(AppChat.getUtilisateurList().getUtilisateur(nom) != null) {
+		try {
+			AppChat.getUtilisateurList().getUtilisateur(nom);
 			return true;
-		}else {
+		}catch(UtilisateurInexistantException e) {
 			return false;
 		}
 	}
 
 	@Override
 	public Utilisateur login(String nom, String mdp) throws RemoteException{
-		System.out.println("Tentative de login de "+ nom);
+		System.out.print("Tentative de login de "+ nom + "... ");
 		if(this.app.verifierMdp(nom, mdp)) {
-			System.out.println("utilisateur trouvé");
-			System.out.print("On cherche le serveur de l'utilisateur dans le registre... ");
-			
-			return AppChat.getUtilisateurList().getUtilisateur(nom);
-			
+			System.out.println("OK");
+			try {
+				return AppChat.getUtilisateurList().getUtilisateur(nom);
+			} catch (UtilisateurInexistantException e) {
+				e.printStackTrace();
+				return null;
+			}
 		}else {
-			System.out.println("utilisateur pas trouvé");
+			System.out.println("Refusé");
 			return null;
 		}
 	}
 
 	@Override
-	public Utilisateur getUtilisateur(String nom)throws RemoteException  {
+	public Utilisateur getUtilisateur(String nom)throws RemoteException, UtilisateurInexistantException  {
 		return AppChat.getUtilisateurList().getUtilisateur(nom);
 	}
 
@@ -89,20 +97,23 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	public static void main(String[] args) {
 		try {
 			Registry registry = null;
+			System.out.print("Récupération du registre RMI... ");
 			try {
 				registry = LocateRegistry.createRegistry(1099);
+				System.out.println("Registre crée !");
 			} catch (ExportException ex) {
 				registry = LocateRegistry.getRegistry(1099);
+				System.out.println("Registre recupéré !");
 			} catch (RemoteException ex) {
 				ex.printStackTrace();
 			}
-			System.out.println("Registre crée !");
-			
+			System.out.print("Instanciation du AppRMIServeur... ");
 			AppRMIServeurImpl a = new AppRMIServeurImpl(registry);
 			System.out.println("AppRMIServeurImpl instancié !");
 			
+			System.out.print("Enregistrement de l'application dans le registre... ");
 			registry.rebind("App", a);
-			System.out.println("L'application est enregistrée");
+			System.out.println("OK");
 		} catch (RemoteException ex) {
 			ex.printStackTrace();
 		}
@@ -120,7 +131,11 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	}
 
 	@Override
-	public void follow(String nom, String nom2) throws RemoteException {
-		this.getUtilisateur(nom).follow(this.getUtilisateur(nom2));
+	public void follow(String nom, String nom2) throws RemoteException, UtilisateurInexistantException {
+		Utilisateur u1 = this.getUtilisateur(nom);
+		if(u1 != null) {
+			Utilisateur u2 = this.getUtilisateur(nom2);
+			u1.follow(u2);
+		}
 	}
 }

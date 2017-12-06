@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import appChat.Message;
 import appChat.Utilisateur;
+import appChat.UtilisateurInexistantException;
 
 public class UserConsoleDistante {
 
@@ -30,7 +31,12 @@ public class UserConsoleDistante {
 			System.out.println("3 - Follow un utilisateur");
 			System.out.println("4 - Afficher les infos sur mon compte");
 			System.out.println("5 - Modifier le nombre max de messages récents");
-			choix = Integer.parseInt(lecture.nextLine());
+			String str = lecture.nextLine();
+			while(str == "") {
+				str = lecture.nextLine();
+			}
+			choix = Integer.parseInt(str);
+			
 			String nom = "";
 			int nb = 0;
 			switch(choix) {
@@ -41,8 +47,7 @@ public class UserConsoleDistante {
 				
 			case 1:
 				System.out.print("Ecrire le contenu du tweet à publier : ");
-				String str = lecture.nextLine();
-				System.out.println("Utilisateur : " + this.utilisateur);
+				str = lecture.nextLine();
 				appDistant.publieMessage(new Message(str, this.utilisateur.getNom()));
 				break;
 				
@@ -53,9 +58,18 @@ public class UserConsoleDistante {
 			case 3:
 				System.out.println("Donner le nom de l'utilisateur : ");
 				nom = lecture.nextLine();
-				System.out.println("-" + nom + "-");
-				this.utilisateur.follow(appDistant.getUtilisateur(nom));
-				this.appDistant.follow(this.utilisateur.getNom(), nom);
+				while(nom.equals("")) {
+					System.out.println("Donner le nom de l'utilisateur : ");
+					nom = lecture.nextLine();
+				}
+				
+				try {
+					this.utilisateur.follow(appDistant.getUtilisateur(nom));
+					this.appDistant.follow(this.utilisateur.getNom(), nom);
+				} catch (UtilisateurInexistantException e) {
+					e.printStackTrace();
+				}
+				
 				break;
 				
 			case 4:
@@ -71,8 +85,12 @@ public class UserConsoleDistante {
 				nb = Integer.parseInt(lecture.nextLine());
 				if(nb>=0) {
 					this.utilisateur.getListMessagesRecents().setNbMaxMessage(nb);
-					this.appDistant.getUtilisateur(this.utilisateur.getNom()).getListMessagesRecents().setNbMaxMessage(nb);
-					System.out.println("OK");
+					try {
+						this.appDistant.getUtilisateur(this.utilisateur.getNom()).getListMessagesRecents().setNbMaxMessage(nb);
+						System.out.println("OK");
+					} catch (UtilisateurInexistantException e) {
+						e.printStackTrace();
+					}
 				}else {
 					System.out.println("Nombre incorrect, on ne change rien");
 				}
@@ -89,7 +107,7 @@ public class UserConsoleDistante {
 		Utilisateur utilisateur = null;
 		AppRMIServeur a = null;
 		UtilisateurServeurImpl utilisateurServeur = null;
-		String mdp, nom;
+		String mdp, nom = "";
 		Scanner lecture = new Scanner(System.in);
 		
 		System.out.print("On cherche le registre... ");
@@ -110,6 +128,11 @@ public class UserConsoleDistante {
 			
 			System.out.print("Entrer votre nom : ");
 			nom = lecture.nextLine();
+			// On ne peut pas avoir un nom vide
+			while(nom.equals("")) {
+				System.out.print("Entrer votre nom : ");
+				nom = lecture.nextLine();
+			}
 			
 			System.out.print("On ajoute le serveur de l'utilisateur au registre... ");
 			registry.rebind(nom, utilisateurServeur);
@@ -136,6 +159,11 @@ public class UserConsoleDistante {
 				System.out.println("Utilisateur inexistant --> Création d'un compte");
 				System.out.print("Creer votre mot de passe : ");
 				mdp = lecture.nextLine();
+				// On ne peut pas creer un compte avec mot de passe vide
+				while(mdp.equals("")) {
+					System.out.print("Creer votre mot de passe : ");
+					mdp = lecture.nextLine();
+				}
 				a.ajouterUtilisateur(nom, mdp);
 				utilisateur = a.login(nom, mdp);
 				

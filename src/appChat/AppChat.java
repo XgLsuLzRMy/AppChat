@@ -61,9 +61,15 @@ public class AppChat {
 	 */
 	public void publieMessage(Message m) {
 		String nomAuteur = m.getAuteur();
-		Utilisateur auteur = AppChat.utilisateurList.getUtilisateur(nomAuteur);
-		auteur.ajouterMessageUtilisateur(m);
-		auteur.getFollowerList().ajouterMessage(m);
+		Utilisateur auteur;
+		try {
+			auteur = AppChat.utilisateurList.getUtilisateur(nomAuteur);
+			auteur.ajouterMessageUtilisateur(m);
+			auteur.getFollowerList().ajouterMessage(m);
+		} catch (UtilisateurInexistantException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }

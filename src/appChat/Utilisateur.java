@@ -22,14 +22,14 @@ public class Utilisateur implements Serializable{
 	}
 	
 	public void follow(Utilisateur u){
-		if (!this.equals(u)){
+		if (!this.equals(u) && (u!=null)){
 			this.listFollow.ajouterUtilisateur(u);
 			u.ajouterFollower(this);
 		}
 	}
 	
 	public void ajouterFollower(Utilisateur u) {
-		if (!this.equals(u)){
+		if (!this.equals(u) && (u!=null)){
 			this.listFollower.ajouterUtilisateur(u);
 		}
 	}
@@ -39,12 +39,16 @@ public class Utilisateur implements Serializable{
 	}
 	
 	public void retweetMessage (Message m){
-		
+		//TODO
 	}
 	
 	public boolean equals(Utilisateur u) {
-		if(this.nom.equals(u.getNom())) {
-			return true;
+		if(u!=null) {
+			if(this.nom.equals(u.getNom())) {
+				return true;
+			}else {
+				return false;
+			}
 		}else {
 			return false;
 		}
