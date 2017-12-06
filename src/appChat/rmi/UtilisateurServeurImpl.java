@@ -15,16 +15,7 @@ public class UtilisateurServeurImpl extends UnicastRemoteObject implements Utili
 		this.utilisateur = null;
 	}
 
-	@Override
-	public void recupererDonnees(Utilisateur utilisateur) throws RemoteException {
-		this.utilisateur = utilisateur;
-		System.out.println("Utilisateur récupéré : "+this.utilisateur);
-	}
 
-	@Override
-	public Utilisateur getUtilisateur() throws RemoteException {
-		return utilisateur;
-	}
 	
 
 	

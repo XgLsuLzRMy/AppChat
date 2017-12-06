@@ -77,13 +77,12 @@ public class UserConsoleDistante {
 									// changer le nom si on s'est trompé)
 					System.out.print("Entrer votre mot de passe : ");
 					mdp = lecture.nextLine();
-					if(a.login(nom, mdp)) {
-						utilisateur = utilisateurServeur.getUtilisateur();
-					}else {
-						System.out.println("erreur lors de la connection");
-					}
+					utilisateur = a.login(nom, mdp);
+					
 					if (utilisateur != null) {
 						correct = true;
+					}else {
+						System.out.println("erreur lors du login");
 					}
 				}
 			} else { // Si l'utilisateur n'a pas encore de compte
@@ -91,10 +90,12 @@ public class UserConsoleDistante {
 				System.out.print("Creer votre mot de passe : ");
 				mdp = lecture.nextLine();
 				a.ajouterUtilisateur(nom, mdp);
-				if(a.login(nom, mdp)) { // Si le login a reussi alors le serveur a donner la liste des messages au serveurUtilisateur
-					utilisateur = utilisateurServeur.getUtilisateur();
+				utilisateur = a.login(nom, mdp);
+				
+				if (utilisateur != null) {
+					correct = true;
 				}else {
-					System.out.println("erreur lors de la connection");
+					System.out.println("erreur lors du login");
 				}
 			}
 			

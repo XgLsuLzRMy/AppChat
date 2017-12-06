@@ -49,23 +49,17 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	}
 
 	@Override
-	public boolean login(String nom, String mdp) throws RemoteException{
+	public Utilisateur login(String nom, String mdp) throws RemoteException{
 		System.out.println("Tentative de login de "+ nom);
 		if(this.app.verifierMdp(nom, mdp)) {
-			UtilisateurServeur us = null;
 			System.out.println("utilisateur trouvé");
 			System.out.print("On cherche le serveur de l'utilisateur dans le registre... ");
-			try {
-				us = (UtilisateurServeur) this.registry.lookup(nom);
-				System.out.println("OK");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			us.recupererDonnees(AppChat.getUtilisateurList().getUtilisateur(nom));
-			return true;
+			
+			return AppChat.getUtilisateurList().getUtilisateur(nom);
+			
 		}else {
 			System.out.println("utilisateur pas trouvé");
-			return false;
+			return null;
 		}
 	}
 
