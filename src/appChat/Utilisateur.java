@@ -54,7 +54,7 @@ public class Utilisateur implements Serializable{
 	}
 	
 	public String toString() {
-		return this.nom + " (" + this.getFollowerCount() + " followers)";
+		return this.nom + " (" + this.getFollowerCount() + " followers et " + this.listMessagesUtilisateur.getNbMessage() + "msg )";
 	}
 	
 	public int getFollowerCount() {

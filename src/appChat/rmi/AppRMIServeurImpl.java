@@ -1,7 +1,5 @@
 package appChat.rmi;
 
-import java.rmi.AccessException;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -34,7 +32,7 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 
 
 	@Override
-	public void ajouterUtilisateur(String nom, String mdp) {
+	public void ajouterUtilisateur(String nom, String mdp)throws RemoteException {
 		if(!this.utilisateurDejaExistant(nom)){
 			this.app.creerCompte(nom, mdp);
 		}
@@ -42,7 +40,7 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	}
 	
 	@Override
-	public boolean utilisateurDejaExistant(String nom) {
+	public boolean utilisateurDejaExistant(String nom) throws RemoteException {
 		if(AppChat.getUtilisateurList().getUtilisateur(nom) != null) {
 			return true;
 		}else {
@@ -51,19 +49,28 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	}
 
 	@Override
-	public Utilisateur login(String nom, String mdp) {
-		System.out.println("Dans login");
+	public boolean login(String nom, String mdp) throws RemoteException{
+		System.out.println("Tentative de login de "+ nom);
 		if(this.app.verifierMdp(nom, mdp)) {
+			UtilisateurServeur us = null;
 			System.out.println("utilisateur trouvé");
-			return AppChat.getUtilisateurList().getUtilisateur(nom);
+			System.out.print("On cherche le serveur de l'utilisateur dans le registre... ");
+			try {
+				us = (UtilisateurServeur) this.registry.lookup(nom);
+				System.out.println("OK");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			us.recupererDonnees(AppChat.getUtilisateurList().getUtilisateur(nom));
+			return true;
 		}else {
 			System.out.println("utilisateur pas trouvé");
-			return null;
+			return false;
 		}
 	}
 
 	@Override
-	public Utilisateur getUtilisateur(String nom) {
+	public Utilisateur getUtilisateur(String nom)throws RemoteException  {
 		return AppChat.getUtilisateurList().getUtilisateur(nom);
 	}
 

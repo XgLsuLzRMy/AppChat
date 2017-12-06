@@ -1,8 +1,9 @@
 package appChat;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
-public class MessageList {
+public class MessageList implements Serializable{
 
 	/*
 	 * Il faudrait faire une classe abstraite MessageListAbstraite puis 2 classes

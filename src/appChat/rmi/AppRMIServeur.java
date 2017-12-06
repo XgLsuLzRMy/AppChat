@@ -28,7 +28,7 @@ public interface AppRMIServeur extends Remote {
 	 * @param mdp le mot de passe de l'utilisateur qui se connecte
 	 * @return les informations du compte sous la forme d'une variable Utilisateur si le mdp correspond au nom, sinon renvoie null
 	 */
-	public Utilisateur login(String nom, String mdp) throws RemoteException;
+	public boolean login(String nom, String mdp) throws RemoteException;
 	
 	/**
 	 * 

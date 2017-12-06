@@ -1,10 +1,12 @@
 package appChat;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class UtilisateurList {
+public class UtilisateurList implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	// On utilise ArrayList car il n'y a pas d'ordre pour les utilisateurs
 	private ArrayList<Utilisateur> utilisateurList;
 
