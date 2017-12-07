@@ -9,18 +9,29 @@ import appChat.Utilisateur;
 public class UtilisateurServeurImpl extends UnicastRemoteObject implements UtilisateurServeur{
 
 	private static final long serialVersionUID = 1L;
-	protected UtilisateurServeurImpl() throws RemoteException {
+	private Utilisateur utilisateur;
+	
+	protected UtilisateurServeurImpl(Utilisateur utilisateur) throws RemoteException {
 		super();
+		this.utilisateur = utilisateur;
 	}
 
 	@Override
-	public void notification(Message message) throws RemoteException {
-		System.out.println("\n\nMessage recu !\n" + message + "\n");
+	public void recevoirMessage(Message message) throws RemoteException {
+		System.out.println("\n\nNouveau message !\n" + message + "\n");
+		
 	}
-
-
 	
-
+	@Override
+	public void nouveauFollower(Utilisateur follower) throws RemoteException{
+		System.out.println("Nouveau follower " + follower.getNom());
+		this.utilisateur.ajouterFollower(follower);
+	}
+	
+	@Override
+	public Utilisateur getUtilisateur() throws RemoteException {
+		return this.utilisateur;
+	}
 	
 	
 	

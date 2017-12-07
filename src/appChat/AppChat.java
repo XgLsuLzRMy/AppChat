@@ -1,5 +1,4 @@
 package appChat;
-import java.util.ArrayList;
 import java.util.Hashtable;
 
 import appChat.Utilisateur;

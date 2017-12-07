@@ -28,9 +28,9 @@ public class Utilisateur implements Serializable{
 		}
 	}
 	
-	public void ajouterFollower(Utilisateur u) {
-		if (!this.equals(u) && (u!=null)){
-			this.listFollower.ajouterUtilisateur(u);
+	public void ajouterFollower(Utilisateur follower) {
+		if (!this.equals(follower) && (follower!=null)){
+			this.listFollower.ajouterUtilisateur(follower);
 		}
 	}
 	

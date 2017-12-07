@@ -12,17 +12,21 @@ import appChat.UtilisateurInexistantException;
 
 public class UserConsoleDistante {
 
-	private Utilisateur utilisateur;
 	private AppRMIServeur appDistant;
+	private UtilisateurServeur utilisateurServeur;
 
-	public UserConsoleDistante(Utilisateur utilisateur, AppRMIServeur a) {
-		this.utilisateur = utilisateur;
+	public UserConsoleDistante(AppRMIServeur a, UtilisateurServeur utilisateurServeur) {
 		this.appDistant = a;
+		this.utilisateurServeur = utilisateurServeur;
 	}
 
 	public void run() throws RemoteException {
 		int choix = 1;
 		Scanner lecture = new Scanner(System.in);
+		Message m = null;
+		String str = "";
+		String nom = "";
+		int nb = 0;
 		while (choix != 0) {
 			System.out.println("Que voulez-vous faire ?");
 			System.out.println("0 - Quitter");
@@ -31,28 +35,30 @@ public class UserConsoleDistante {
 			System.out.println("3 - Follow un utilisateur");
 			System.out.println("4 - Afficher les infos sur mon compte");
 			System.out.println("5 - Modifier le nombre max de messages récents");
-			String str = lecture.nextLine();
+			str = lecture.nextLine();
 			while(str == "") {
 				str = lecture.nextLine();
 			}
 			choix = Integer.parseInt(str);
 			
-			String nom = "";
-			int nb = 0;
+			nom = "";
+			nb = 0;
 			switch(choix) {
 			
 			case 0:
-				appDistant.logout(this.utilisateur);
+				appDistant.logout(this.utilisateurServeur.getUtilisateur());
 				break;
 				
 			case 1:
 				System.out.print("Ecrire le contenu du tweet à publier : ");
 				str = lecture.nextLine();
-				appDistant.publieMessage(new Message(str, this.utilisateur.getNom()));
+				m = new Message(str, this.utilisateurServeur.getUtilisateur().getNom());
+				this.appDistant.publieMessage(m);
+				this.utilisateurServeur.getUtilisateur().ajouterMessageUtilisateur(m);
 				break;
 				
 			case 2:
-				System.out.println(this.utilisateur.getListMessagesRecents());
+				System.out.println(this.utilisateurServeur.getUtilisateur().getListMessagesRecents());
 				break;
 				
 			case 3:
@@ -64,8 +70,8 @@ public class UserConsoleDistante {
 				}
 				
 				try {
-					this.utilisateur.follow(appDistant.getUtilisateur(nom));
-					this.appDistant.follow(this.utilisateur.getNom(), nom);
+					this.utilisateurServeur.getUtilisateur().follow(appDistant.getUtilisateur(nom));
+					this.appDistant.follow(this.utilisateurServeur.getUtilisateur().getNom(), nom);
 				} catch (UtilisateurInexistantException e) {
 					e.printStackTrace();
 				}
@@ -73,20 +79,20 @@ public class UserConsoleDistante {
 				break;
 				
 			case 4:
-				System.out.println("\nVous suivez " + this.utilisateur.getFollowCount() + " utilisateurs");
-				System.out.println("Vous êtes suivi par " + this.utilisateur.getFollowerCount() + " utilisateurs");
-				System.out.println("Vous avez posté " + this.utilisateur.getListMessages().getNbMessage() + " messages");
-				System.out.println("Vous avez fixé à " + this.utilisateur.getListMessagesRecents().getNbMaxMessage() + " le nombre maximal de messages récents\n");
+				System.out.println("\nVous suivez " + this.utilisateurServeur.getUtilisateur().getFollowCount() + " utilisateurs");
+				System.out.println("Vous êtes suivi par " + this.utilisateurServeur.getUtilisateur().getFollowerCount() + " utilisateurs");
+				System.out.println("Vous avez posté " + this.utilisateurServeur.getUtilisateur().getListMessages().getNbMessage() + " messages");
+				System.out.println("Vous avez fixé à " + this.utilisateurServeur.getUtilisateur().getListMessagesRecents().getNbMaxMessage() + " le nombre maximal de messages récents\n");
 				break;
 				
 			case 5:
-				System.out.println("Le nombre max de messages récents est actuellement de " + this.utilisateur.getListMessagesRecents().getNbMaxMessage());
+				System.out.println("Le nombre max de messages récents est actuellement de " + this.utilisateurServeur.getUtilisateur().getListMessagesRecents().getNbMaxMessage());
 				System.out.println("Donner le nouveau nombre max de messages récents : ");
 				nb = Integer.parseInt(lecture.nextLine());
 				if(nb>=0) {
-					this.utilisateur.getListMessagesRecents().setNbMaxMessage(nb);
+					this.utilisateurServeur.getUtilisateur().getListMessagesRecents().setNbMaxMessage(nb);
 					try {
-						this.appDistant.getUtilisateur(this.utilisateur.getNom()).getListMessagesRecents().setNbMaxMessage(nb);
+						this.appDistant.getUtilisateur(this.utilisateurServeur.getUtilisateur().getNom()).getListMessagesRecents().setNbMaxMessage(nb);
 						System.out.println("OK");
 					} catch (UtilisateurInexistantException e) {
 						e.printStackTrace();
@@ -122,10 +128,6 @@ public class UserConsoleDistante {
 			a = (AppRMIServeur) registry.lookup("App");
 			System.out.println("OK");
 			
-			System.out.print("On instancie le serveur de l'utilisateur... ");
-			utilisateurServeur = new UtilisateurServeurImpl();
-			System.out.println("OK\n");
-			
 			System.out.print("Entrer votre nom : ");
 			nom = lecture.nextLine();
 			// On ne peut pas avoir un nom vide
@@ -133,11 +135,6 @@ public class UserConsoleDistante {
 				System.out.print("Entrer votre nom : ");
 				nom = lecture.nextLine();
 			}
-			
-			System.out.print("On ajoute le serveur de l'utilisateur au registre... ");
-			registry.rebind(nom, utilisateurServeur);
-			System.out.println("OK");
-			
 			
 			boolean correct = false; // vaut false si le mdp ne correspond pas au nom et true sinon
 			if (a.utilisateurDejaExistant(nom)) { // Si l'utilisateur existe déjà dans la liste d'utilisateurs alors on
@@ -174,7 +171,14 @@ public class UserConsoleDistante {
 				}
 			}
 			
-			UserConsoleDistante console = new UserConsoleDistante(utilisateur, a);
+			System.out.print("On instancie le serveur de l'utilisateur... ");
+			utilisateurServeur = new UtilisateurServeurImpl(utilisateur);
+			System.out.println("OK");
+			System.out.print("On ajoute le serveur de l'utilisateur au registre... ");
+			registry.rebind(nom, utilisateurServeur);
+			System.out.println("OK");
+			
+			UserConsoleDistante console = new UserConsoleDistante(a, utilisateurServeur);
 			console.run();
 		} catch (RemoteException ex) {
 			ex.printStackTrace();
@@ -184,8 +188,8 @@ public class UserConsoleDistante {
 		lecture.close();
 	}
 
-	public Utilisateur getUtilisateur() {
-		return this.utilisateur;
+	public Utilisateur getUtilisateur() throws RemoteException{
+		return this.utilisateurServeur.getUtilisateur();
 	}
 
 }

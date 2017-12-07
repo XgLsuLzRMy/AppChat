@@ -28,22 +28,25 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 
 	@Override
 	public void publieMessage(Message m) throws RemoteException {
+		System.out.println("Nouveau message de " + m.getAuteur());
 		this.app.publieMessage(m);
 		
 		// On notifie les follower
 		
 		Iterator<Utilisateur> it = null;
+		System.out.print("Notification des destinataires... ");
 		try {
 			it = this.getUtilisateur(m.getAuteur()).getFollowerList().getUtilisateurList().iterator();
 			UtilisateurServeur u = null;
 			while(it.hasNext()) {
 				try {
 					u = (UtilisateurServeur) this.registry.lookup(it.next().getNom());
-					u.notification(m);
+					u.recevoirMessage(m);
 				} catch (NotBoundException e) {
 					e.printStackTrace();
 				}
 			}
+			System.out.println("OK");
 		} catch (UtilisateurInexistantException e1) {
 			e1.printStackTrace();
 		}
@@ -54,8 +57,12 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 
 	@Override
 	public void ajouterUtilisateur(String nom, String mdp)throws RemoteException {
+		System.out.print("Ajout d'un nouvel utilisateur " + nom + "... ");
 		if(!this.utilisateurDejaExistant(nom)){
 			this.app.creerCompte(nom, mdp);
+			System.out.println("OK");
+		}else {
+			System.out.println("déjà existant");
 		}
 
 	}
@@ -132,10 +139,22 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 
 	@Override
 	public void follow(String nom, String nom2) throws RemoteException, UtilisateurInexistantException {
+		System.out.print(nom + " follow " + nom2 + "... ");
 		Utilisateur u1 = this.getUtilisateur(nom);
 		if(u1 != null) {
 			Utilisateur u2 = this.getUtilisateur(nom2);
 			u1.follow(u2);
+			System.out.println("OK");
+			System.out.print("Notification de " + nom2 + "... ");
+			try {
+				UtilisateurServeur us = (UtilisateurServeur) this.registry.lookup(nom2);
+				us.nouveauFollower(u1);
+				System.out.println("OK");
+			} catch (NotBoundException e) {
+				e.printStackTrace();
+			}
+		}else {
+			System.out.println("erreur : " + nom + " n'existe pas");
 		}
 	}
 }
