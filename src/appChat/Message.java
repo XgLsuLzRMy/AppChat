@@ -5,6 +5,8 @@ import java.util.Date;
 
 public class Message implements Serializable{
 	
+
+	private static final long serialVersionUID = 4300497796996046007L;
 	private String auteur;
 	private String contenu;
 	private Date date;
@@ -49,7 +51,7 @@ public class Message implements Serializable{
 	}
 
 	public String toString() {
-		return this.auteur + " dit : \n--------------\n" + this.contenu + "\n--------------";
+		return "\n" + this.auteur + " : \n--------------\n" + this.contenu + "\n--------------\n";
 	}
 	
 }

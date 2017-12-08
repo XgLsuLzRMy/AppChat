@@ -37,11 +37,16 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 		System.out.print("Notification des destinataires... ");
 		try {
 			it = this.getUtilisateur(m.getAuteur()).getFollowerList().getUtilisateurList().iterator();
-			UtilisateurServeur u = null;
+			UtilisateurServeur uDistant = null;
+			Utilisateur u = null;
 			while(it.hasNext()) {
 				try {
-					u = (UtilisateurServeur) this.registry.lookup(it.next().getNom());
-					u.recevoirMessage(m);
+					u = it.next();
+					u.ajouterMessage(m);
+					
+					uDistant = (UtilisateurServeur) this.registry.lookup(u.getNom());
+					uDistant.recevoirMessage(m);
+					
 				} catch (NotBoundException e) {
 					e.printStackTrace();
 				}

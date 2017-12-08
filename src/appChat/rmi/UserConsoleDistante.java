@@ -35,6 +35,7 @@ public class UserConsoleDistante {
 			System.out.println("3 - Follow un utilisateur");
 			System.out.println("4 - Afficher les infos sur mon compte");
 			System.out.println("5 - Modifier le nombre max de messages récents");
+			System.out.println("6 - Afficher vos tweets");
 			str = lecture.nextLine();
 			while(str == "") {
 				str = lecture.nextLine();
@@ -91,6 +92,7 @@ public class UserConsoleDistante {
 				nb = Integer.parseInt(lecture.nextLine());
 				if(nb>=0) {
 					this.utilisateurServeur.getUtilisateur().getListMessagesRecents().setNbMaxMessage(nb);
+		
 					try {
 						this.appDistant.getUtilisateur(this.utilisateurServeur.getUtilisateur().getNom()).getListMessagesRecents().setNbMaxMessage(nb);
 						System.out.println("OK");
@@ -100,6 +102,10 @@ public class UserConsoleDistante {
 				}else {
 					System.out.println("Nombre incorrect, on ne change rien");
 				}
+				break;
+			case 6:
+				System.out.println(this.utilisateurServeur.getUtilisateur().getListMessagesUtilisateur());
+				break;
 			default:
 				System.out.println(choix + " n'est pas un chox correct");
 				break;
