@@ -18,14 +18,15 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 
 	private static final long serialVersionUID = 1L;
 	private AppChat app;
-	private Registry registry;
+	public static Registry registry;
+	public static UtilisateurList utilisateursConnectes = new UtilisateurList();
 
 	public AppRMIServeurImpl(Registry registry) throws RemoteException {
 		super();
 		this.app = new AppChat();
 		this.registry = registry;
 	}
-
+	
 	@Override
 	public void publieMessage(Message m) throws RemoteException {
 		System.out.println("Nouveau message de " + m.getAuteur());
@@ -43,9 +44,13 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 				try {
 					u = it.next();
 					u.ajouterMessage(m);
-					
-					uDistant = (UtilisateurServeur) this.registry.lookup(u.getNom());
-					uDistant.recevoirMessage(m);
+					try{
+						AppRMIServeurImpl.utilisateursConnectes.getUtilisateur(u.getNom());
+						uDistant = (UtilisateurServeur) this.registry.lookup(u.getNom());
+						uDistant.recevoirMessage(m);
+					}catch(UtilisateurInexistantException e) {
+						
+					}
 					
 				} catch (NotBoundException e) {
 					e.printStackTrace();
@@ -87,8 +92,11 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 		System.out.print("Tentative de login de "+ nom + "... ");
 		if(this.app.verifierMdp(nom, mdp)) {
 			System.out.println("OK");
+			Utilisateur u = null;
 			try {
-				return AppChat.getUtilisateurList().getUtilisateur(nom);
+				u = AppChat.getUtilisateurList().getUtilisateur(nom);
+				this.utilisateursConnectes.ajouterUtilisateur(u);
+				return u;
 			} catch (UtilisateurInexistantException e) {
 				e.printStackTrace();
 				return null;
@@ -106,30 +114,7 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 
 
 
-	public static void main(String[] args) {
-		try {
-			Registry registry = null;
-			System.out.print("Récupération du registre RMI... ");
-			try {
-				registry = LocateRegistry.createRegistry(1099);
-				System.out.println("Registre crée !");
-			} catch (ExportException ex) {
-				registry = LocateRegistry.getRegistry(1099);
-				System.out.println("Registre recupéré !");
-			} catch (RemoteException ex) {
-				ex.printStackTrace();
-			}
-			System.out.print("Instanciation du AppRMIServeur... ");
-			AppRMIServeurImpl a = new AppRMIServeurImpl(registry);
-			System.out.println("AppRMIServeurImpl instancié !");
-			
-			System.out.print("Enregistrement de l'application dans le registre... ");
-			registry.rebind("App", a);
-			System.out.println("OK");
-		} catch (RemoteException ex) {
-			ex.printStackTrace();
-		}
-	}
+	
 
 	@Override
 	public UtilisateurList getUtilisateurList() {
@@ -150,16 +135,58 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 			Utilisateur u2 = this.getUtilisateur(nom2);
 			u1.follow(u2);
 			System.out.println("OK");
-			System.out.print("Notification de " + nom2 + "... ");
-			try {
-				UtilisateurServeur us = (UtilisateurServeur) this.registry.lookup(nom2);
-				us.nouveauFollower(u1);
-				System.out.println("OK");
-			} catch (NotBoundException e) {
-				e.printStackTrace();
+			try{
+				AppRMIServeurImpl.utilisateursConnectes.getUtilisateur(nom2);
+				System.out.print("Notification de " + nom2 + "... ");
+				try {
+					UtilisateurServeur us = (UtilisateurServeur) this.registry.lookup(nom2);
+					System.out.println("OK");
+					us.nouveauFollower(u1);
+					
+				} catch (NotBoundException e) {
+					e.printStackTrace();
+				}
+			}catch(UtilisateurInexistantException e) {
+				
 			}
 		}else {
 			System.out.println("erreur : " + nom + " n'existe pas");
 		}
 	}
+	
+	
+	public static void main(String[] args) {
+		try {
+			Registry registry = null;
+			System.out.print("Récupération du registre RMI... ");
+			try {
+				registry = LocateRegistry.createRegistry(1099);
+				System.out.println("Registre crée !");
+			} catch (ExportException ex) {
+				registry = LocateRegistry.getRegistry(1099);
+				System.out.println("Registre recupéré !");
+			} catch (RemoteException ex) {
+				ex.printStackTrace();
+			}
+			System.out.print("Instanciation du AppRMIServeur... ");
+			AppRMIServeurImpl a = new AppRMIServeurImpl(registry);
+			System.out.println("AppRMIServeurImpl instancié !");
+			
+			System.out.print("Enregistrement de l'application dans le registre... ");
+			registry.rebind("App", a);
+			System.out.println("OK");
+			
+			System.out.print("Instanciation de la classe qui check les utilisateurs connectes... ");
+			CheckUtilisateursConnectes t = new CheckUtilisateursConnectes();
+			System.out.println("OK");
+			System.out.println("Lancement de la thread");
+			t.start();
+		} catch (RemoteException ex) {
+			ex.printStackTrace();
+		}
+		
+		
+		
+	}
+	
 }

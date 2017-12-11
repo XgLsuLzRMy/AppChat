@@ -1,6 +1,7 @@
 package appChat.rmi;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.registry.Registry;
 
 import appChat.Message;
 import appChat.Utilisateur;
@@ -57,5 +58,6 @@ public interface AppRMIServeur extends Remote {
 	 * @throws UtilisateurInexistantException 
 	 */
 	public void follow(String nom, String nom2) throws RemoteException, UtilisateurInexistantException;
+
 		
 }

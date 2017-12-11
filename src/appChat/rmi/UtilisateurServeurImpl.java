@@ -32,6 +32,11 @@ public class UtilisateurServeurImpl extends UnicastRemoteObject implements Utili
 	public Utilisateur getUtilisateur() throws RemoteException {
 		return this.utilisateur;
 	}
+
+	@Override
+	public void ping() throws RemoteException {
+		
+	}
 	
 	
 	
