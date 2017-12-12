@@ -26,7 +26,8 @@ public class UtilisateurServeurImpl extends UnicastRemoteObject implements Utili
 	@Override
 	public void recevoirMessage(Message message) throws RemoteException {
 		System.out.println("\n\nNouveau message !\n" + message + "\n");
-		
+		this.utilisateur.ajouterMessage(message);
+		this.fenetre.refresh();
 	}
 	
 	@Override

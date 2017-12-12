@@ -14,7 +14,7 @@ import appChat.Utilisateur;
 import appChat.UtilisateurInexistantException;
 import appChat.UtilisateurList;
 
-public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServeur {
+public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServeur{
 
 	private static final long serialVersionUID = 1L;
 	private AppChat app;
@@ -181,6 +181,8 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 			System.out.println("OK");
 			System.out.println("Lancement de la thread");
 			t.start();
+			
+			
 		} catch (RemoteException ex) {
 			ex.printStackTrace();
 		}
@@ -188,5 +190,6 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 		
 		
 	}
+
 	
 }
