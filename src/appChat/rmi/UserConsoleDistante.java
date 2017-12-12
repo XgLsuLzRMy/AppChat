@@ -27,6 +27,11 @@ public class UserConsoleDistante {
 		String str = "";
 		String nom = "";
 		int nb = 0;
+		
+		
+		System.out.println("Messages recents : \n" + this.getUtilisateur().getListMessagesRecents());
+		
+		
 		while (choix != 0) {
 			System.out.println("Que voulez-vous faire ?");
 			System.out.println("0 - Quitter");
@@ -55,7 +60,7 @@ public class UserConsoleDistante {
 				str = lecture.nextLine();
 				m = new Message(str, this.utilisateurServeur.getUtilisateur().getNom());
 				this.appDistant.publieMessage(m);
-				this.utilisateurServeur.getUtilisateur().ajouterMessageUtilisateur(m);
+				//this.utilisateurServeur.getUtilisateur().ajouterMessageUtilisateur(m);
 				break;
 				
 			case 2:
@@ -71,8 +76,11 @@ public class UserConsoleDistante {
 				}
 				
 				try {
-					this.utilisateurServeur.getUtilisateur().follow(appDistant.getUtilisateur(nom));
+					//this.utilisateurServeur.getUtilisateur().follow(appDistant.getUtilisateur(nom));
+					// On ajoute un nouveau follower sur le serveur
 					this.appDistant.follow(this.utilisateurServeur.getUtilisateur().getNom(), nom);
+					// On met a jour la liste des follower en local
+					this.utilisateurServeur.setFollowerList(this.appDistant.getUtilisateur(this.utilisateurServeur.getUtilisateur().getNom()).getFollowerList());
 				} catch (UtilisateurInexistantException e) {
 					e.printStackTrace();
 				}

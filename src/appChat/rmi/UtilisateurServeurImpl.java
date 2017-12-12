@@ -5,6 +5,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 import appChat.Message;
 import appChat.Utilisateur;
+import appChat.UtilisateurList;
 
 public class UtilisateurServeurImpl extends UnicastRemoteObject implements UtilisateurServeur{
 
@@ -36,6 +37,12 @@ public class UtilisateurServeurImpl extends UnicastRemoteObject implements Utili
 	@Override
 	public void ping() throws RemoteException {
 		
+	}
+
+	@Override
+	public Utilisateur setFollowerList(UtilisateurList followerList) throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

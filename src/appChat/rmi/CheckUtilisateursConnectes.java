@@ -34,6 +34,7 @@ public class CheckUtilisateursConnectes extends Thread{
 					}catch(Exception e) {
 						System.out.println(u.getNom() + " est deconnecte");
 						AppRMIServeurImpl.utilisateursConnectes.retirerUtilisateur(u);
+						i--;
 					}
 					
 				} catch (AccessException e) {
@@ -43,6 +44,7 @@ public class CheckUtilisateursConnectes extends Thread{
 				} catch (NotBoundException e) {
 					System.out.println(u.getNom() + " est deconnecte");
 					AppRMIServeurImpl.utilisateursConnectes.retirerUtilisateur(u);
+					i--;
 				}
 			}
 			synchronized(this) {

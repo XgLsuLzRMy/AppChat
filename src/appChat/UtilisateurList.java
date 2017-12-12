@@ -39,7 +39,11 @@ public class UtilisateurList implements Serializable {
 	public String toString(){
 		return this.utilisateurList.toString();
 	}
-
+	
+	public void setUtilisateurList(ArrayList<Utilisateur> utilisateurList) {
+		this.utilisateurList = utilisateurList;
+	}
+	
 	public Utilisateur getUtilisateur(String nomAuteur) throws UtilisateurInexistantException {
 		
 		Utilisateur temp = null;

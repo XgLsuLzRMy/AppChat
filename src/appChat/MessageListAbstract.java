@@ -22,6 +22,10 @@ public abstract class MessageListAbstract implements Serializable{
 		}
 	}
 	
+	public void setList(LinkedList<Message> list) {
+		this.list = list;
+	}
+	
 	public LinkedList<Message> getMessageList() {
 		return this.list;
 	}
