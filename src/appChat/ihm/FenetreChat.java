@@ -9,34 +9,33 @@ import javax.swing.JScrollPane;
 
 import appChat.Message;
 import appChat.Utilisateur;
+import appChat.rmi.UtilisateurServeurImpl;
 
 public class FenetreChat extends JFrame{
 
 	private static final long serialVersionUID = 8976560413665224423L;
 	
-	private Utilisateur utilisateur;
+	private UtilisateurServeurImpl utilisateurServeur;
 	
-	public FenetreChat(Utilisateur utilisateur) {
+	public FenetreChat(UtilisateurServeurImpl utilisateurServeur) {
 		super("AppChat");
-		this.utilisateur = utilisateur;
+		this.utilisateurServeur = utilisateurServeur;
 		
 		JPanel chatPanel = (JPanel) this.getContentPane();
 		chatPanel.setLayout(new BorderLayout());
 		
-		Message[] tab = new Message[this.utilisateur.getListMessagesRecents().getNbMessage()];
-		this.utilisateur.getListMessagesRecents().getMessageList().toArray(tab);
-		new JList<Message>(tab);
-		
-		chatPanel.add(new JScrollPane(), BorderLayout.CENTER);
+		try {
+			Message[] tab = new Message[this.utilisateurServeur.getUtilisateur().getListMessagesRecents().getNbMessage()];
+			this.utilisateurServeur.getUtilisateur().getListMessagesRecents().getMessageList().toArray(tab);
+			
+			
+			chatPanel.add(new JScrollPane(new JList<Message>(tab)), BorderLayout.CENTER);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
-	public Utilisateur getUtilisateur() {
-		return this.utilisateur;
-	}
-	
-	public void setUtilisateur(Utilisateur utilisateur) {
-		this.utilisateur = utilisateur;
-	}
 	
 }

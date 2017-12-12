@@ -17,7 +17,7 @@ public class CheckUtilisateursConnectes extends Thread{
 	@Override
 	public void run() {
 		while(true) {
-			System.out.println("Liste des utilisateurs connectes : \n" + AppRMIServeurImpl.utilisateursConnectes);
+			//System.out.println("Liste des utilisateurs connectes : \n" + AppRMIServeurImpl.utilisateursConnectes);
 			
 			Utilisateur u;
 			int i = 0;
@@ -28,7 +28,7 @@ public class CheckUtilisateursConnectes extends Thread{
 					UtilisateurServeur us = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(u.getNom());
 					try {
 						us.ping();
-						System.out.println(u.getNom() + " est connecte");
+						//System.out.println(u.getNom() + " est connecte");
 					}catch(Exception e) {
 						System.out.println(u.getNom() + " est deconnecte");
 						AppRMIServeurImpl.utilisateursConnectes.retirerUtilisateur(u);

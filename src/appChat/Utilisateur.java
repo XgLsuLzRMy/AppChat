@@ -107,4 +107,8 @@ public class Utilisateur implements Serializable{
 		return this.listMessagesUtilisateur;
 	}
 
+	public void setFollowerList(UtilisateurList followerList) {
+		this.listFollower = followerList;
+	}
+
 }

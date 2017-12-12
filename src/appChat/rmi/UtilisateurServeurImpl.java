@@ -6,15 +6,21 @@ import java.rmi.server.UnicastRemoteObject;
 import appChat.Message;
 import appChat.Utilisateur;
 import appChat.UtilisateurList;
+import appChat.ihm.FenetreChat;
 
 public class UtilisateurServeurImpl extends UnicastRemoteObject implements UtilisateurServeur{
 
 	private static final long serialVersionUID = 1L;
 	private Utilisateur utilisateur;
 	
-	protected UtilisateurServeurImpl(Utilisateur utilisateur) throws RemoteException {
+	private FenetreChat fenetre;
+	
+	public UtilisateurServeurImpl(Utilisateur utilisateur) throws RemoteException {
 		super();
 		this.utilisateur = utilisateur;
+		this.fenetre = new FenetreChat(this);
+		this.fenetre.pack();
+		this.fenetre.setVisible(true);
 	}
 
 	@Override
@@ -40,9 +46,8 @@ public class UtilisateurServeurImpl extends UnicastRemoteObject implements Utili
 	}
 
 	@Override
-	public Utilisateur setFollowerList(UtilisateurList followerList) throws RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+	public void setFollowerList(UtilisateurList followerList) throws RemoteException {
+		this.utilisateur.setFollowerList(followerList);
 	}
 	
 	
