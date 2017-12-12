@@ -3,8 +3,6 @@ package appChat.rmi;
 import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.Iterator;
-
 import appChat.Utilisateur;
 
 public class CheckUtilisateursConnectes extends Thread{

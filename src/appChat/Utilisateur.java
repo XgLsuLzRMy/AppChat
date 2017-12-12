@@ -44,6 +44,14 @@ public class Utilisateur implements Serializable{
 		//TODO
 	}
 	
+	public void setListMessagesRetweetes(MessageList listMessagesRetweetes) {
+		this.listMessagesRetweetes = listMessagesRetweetes;
+	}
+	
+	public MessageList getListMessagesRetweetes() {
+		return this.listMessagesRetweetes;
+	}
+	
 	public boolean equals(Utilisateur u) {
 		if(u!=null) {
 			if(this.nom.equals(u.getNom())) {

@@ -24,7 +24,7 @@ public class FenetreChat extends JFrame{
 		chatPanel.setLayout(new BorderLayout());
 		
 		Message[] tab = new Message[this.utilisateur.getListMessagesRecents().getNbMessage()];
-		tab = (Message[]) this.utilisateur.getListMessagesRecents().getMessageList().toArray();
+		this.utilisateur.getListMessagesRecents().getMessageList().toArray(tab);
 		new JList<Message>(tab);
 		
 		chatPanel.add(new JScrollPane(), BorderLayout.CENTER);

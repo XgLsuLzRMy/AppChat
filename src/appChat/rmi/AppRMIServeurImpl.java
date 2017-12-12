@@ -24,7 +24,7 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	public AppRMIServeurImpl(Registry registry) throws RemoteException {
 		super();
 		this.app = new AppChat();
-		this.registry = registry;
+		AppRMIServeurImpl.registry = registry;
 	}
 	
 	@Override
@@ -46,7 +46,7 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 					u.ajouterMessage(m);
 					try{
 						AppRMIServeurImpl.utilisateursConnectes.getUtilisateur(u.getNom()); // verification que l'utilisateur est connecte
-						uDistant = (UtilisateurServeur) this.registry.lookup(u.getNom());
+						uDistant = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(u.getNom());
 						uDistant.recevoirMessage(m);
 					}catch(UtilisateurInexistantException e) {
 						
@@ -95,7 +95,7 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 			Utilisateur u = null;
 			try {
 				u = AppChat.getUtilisateurList().getUtilisateur(nom);
-				this.utilisateursConnectes.ajouterUtilisateur(u);
+				AppRMIServeurImpl.utilisateursConnectes.ajouterUtilisateur(u);
 				return u;
 			} catch (UtilisateurInexistantException e) {
 				e.printStackTrace();
@@ -139,7 +139,7 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 				AppRMIServeurImpl.utilisateursConnectes.getUtilisateur(nom2);
 				System.out.print("Notification de " + nom2 + "... ");
 				try {
-					UtilisateurServeur us = (UtilisateurServeur) this.registry.lookup(nom2);
+					UtilisateurServeur us = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(nom2);
 					System.out.println("OK");
 					us.nouveauFollower(u1);
 					

@@ -9,6 +9,7 @@ import java.util.Hashtable;
 
 import appChat.Utilisateur;
 import appChat.UtilisateurList;
+import appChat.ihm.FenetreServeur;
 
 
 public class AppChat {
@@ -16,9 +17,12 @@ public class AppChat {
 	public static int COMPTEUR_USER = 0;
 	private static UtilisateurList utilisateurList = new UtilisateurList();
 	private static Hashtable<String, String> passwordTable = new Hashtable<String, String>();
+	private FenetreServeur fenetre;
 
 	public AppChat (){
-		
+		this.fenetre = new FenetreServeur(this);
+		this.fenetre.pack();
+		this.fenetre.setVisible(true);
 	}
 	
 	public AppChat(String fichierUtilisateurList, String fichierHashTable) {
@@ -93,6 +97,7 @@ public class AppChat {
 	public void creerCompte (String nom,String mdp) {
 		AppChat.ajouterUtilisateur(new Utilisateur(nom));
 		AppChat.ajouterPassword(nom, mdp);
+		this.fenetre.refresh();
 	}
 	
 	/**
@@ -111,15 +116,9 @@ public class AppChat {
 	public void supprimerCompte(Utilisateur u) {
 		AppChat.utilisateurList.retirerUtilisateur(u);
 		AppChat.passwordTable.remove(u.getNom());
+		this.fenetre.refresh();
 	}
 
-	public void Connexion (){
-		// doit afficher un menu avec les différentes options proposées
-	}
-
-	public void Deconnexion () {
-		// doit fermer la fenetre des propositions
-	}
 
 	public static UtilisateurList getUtilisateurList(){
 		return AppChat.utilisateurList;
