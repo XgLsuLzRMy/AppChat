@@ -15,10 +15,10 @@ public class UtilisateurServeurImpl extends UnicastRemoteObject implements Utili
 	
 	private FenetreChat fenetre;
 	
-	public UtilisateurServeurImpl(Utilisateur utilisateur) throws RemoteException {
+	public UtilisateurServeurImpl(Utilisateur utilisateur, UserConsoleDistante uc) throws RemoteException {
 		super();
 		this.utilisateur = utilisateur;
-		this.fenetre = new FenetreChat(this);
+		this.fenetre = new FenetreChat(this, uc);
 		this.fenetre.pack();
 		this.fenetre.setVisible(true);
 	}

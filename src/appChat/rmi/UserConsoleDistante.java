@@ -12,12 +12,23 @@ import appChat.UtilisateurInexistantException;
 
 public class UserConsoleDistante {
 
-	private AppRMIServeur appDistant;
+	public static AppRMIServeur appDistant;
 	private UtilisateurServeur utilisateurServeur;
+	private Registry registry;
 
-	public UserConsoleDistante(AppRMIServeur a, UtilisateurServeur utilisateurServeur) {
-		this.appDistant = a;
-		this.utilisateurServeur = utilisateurServeur;
+	public UserConsoleDistante(AppRMIServeur a, Utilisateur utilisateur, Registry registry) {
+		UserConsoleDistante.appDistant = a;
+		System.out.print("On instancie le serveur de l'utilisateur... ");
+		try {
+			utilisateurServeur = new UtilisateurServeurImpl(utilisateur, this);
+			System.out.print("On ajoute le serveur de l'utilisateur au registre... ");
+			registry.rebind(utilisateur.getNom(), utilisateurServeur);
+			System.out.println("OK");
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		System.out.println("OK");
+		
 	}
 
 	public void run() throws RemoteException {
@@ -58,9 +69,11 @@ public class UserConsoleDistante {
 			case 1:
 				System.out.print("Ecrire le contenu du tweet à publier : ");
 				str = lecture.nextLine();
-				m = new Message(str, this.utilisateurServeur.getUtilisateur().getNom());
-				this.appDistant.publieMessage(m);
-				//this.utilisateurServeur.getUtilisateur().ajouterMessageUtilisateur(m);
+				while(str.isEmpty() == true) {
+					str = lecture.nextLine();
+				}
+				
+				this.envoyerMessage(str);
 				break;
 				
 			case 2:
@@ -78,9 +91,9 @@ public class UserConsoleDistante {
 				try {
 					//this.utilisateurServeur.getUtilisateur().follow(appDistant.getUtilisateur(nom));
 					// On ajoute un nouveau follower sur le serveur
-					this.appDistant.follow(this.utilisateurServeur.getUtilisateur().getNom(), nom);
+					UserConsoleDistante.appDistant.follow(this.utilisateurServeur.getUtilisateur().getNom(), nom);
 					// On met a jour la liste des follower en local
-					this.utilisateurServeur.setFollowerList(this.appDistant.getUtilisateur(this.utilisateurServeur.getUtilisateur().getNom()).getFollowerList());
+					this.utilisateurServeur.setFollowerList(UserConsoleDistante.appDistant.getUtilisateur(this.utilisateurServeur.getUtilisateur().getNom()).getFollowerList());
 				} catch (UtilisateurInexistantException e) {
 					e.printStackTrace();
 				}
@@ -102,7 +115,7 @@ public class UserConsoleDistante {
 					this.utilisateurServeur.getUtilisateur().getListMessagesRecents().setNbMaxMessage(nb);
 		
 					try {
-						this.appDistant.getUtilisateur(this.utilisateurServeur.getUtilisateur().getNom()).getListMessagesRecents().setNbMaxMessage(nb);
+						UserConsoleDistante.appDistant.getUtilisateur(this.utilisateurServeur.getUtilisateur().getNom()).getListMessagesRecents().setNbMaxMessage(nb);
 						System.out.println("OK");
 					} catch (UtilisateurInexistantException e) {
 						e.printStackTrace();
@@ -120,6 +133,22 @@ public class UserConsoleDistante {
 			}
 		}
 		lecture.close();
+	}
+
+	public void envoyerMessage(String str) {
+		Message m;
+		try {
+			m = new Message(str, this.utilisateurServeur.getUtilisateur().getNom());
+			try {
+				UserConsoleDistante.appDistant.publieMessage(m);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 	public static void main(String[] args) {
@@ -185,14 +214,12 @@ public class UserConsoleDistante {
 				}
 			}
 			
-			System.out.print("On instancie le serveur de l'utilisateur... ");
-			utilisateurServeur = new UtilisateurServeurImpl(utilisateur);
-			System.out.println("OK");
-			System.out.print("On ajoute le serveur de l'utilisateur au registre... ");
-			registry.rebind(nom, utilisateurServeur);
-			System.out.println("OK");
 			
-			UserConsoleDistante console = new UserConsoleDistante(a, utilisateurServeur);
+			
+			
+			
+			
+			UserConsoleDistante console = new UserConsoleDistante(a, utilisateur, registry);
 			console.run();
 		} catch (RemoteException ex) {
 			ex.printStackTrace();

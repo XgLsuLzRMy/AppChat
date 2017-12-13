@@ -83,7 +83,7 @@ public class AppChat {
 	
 	public void ecrireDansFichier(String fichierUtilisateurList, String fichierHashTable) {
 		System.out.print("Ecriture de la liste d'utilisateurs... ");
-		this.ecrirePasswordDansFichier(fichierUtilisateurList);
+		this.ecrireUtilisateursDansFichier(fichierUtilisateurList);
 		System.out.println("OK");
 		System.out.print("Ecriture de la hashtable... ");
 		this.ecrirePasswordDansFichier(fichierHashTable);

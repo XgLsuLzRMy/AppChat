@@ -14,7 +14,7 @@ import appChat.Utilisateur;
 import appChat.UtilisateurInexistantException;
 import appChat.UtilisateurList;
 
-public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServeur{
+public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServeur, Runnable{
 
 	private static final long serialVersionUID = 1L;
 	private AppChat app;
@@ -188,6 +188,12 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 		}
 		
 		
+		
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
 		
 	}
 

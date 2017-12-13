@@ -1,0 +1,42 @@
+package appChat.ihm;
+
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import appChat.rmi.UserConsoleDistante;
+
+public class TextFieldPanel extends JPanel implements ActionListener{
+
+	private static final long serialVersionUID = 5018214483472601635L;
+	
+	private JTextField zoneTexte;
+	private JButton boutton;
+
+	private UserConsoleDistante uc;
+	
+	public TextFieldPanel(UserConsoleDistante uc) {
+		this.zoneTexte = new JTextField(140);
+		this.boutton = new JButton("OK");
+		this.uc = uc;
+		
+		this.add(this.zoneTexte, BorderLayout.CENTER);
+		this.add(this.boutton, BorderLayout.EAST);
+		
+		this.zoneTexte.requestFocusInWindow();
+		
+		
+		this.zoneTexte.addActionListener(new ListenerZoneTexte(this.zoneTexte, uc));
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		
+		
+	}
+	
+}

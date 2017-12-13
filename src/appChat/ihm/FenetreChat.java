@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import appChat.Message;
+import appChat.rmi.UserConsoleDistante;
 import appChat.rmi.UtilisateurServeurImpl;
 
 public class FenetreChat extends JFrame{
@@ -15,13 +16,16 @@ public class FenetreChat extends JFrame{
 	private static final long serialVersionUID = 8976560413665224423L;
 	
 	private UtilisateurServeurImpl utilisateurServeur;
+	private UserConsoleDistante uc;
 	private JPanel chatPanel;
 	private JScrollPane panneauMessages;
+	private TextFieldPanel textFieldPanel;
 	
-	
-	public FenetreChat(UtilisateurServeurImpl utilisateurServeur) {
+	public FenetreChat(UtilisateurServeurImpl utilisateurServeur, UserConsoleDistante uc) {
 		super("AppChat");
 		this.utilisateurServeur = utilisateurServeur;
+		
+		this.textFieldPanel = new TextFieldPanel(uc);
 		
 		this.chatPanel = (JPanel) this.getContentPane();
 		this.chatPanel.setLayout(new BorderLayout());
@@ -41,6 +45,7 @@ public class FenetreChat extends JFrame{
 		//this.refresh();
 		
 		this.chatPanel.add(this.panneauMessages, BorderLayout.CENTER);
+		this.chatPanel.add(textFieldPanel, BorderLayout.SOUTH);
 		
 	}
 	

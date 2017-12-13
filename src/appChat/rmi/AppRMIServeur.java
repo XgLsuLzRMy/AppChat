@@ -1,14 +1,12 @@
 package appChat.rmi;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
-
 import appChat.Message;
 import appChat.Utilisateur;
 import appChat.UtilisateurInexistantException;
 import appChat.UtilisateurList;
 
-public interface AppRMIServeur extends Remote {
+public interface AppRMIServeur extends Remote{
 	
 	/**
 	 * 
