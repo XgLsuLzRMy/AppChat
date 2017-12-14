@@ -57,5 +57,8 @@ public interface AppRMIServeur extends Remote{
 	 */
 	public void follow(String nom, String nom2) throws RemoteException, UtilisateurInexistantException;
 
-		
+	
+	public UtilisateurList getListeUtilisateursConnectes() throws RemoteException;
+	
+	
 }

@@ -13,5 +13,6 @@ public interface UtilisateurServeur extends Remote{
 	public Utilisateur getUtilisateur() throws RemoteException;
 	public void setFollowerList(UtilisateurList followerList) throws RemoteException;
 	public void ping() throws RemoteException;
+	public void refreshAffichageListeutilisateursConnectes() throws RemoteException;
 
 }

@@ -16,28 +16,36 @@ public class FenetreServeur extends JFrame{
 	
 	private AppChat appChat;
 	private JList<Utilisateur> jListUtilisateurs;
+	private JPanel mainPanel;
 	
 	public FenetreServeur(AppChat appChat) {
 		super("AppChat Serveur");
 		this.appChat = appChat;
 		
-		JPanel mainPanel = (JPanel)this.getContentPane();
-		mainPanel.setLayout(new BorderLayout());
-		
-		System.out.println("1");
+		this.mainPanel = (JPanel)this.getContentPane();
+		this.mainPanel.setLayout(new BorderLayout());
 		
 		Utilisateur[] ul = new Utilisateur[AppChat.getUtilisateurList().getUtilisateurList().size()];
 		AppChat.getUtilisateurList().getUtilisateurList().toArray(ul);
 		
-		System.out.println("2");
-		
 		jListUtilisateurs = new JList<Utilisateur>(ul);
-		System.out.println("3");
-		mainPanel.add(new JScrollPane(jListUtilisateurs), BorderLayout.CENTER);
-		System.out.println("4");
+		this.mainPanel.add(new JScrollPane(jListUtilisateurs), BorderLayout.CENTER);
+		
 	}
 	
 	public void refresh() {
+		
+		System.out.println("Refresh...");
+		
+		this.mainPanel.remove(this.jListUtilisateurs);
+		
+		Utilisateur[] ul = new Utilisateur[AppChat.getUtilisateurList().getUtilisateurList().size()];
+		AppChat.getUtilisateurList().getUtilisateurList().toArray(ul);
+		
+		this.jListUtilisateurs = new JList<Utilisateur>(ul);
+		this.mainPanel.add(new JScrollPane(this.jListUtilisateurs), BorderLayout.CENTER);
+		
+		this.revalidate();
 		this.repaint();
 	}
 	

@@ -9,6 +9,7 @@ import java.util.Scanner;
 import appChat.Message;
 import appChat.Utilisateur;
 import appChat.UtilisateurInexistantException;
+import appChat.UtilisateurList;
 
 public class UserConsoleDistante {
 
@@ -30,7 +31,11 @@ public class UserConsoleDistante {
 		System.out.println("OK");
 		
 	}
-
+	
+	public UtilisateurList getListeUtilisateursConnectes() throws RemoteException {
+		return UserConsoleDistante.appDistant.getListeUtilisateursConnectes();
+	}
+	
 	public void run() throws RemoteException {
 		int choix = 1;
 		Scanner lecture = new Scanner(System.in);
@@ -47,7 +52,7 @@ public class UserConsoleDistante {
 			System.out.println("Que voulez-vous faire ?");
 			System.out.println("0 - Quitter");
 			System.out.println("1 - Publier un tweet");
-			System.out.println("2 - Voir les messages récents");
+			System.out.println("2 - Voir les messages recents");
 			System.out.println("3 - Follow un utilisateur");
 			System.out.println("4 - Afficher les infos sur mon compte");
 			System.out.println("5 - Modifier le nombre max de messages récents");
@@ -102,9 +107,9 @@ public class UserConsoleDistante {
 				
 			case 4:
 				System.out.println("\nVous suivez " + this.utilisateurServeur.getUtilisateur().getFollowCount() + " utilisateurs");
-				System.out.println("Vous êtes suivi par " + this.utilisateurServeur.getUtilisateur().getFollowerCount() + " utilisateurs");
-				System.out.println("Vous avez posté " + this.utilisateurServeur.getUtilisateur().getListMessages().getNbMessage() + " messages");
-				System.out.println("Vous avez fixé à " + this.utilisateurServeur.getUtilisateur().getListMessagesRecents().getNbMaxMessage() + " le nombre maximal de messages récents\n");
+				System.out.println("Vous etes suivi par " + this.utilisateurServeur.getUtilisateur().getFollowerCount() + " utilisateurs");
+				System.out.println("Vous avez poste " + this.utilisateurServeur.getUtilisateur().getListMessages().getNbMessage() + " messages");
+				System.out.println("Vous avez fixe à " + this.utilisateurServeur.getUtilisateur().getListMessagesRecents().getNbMaxMessage() + " le nombre maximal de messages recents\n");
 				break;
 				
 			case 5:
@@ -167,7 +172,7 @@ public class UserConsoleDistante {
 				registry = LocateRegistry.getRegistry(1099);
 			}
 			System.out.println("OK");
-			System.out.print("On récupère le registre... ");
+			System.out.print("On recupere le registre... ");
 			a = (AppRMIServeur) registry.lookup("App");
 			System.out.println("OK");
 			
@@ -196,7 +201,7 @@ public class UserConsoleDistante {
 					}
 				}
 			} else { // Si l'utilisateur n'a pas encore de compte
-				System.out.println("Utilisateur inexistant --> Création d'un compte");
+				System.out.println("Utilisateur inexistant --> Creation d'un compte");
 				System.out.print("Creer votre mot de passe : ");
 				mdp = lecture.nextLine();
 				// On ne peut pas creer un compte avec mot de passe vide
@@ -213,10 +218,6 @@ public class UserConsoleDistante {
 					System.out.println("erreur lors du login");
 				}
 			}
-			
-			
-			
-			
 			
 			
 			UserConsoleDistante console = new UserConsoleDistante(a, utilisateur, registry);

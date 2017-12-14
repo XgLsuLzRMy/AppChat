@@ -50,6 +50,11 @@ public class UtilisateurServeurImpl extends UnicastRemoteObject implements Utili
 	public void setFollowerList(UtilisateurList followerList) throws RemoteException {
 		this.utilisateur.setFollowerList(followerList);
 	}
+
+	@Override
+	public void refreshAffichageListeutilisateursConnectes() {
+		this.fenetre.refreshListeUtilisateursConnectes();
+	}
 	
 	
 	

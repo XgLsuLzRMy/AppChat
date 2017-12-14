@@ -27,6 +27,10 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 		AppRMIServeurImpl.registry = registry;
 	}
 	
+	public UtilisateurList getListeUtilisateursConnectes() throws RemoteException{
+		return AppRMIServeurImpl.utilisateursConnectes;
+	}
+	
 	@Override
 	public void publieMessage(Message m) throws RemoteException {
 		System.out.println("Nouveau message de " + m.getAuteur());
@@ -72,7 +76,7 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 			this.app.creerCompte(nom, mdp);
 			System.out.println("OK");
 		}else {
-			System.out.println("déjà existant");
+			System.out.println("deja existant");
 		}
 
 	}
@@ -96,17 +100,19 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 			try {
 				u = AppChat.getUtilisateurList().getUtilisateur(nom);
 				AppRMIServeurImpl.utilisateursConnectes.ajouterUtilisateur(u);
+				
 				return u;
 			} catch (UtilisateurInexistantException e) {
 				e.printStackTrace();
 				return null;
 			}
 		}else {
-			System.out.println("Refusé");
+			System.out.println("Refuse");
 			return null;
 		}
 	}
-
+	
+	
 	@Override
 	public Utilisateur getUtilisateur(String nom)throws RemoteException, UtilisateurInexistantException  {
 		return AppChat.getUtilisateurList().getUtilisateur(nom);
@@ -130,27 +136,31 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	@Override
 	public void follow(String nom, String nom2) throws RemoteException, UtilisateurInexistantException {
 		System.out.print(nom + " follow " + nom2 + "... ");
-		Utilisateur u1 = this.getUtilisateur(nom);
-		if(u1 != null) {
-			Utilisateur u2 = this.getUtilisateur(nom2);
-			u1.follow(u2);
-			System.out.println("OK");
-			try{
-				AppRMIServeurImpl.utilisateursConnectes.getUtilisateur(nom2);
-				System.out.print("Notification de " + nom2 + "... ");
-				try {
-					UtilisateurServeur us = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(nom2);
-					System.out.println("OK");
-					us.nouveauFollower(u1);
+		if(nom != nom2) {
+			Utilisateur u1 = this.getUtilisateur(nom);
+			if(u1 != null) {
+				Utilisateur u2 = this.getUtilisateur(nom2);
+				u1.follow(u2);
+				System.out.println("OK");
+				try{
+					AppRMIServeurImpl.utilisateursConnectes.getUtilisateur(nom2);
+					System.out.print("Notification de " + nom2 + "... ");
+					try {
+						UtilisateurServeur us = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(nom2);
+						System.out.println("OK");
+						us.nouveauFollower(u1);
+						
+					} catch (NotBoundException e) {
+						e.printStackTrace();
+					}
+				}catch(UtilisateurInexistantException e) {
 					
-				} catch (NotBoundException e) {
-					e.printStackTrace();
 				}
-			}catch(UtilisateurInexistantException e) {
-				
+			}else {
+				System.out.println("erreur : " + nom + " n'existe pas");
 			}
 		}else {
-			System.out.println("erreur : " + nom + " n'existe pas");
+			System.out.println("impossible de se suivre soit meme");
 		}
 	}
 	
@@ -158,19 +168,19 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	public static void main(String[] args) {
 		try {
 			Registry registry = null;
-			System.out.print("Récupération du registre RMI... ");
+			System.out.print("Recuperation du registre RMI... ");
 			try {
 				registry = LocateRegistry.createRegistry(1099);
-				System.out.println("Registre crée !");
+				System.out.println("Registre cree !");
 			} catch (ExportException ex) {
 				registry = LocateRegistry.getRegistry(1099);
-				System.out.println("Registre recupéré !");
+				System.out.println("Registre recupere !");
 			} catch (RemoteException ex) {
 				ex.printStackTrace();
 			}
 			System.out.print("Instanciation du AppRMIServeur... ");
 			AppRMIServeurImpl a = new AppRMIServeurImpl(registry);
-			System.out.println("AppRMIServeurImpl instancié !");
+			System.out.println(" AppRMIServeurImpl instancié !");
 			
 			System.out.print("Enregistrement de l'application dans le registre... ");
 			registry.rebind("App", a);

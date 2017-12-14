@@ -20,7 +20,7 @@ public class TextFieldPanel extends JPanel implements ActionListener{
 	private UserConsoleDistante uc;
 	
 	public TextFieldPanel(UserConsoleDistante uc) {
-		this.zoneTexte = new JTextField(140);
+		this.zoneTexte = new JTextField(50);
 		this.boutton = new JButton("OK");
 		this.uc = uc;
 		
@@ -31,6 +31,7 @@ public class TextFieldPanel extends JPanel implements ActionListener{
 		
 		
 		this.zoneTexte.addActionListener(new ListenerZoneTexte(this.zoneTexte, uc));
+		this.boutton.addActionListener(new ListenerZoneTexte(this.zoneTexte, uc));
 	}
 	
 	@Override

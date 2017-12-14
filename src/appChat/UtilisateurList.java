@@ -16,16 +16,20 @@ public class UtilisateurList implements Serializable {
 
 	/**
 	 *
-	 * @param u l'utilisateur ﾃ� ajouter dans la liste
-	 * Permet d'ajouter un utilisateur dans la liste si celui-ci n'y est pas dﾃｩjﾃ� (s'il y est dﾃｩjﾃ�, on ne fait rien)
+	 * @param u l'utilisateur a ajouter dans la liste
+	 * Permet d'ajouter un utilisateur dans la liste si celui-ci n'y est pas deja (s'il y est deja, on ne fait rien)
 	 */
 	public void ajouterUtilisateur(Utilisateur u) {
-		// On vﾃｩrifie que l'utilisateur u n'est pas dﾃｩjﾃ� dans la liste
+		// On verifie que l'utilisateur u n'est pas dﾃｩjﾃ� dans la liste
 		if((u!=null) && !this.utilisateurList.contains(u)) {
 			this.utilisateurList.add(u);
 		}
 	}
-
+	
+	public Utilisateur get(int i) {
+		return this.utilisateurList.get(i);
+	}
+	
 	public void retirerUtilisateur(Utilisateur u) {
 		if(u!=null) {
 			this.utilisateurList.remove(u);

@@ -22,6 +22,7 @@ public class ListenerZoneTexte implements ActionListener{
 		
 		System.out.println(this.zoneTexte.getText());
 		this.uc.envoyerMessage(this.zoneTexte.getText());
+		this.zoneTexte.setText("");
 		
 	}
 
