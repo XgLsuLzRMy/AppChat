@@ -1,5 +1,6 @@
 package appChat.rmi;
 
+import java.awt.event.WindowEvent;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -10,26 +11,137 @@ import appChat.Message;
 import appChat.Utilisateur;
 import appChat.UtilisateurInexistantException;
 import appChat.UtilisateurList;
+import appChat.ihm.FenetreLogin;
 
 public class UserConsoleDistante {
 
 	public static AppRMIServeur appDistant;
 	private UtilisateurServeur utilisateurServeur;
 	private Registry registry;
+	private FenetreLogin fenetreLogin;
 
-	public UserConsoleDistante(AppRMIServeur a, Utilisateur utilisateur, Registry registry) {
+	public UserConsoleDistante(AppRMIServeur a, Registry registry) {
+		this.utilisateurServeur = null;
 		UserConsoleDistante.appDistant = a;
-		System.out.print("On instancie le serveur de l'utilisateur... ");
+		this.registry = registry;
+		this.fenetreLogin = new FenetreLogin(this);
+		this.fenetreLogin.pack();
+		this.fenetreLogin.setVisible(true);
+		
+	}
+	
+	public void login(String nom, String mdp) {
+		System.out.println("Tentative de login "+nom+" "+mdp);
+		Utilisateur u = null;
 		try {
-			utilisateurServeur = new UtilisateurServeurImpl(utilisateur, this);
-			System.out.print("On ajoute le serveur de l'utilisateur au registre... ");
-			registry.rebind(utilisateur.getNom(), utilisateurServeur);
-			System.out.println("OK");
+			if (UserConsoleDistante.appDistant.utilisateurDejaExistant(nom)) {
+				u = UserConsoleDistante.appDistant.login(nom, mdp);
+			}else {
+				UserConsoleDistante.appDistant.ajouterUtilisateur(nom, mdp);
+				u = UserConsoleDistante.appDistant.login(nom, mdp);
+			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		System.out.println("OK");
 		
+		if (u != null) {
+			try {
+
+				
+				System.out.println("new utilisateurServeurImpl");
+
+				//this.fenetreLogin.dispatchEvent(new WindowEvent(this.fenetreLogin, WindowEvent.WINDOW_CLOSING));
+				this.fenetreLogin.setVisible(false);
+				
+				this.utilisateurServeur = new UtilisateurServeurImpl(u, this);
+				this.registry.rebind(u.getNom(), utilisateurServeur);
+
+				/*
+				
+				try {
+					this.run();
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
+				
+				*/
+				
+				
+				
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+			
+		}else {
+			System.out.println("null");
+		}
+		
+		
+		
+		/*
+		Scanner lecture = new Scanner(System.in);
+		System.out.print("Entrer votre nom : ");
+		nom = lecture.nextLine();
+		// On ne peut pas avoir un nom vide
+		while(nom.equals("")) {
+			System.out.print("Entrer votre nom : ");
+			nom = lecture.nextLine();
+		}
+		
+		boolean correct = false; // vaut false si le mdp ne correspond pas au nom et true sinon
+		try {
+			if (UserConsoleDistante.appDistant.utilisateurDejaExistant(nom)) { // Si l'utilisateur existe déjà dans la liste d'utilisateurs alors on
+													// lit le mot de passe et on essaie de se connecter
+				System.out.println("Utilisateur existant --> Connexion au compte");
+				while (!correct) { // on boucle pour avoir plusieurs tentatives (dans l'ihm il faudrait un moyen de
+									// changer le nom si on s'est trompé)
+					System.out.print("Entrer votre mot de passe : ");
+					mdp = lecture.nextLine();
+					utilisateur = UserConsoleDistante.appDistant.login(nom, mdp);
+					
+					if (utilisateur != null) {
+						correct = true;
+					}else {
+						System.out.println("erreur lors du login");
+					}
+				}
+			} else { // Si l'utilisateur n'a pas encore de compte
+				System.out.println("Utilisateur inexistant --> Creation d'un compte");
+				System.out.print("Creer votre mot de passe : ");
+				mdp = lecture.nextLine();
+				// On ne peut pas creer un compte avec mot de passe vide
+				while(mdp.equals("")) {
+					System.out.print("Creer votre mot de passe : ");
+					mdp = lecture.nextLine();
+				}
+				UserConsoleDistante.appDistant.ajouterUtilisateur(nom, mdp);
+				utilisateur = UserConsoleDistante.appDistant.login(nom, mdp);
+				
+				if (utilisateur != null) {
+					correct = true;
+				}else {
+					System.out.println("erreur lors du login");
+				}
+			}
+			
+			System.out.print("On instancie le serveur de l'utilisateur... ");
+			try {
+				utilisateurServeur = new UtilisateurServeurImpl(utilisateur, this);
+				System.out.print("On ajoute le serveur de l'utilisateur au registre... ");
+				registry.rebind(utilisateur.getNom(), utilisateurServeur);
+				System.out.println("OK");
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+			System.out.println("OK");
+			
+		} catch (RemoteException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		lecture.close();
+		*/
 	}
 	
 	public UtilisateurList getListeUtilisateursConnectes() throws RemoteException {
@@ -39,7 +151,7 @@ public class UserConsoleDistante {
 	public void run() throws RemoteException {
 		int choix = 1;
 		Scanner lecture = new Scanner(System.in);
-		Message m = null;
+		
 		String str = "";
 		String nom = "";
 		int nb = 0;
@@ -158,11 +270,7 @@ public class UserConsoleDistante {
 
 	public static void main(String[] args) {
 		Registry registry = null;
-		Utilisateur utilisateur = null;
 		AppRMIServeur a = null;
-		UtilisateurServeurImpl utilisateurServeur = null;
-		String mdp, nom = "";
-		Scanner lecture = new Scanner(System.in);
 		
 		System.out.print("On cherche le registre... ");
 		try {
@@ -176,58 +284,14 @@ public class UserConsoleDistante {
 			a = (AppRMIServeur) registry.lookup("App");
 			System.out.println("OK");
 			
-			System.out.print("Entrer votre nom : ");
-			nom = lecture.nextLine();
-			// On ne peut pas avoir un nom vide
-			while(nom.equals("")) {
-				System.out.print("Entrer votre nom : ");
-				nom = lecture.nextLine();
-			}
 			
-			boolean correct = false; // vaut false si le mdp ne correspond pas au nom et true sinon
-			if (a.utilisateurDejaExistant(nom)) { // Si l'utilisateur existe déjà dans la liste d'utilisateurs alors on
-													// lit le mot de passe et on essaie de se connecter
-				System.out.println("Utilisateur existant --> Connexion au compte");
-				while (!correct) { // on boucle pour avoir plusieurs tentatives (dans l'ihm il faudrait un moyen de
-									// changer le nom si on s'est trompé)
-					System.out.print("Entrer votre mot de passe : ");
-					mdp = lecture.nextLine();
-					utilisateur = a.login(nom, mdp);
-					
-					if (utilisateur != null) {
-						correct = true;
-					}else {
-						System.out.println("erreur lors du login");
-					}
-				}
-			} else { // Si l'utilisateur n'a pas encore de compte
-				System.out.println("Utilisateur inexistant --> Creation d'un compte");
-				System.out.print("Creer votre mot de passe : ");
-				mdp = lecture.nextLine();
-				// On ne peut pas creer un compte avec mot de passe vide
-				while(mdp.equals("")) {
-					System.out.print("Creer votre mot de passe : ");
-					mdp = lecture.nextLine();
-				}
-				a.ajouterUtilisateur(nom, mdp);
-				utilisateur = a.login(nom, mdp);
-				
-				if (utilisateur != null) {
-					correct = true;
-				}else {
-					System.out.println("erreur lors du login");
-				}
-			}
+			UserConsoleDistante console = new UserConsoleDistante(a, registry);
 			
-			
-			UserConsoleDistante console = new UserConsoleDistante(a, utilisateur, registry);
-			console.run();
 		} catch (RemoteException ex) {
 			ex.printStackTrace();
 		} catch (NotBoundException ex) {
 			ex.printStackTrace();
 		}
-		lecture.close();
 	}
 
 	public Utilisateur getUtilisateur() throws RemoteException{

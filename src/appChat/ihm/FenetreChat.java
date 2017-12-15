@@ -47,17 +47,16 @@ public class FenetreChat extends JFrame{
 			Message[] tab = new Message[this.utilisateurServeur.getUtilisateur().getListMessagesRecents().getNbMessage()];
 			this.utilisateurServeur.getUtilisateur().getListMessagesRecents().getMessageList().toArray(tab);
 			this.panneauMessages = new JScrollPane(new JList<Message>(tab));
-			System.out.println("1");
+			
 			UtilisateurList utilisateursConnectes = this.uc.getListeUtilisateursConnectes();
-			System.out.println("2");
+			
 			Utilisateur[] tab1 = new Utilisateur[utilisateursConnectes.length()];
-			System.out.println("3");
+			
 			utilisateursConnectes.getUtilisateurList().toArray(tab1);
-			System.out.println("4");
+			
 			this.panneauUtilisateurConnectes = new JScrollPane(new JList<Utilisateur>(tab1));
 			
 			
-			System.out.println("OK");
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

@@ -8,8 +8,6 @@ import appChat.Utilisateur;
 public class CheckUtilisateursConnectes extends Thread{
 	
 	
-	
-	
 	public CheckUtilisateursConnectes() {
 		
 	}

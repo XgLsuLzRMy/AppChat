@@ -17,6 +17,7 @@ public class UtilisateurServeurImpl extends UnicastRemoteObject implements Utili
 	
 	public UtilisateurServeurImpl(Utilisateur utilisateur, UserConsoleDistante uc) throws RemoteException {
 		super();
+		System.out.println(utilisateur);
 		this.utilisateur = utilisateur;
 		this.fenetre = new FenetreChat(this, uc);
 		this.fenetre.pack();
