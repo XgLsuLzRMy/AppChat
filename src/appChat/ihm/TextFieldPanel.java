@@ -17,12 +17,12 @@ public class TextFieldPanel extends JPanel implements ActionListener{
 	private JTextField zoneTexte;
 	private JButton boutton;
 
-	private UserConsoleDistante uc;
+	//private UserConsoleDistante uc;
 	
 	public TextFieldPanel(UserConsoleDistante uc) {
 		this.zoneTexte = new JTextField(50);
 		this.boutton = new JButton("OK");
-		this.uc = uc;
+		//this.uc = uc;
 		
 		this.add(this.zoneTexte, BorderLayout.CENTER);
 		this.add(this.boutton, BorderLayout.EAST);

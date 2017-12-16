@@ -16,7 +16,7 @@ public class CheckUtilisateursConnectes extends Thread{
 	public void run() {
 		while(true) {
 			//System.out.println("Liste des utilisateurs connectes : \n" + AppRMIServeurImpl.utilisateursConnectes);
-			boolean changement = false;
+			//boolean changement = false;
 			Utilisateur u;
 			int i = 0;
 			while(i < AppRMIServeurImpl.utilisateursConnectes.length()) {
@@ -30,7 +30,7 @@ public class CheckUtilisateursConnectes extends Thread{
 						//System.out.println(u.getNom() + " est connecte");
 					}catch(Exception e) {
 						System.out.println("changement");
-						changement = true;
+						//changement = true;
 						System.out.println(u.getNom() + " est deconnecte");
 						AppRMIServeurImpl.utilisateursConnectes.retirerUtilisateur(u);
 						i--;
@@ -42,7 +42,7 @@ public class CheckUtilisateursConnectes extends Thread{
 					e.printStackTrace();
 				} catch (NotBoundException e) {
 					System.out.println("changement");
-					changement = true;
+					//changement = true;
 					System.out.println(u.getNom() + " est deconnecte");
 					AppRMIServeurImpl.utilisateursConnectes.retirerUtilisateur(u);
 					i--;

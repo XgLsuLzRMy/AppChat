@@ -8,7 +8,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import appChat.AppChat;
 import appChat.Message;
 import appChat.Utilisateur;
 import appChat.UtilisateurList;

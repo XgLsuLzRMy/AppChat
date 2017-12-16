@@ -1,6 +1,5 @@
 package appChat.rmi;
 
-import java.awt.event.WindowEvent;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -285,7 +284,8 @@ public class UserConsoleDistante {
 			System.out.println("OK");
 			
 			
-			UserConsoleDistante console = new UserConsoleDistante(a, registry);
+			//UserConsoleDistante console = 
+			new UserConsoleDistante(a, registry);
 			
 		} catch (RemoteException ex) {
 			ex.printStackTrace();

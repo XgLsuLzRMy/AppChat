@@ -9,22 +9,18 @@ import java.util.Hashtable;
 
 import appChat.Utilisateur;
 import appChat.UtilisateurList;
-import appChat.ihm.FenetreServeur;
 
 
 public class AppChat {
 
-	public static int COMPTEUR_USER = 0;
 	private static UtilisateurList utilisateurList = new UtilisateurList();
 	private static Hashtable<String, String> passwordTable = new Hashtable<String, String>();
-	private FenetreServeur fenetre;
 
 	public AppChat (){
-		this.fenetre = new FenetreServeur(this);
-		this.fenetre.pack();
-		this.fenetre.setVisible(true);
+		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public AppChat(String fichierUtilisateurList, String fichierHashTable) {
 		System.out.println("On lit les fichiers... ");
 		System.out.print(fichierUtilisateurList + "... ");
@@ -41,7 +37,7 @@ public class AppChat {
 					fis = new FileInputStream(fichierHashTable);
 					ois = new ObjectInputStream(fis);
 					AppChat.passwordTable = (Hashtable<String, String>) ois.readObject();
-					System.out.print("OK");
+					System.out.println("OK");
 					
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
@@ -97,7 +93,6 @@ public class AppChat {
 	public void creerCompte (String nom,String mdp) {
 		AppChat.ajouterUtilisateur(new Utilisateur(nom));
 		AppChat.ajouterPassword(nom, mdp);
-		this.fenetre.refresh();
 	}
 	
 	/**
@@ -116,7 +111,6 @@ public class AppChat {
 	public void supprimerCompte(Utilisateur u) {
 		AppChat.utilisateurList.retirerUtilisateur(u);
 		AppChat.passwordTable.remove(u.getNom());
-		this.fenetre.refresh();
 	}
 
 
