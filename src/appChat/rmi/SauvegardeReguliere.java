@@ -14,7 +14,7 @@ public class SauvegardeReguliere extends Thread{
 	public void run() {
 		while(true) {
 			
-			System.out.println("Sauvegarde... ");
+			//System.out.println("Sauvegarde... ");
 			
 			this.a.ecrireDansFichier("utilisateurs","passwords");
 			

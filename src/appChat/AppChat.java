@@ -22,8 +22,8 @@ public class AppChat {
 	
 	@SuppressWarnings("unchecked")
 	public AppChat(String fichierUtilisateurList, String fichierHashTable) {
-		System.out.println("On lit les fichiers... ");
-		System.out.print(fichierUtilisateurList + "... ");
+		//System.out.println("On lit les fichiers... ");
+		//System.out.print(fichierUtilisateurList + "... ");
 		FileInputStream fis;
 		try {
 			fis = new FileInputStream(fichierUtilisateurList);
@@ -31,13 +31,13 @@ public class AppChat {
 				ObjectInputStream ois = new ObjectInputStream(fis);
 				try {
 					AppChat.utilisateurList = (UtilisateurList) ois.readObject();
-					System.out.println("OK");
+					//System.out.println("OK");
 					
-					System.out.print(fichierHashTable + "... ");
+					//System.out.print(fichierHashTable + "... ");
 					fis = new FileInputStream(fichierHashTable);
 					ois = new ObjectInputStream(fis);
 					AppChat.passwordTable = (Hashtable<String, String>) ois.readObject();
-					System.out.println("OK");
+					//System.out.println("OK");
 					
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
@@ -78,12 +78,12 @@ public class AppChat {
 	}
 	
 	public void ecrireDansFichier(String fichierUtilisateurList, String fichierHashTable) {
-		System.out.print("Ecriture de la liste d'utilisateurs... ");
+		//System.out.print("Ecriture de la liste d'utilisateurs... ");
 		this.ecrireUtilisateursDansFichier(fichierUtilisateurList);
-		System.out.println("OK");
-		System.out.print("Ecriture de la hashtable... ");
+		//System.out.println("OK");
+		//System.out.print("Ecriture de la hashtable... ");
 		this.ecrirePasswordDansFichier(fichierHashTable);
-		System.out.println("OK");
+		//System.out.println("OK");
 	}
 	
 	private static void ajouterUtilisateur(Utilisateur u) {
