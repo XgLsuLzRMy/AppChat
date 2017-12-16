@@ -28,13 +28,13 @@ public class UtilisateurServeurImpl extends UnicastRemoteObject implements Utili
 	public void recevoirMessage(Message message) throws RemoteException {
 		System.out.println("\n\nNouveau message !\n" + message + "\n");
 		this.utilisateur.ajouterMessage(message);
-		this.fenetre.refresh();
+		this.fenetre.refreshMessages();
 	}
 	
 	@Override
 	public void nouveauFollower(Utilisateur follower) throws RemoteException{
 		System.out.println("Nouveau follower " + follower.getNom());
-		this.utilisateur.ajouterFollower(follower);
+		//this.utilisateur.ajouterFollower(follower); // deja fait dans Utilisateur>follow
 	}
 	
 	@Override

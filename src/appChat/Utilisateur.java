@@ -30,9 +30,22 @@ public class Utilisateur implements Serializable{
 		}
 	}
 	
-	public void ajouterFollower(Utilisateur follower) {
+	public void unfollow(Utilisateur u) {
+		if(u!=null) {
+			this.listFollow.retirerUtilisateur(u);
+			u.retirerFollower(this);
+		}
+	}
+	
+	private void ajouterFollower(Utilisateur follower) {
 		if (!this.equals(follower) && (follower!=null)){
 			this.listFollower.ajouterUtilisateur(follower);
+		}
+	}
+	
+	private void retirerFollower(Utilisateur follower) {
+		if(follower != null) {
+			this.listFollower.retirerUtilisateur(follower);
 		}
 	}
 	

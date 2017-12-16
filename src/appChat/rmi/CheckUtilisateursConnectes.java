@@ -29,7 +29,7 @@ public class CheckUtilisateursConnectes extends Thread{
 						us.refreshAffichageListeutilisateursConnectes();
 						//System.out.println(u.getNom() + " est connecte");
 					}catch(Exception e) {
-						System.out.println("changement");
+						//System.out.println("changement");
 						//changement = true;
 						System.out.println(u.getNom() + " est deconnecte");
 						AppRMIServeurImpl.utilisateursConnectes.retirerUtilisateur(u);
@@ -41,7 +41,7 @@ public class CheckUtilisateursConnectes extends Thread{
 				} catch (RemoteException e) {
 					e.printStackTrace();
 				} catch (NotBoundException e) {
-					System.out.println("changement");
+					//System.out.println("changement");
 					//changement = true;
 					System.out.println(u.getNom() + " est deconnecte");
 					AppRMIServeurImpl.utilisateursConnectes.retirerUtilisateur(u);

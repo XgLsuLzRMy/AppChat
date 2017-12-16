@@ -25,6 +25,7 @@ public class FenetreChat extends JFrame{
 	private JScrollPane panneauUtilisateurConnectes;
 	private TextFieldPanel textFieldPanel;
 	
+	
 	public FenetreChat(UtilisateurServeurImpl utilisateurServeur, UserConsoleDistante uc) {
 		super("AppChat");
 		this.utilisateurServeur = utilisateurServeur;
@@ -42,24 +43,8 @@ public class FenetreChat extends JFrame{
 		
 		this.panneauUtilisateurConnectes = new JScrollPane(new JList<Utilisateur>());
 		
-		try {
-			Message[] tab = new Message[this.utilisateurServeur.getUtilisateur().getListMessagesRecents().getNbMessage()];
-			this.utilisateurServeur.getUtilisateur().getListMessagesRecents().getMessageList().toArray(tab);
-			this.panneauMessages = new JScrollPane(new JList<Message>(tab));
-			
-			UtilisateurList utilisateursConnectes = this.uc.getListeUtilisateursConnectes();
-			
-			Utilisateur[] tab1 = new Utilisateur[utilisateursConnectes.length()];
-			
-			utilisateursConnectes.getUtilisateurList().toArray(tab1);
-			
-			this.panneauUtilisateurConnectes = new JScrollPane(new JList<Utilisateur>(tab1));
-			
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		//this.refresh();
+		this.refreshMessages();
+		this.refreshListeUtilisateursConnectes();
 		
 		this.chatPanel.add(this.panneauMessages, BorderLayout.CENTER);
 		this.chatPanel.add(this.panneauUtilisateurConnectes, BorderLayout.EAST);
@@ -92,7 +77,7 @@ public class FenetreChat extends JFrame{
 	}
 	
 	
-	public void refresh() {
+	public void refreshMessages() {
 		
 		this.chatPanel.remove(this.panneauMessages);
 		System.out.print("On refresh... ");
