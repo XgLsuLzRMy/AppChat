@@ -35,7 +35,7 @@ public abstract class MessageListAbstract implements Serializable {
 	}
 
 	public String toString() {
-		return this.nbMessage + "\n" + this.list.toString();
+		return this.nbMessage + " messages\n" + this.list.toString();
 	}
 
 }

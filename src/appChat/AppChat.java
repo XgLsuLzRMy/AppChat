@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 import appChat.Utilisateur;
@@ -123,17 +124,56 @@ public class AppChat {
 	/**
 	 * 
 	 * @param m
+	 * @return La liste des utilisateur qui ont recu le message et qu'il faut donc notifier
 	 */
-	public void publieMessage(Message m) {
+	public UtilisateurList publieMessage(Message m) {
 		String nomAuteur = m.getAuteur();
+		UtilisateurList res = null;
 		Utilisateur auteur;
 		try {
 			auteur = AppChat.utilisateurList.getUtilisateur(nomAuteur);
 			auteur.ajouterMessageUtilisateur(m);
 			auteur.getFollowerList().ajouterMessage(m);
+
+			res = new UtilisateurList();
+
+			res.setUtilisateurList((ArrayList<Utilisateur>) auteur.getFollowerList().getUtilisateurList().clone());
+
+			/*
+			 * On scan le contenu du message a la recherche de hashtag On stocke les hashtag
+			 * dans un arraylist Si le hashtag est un nom d'utilisateur on leur envoie le
+			 * message
+			 */
+			ArrayList<String> hashTagList = new ArrayList<String>();
+			Utilisateur u;
+			int indexHashTag = m.getContenu().indexOf('#');
+			int indexEspace = -1;
+			String hashTag;
+			while (indexHashTag >= 0 && indexHashTag < m.getContenu().length() - 1) {
+				System.out.print("HashTag detecte : ");
+				indexEspace = m.getContenu().indexOf(' ', indexHashTag);
+				if (indexEspace == -1) {
+					indexEspace = m.getContenu().length();
+				}
+				hashTag = m.getContenu().substring(indexHashTag + 1, indexEspace);
+				hashTagList.add(hashTag);
+				System.out.println(hashTag);
+
+				try {
+					u = AppChat.utilisateurList.getUtilisateur(hashTag);
+					u.ajouterMessage(m);
+					res.ajouterUtilisateur(u);
+				} catch (UtilisateurInexistantException e) {
+				}
+
+				indexHashTag = m.getContenu().indexOf('#', indexHashTag + 1);
+			}
+
 		} catch (UtilisateurInexistantException e) {
 			e.printStackTrace();
 		}
+
+		return res;
 
 	}
 

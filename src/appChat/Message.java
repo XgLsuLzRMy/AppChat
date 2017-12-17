@@ -50,7 +50,7 @@ public class Message implements Serializable {
 	}
 
 	public String toString() {
-		return "\n" + this.auteur + " : \n--------------\n" + this.contenu + "\n--------------\n";
+		return "\n" + this.auteur + " : " + this.contenu + "\n";
 	}
 
 }

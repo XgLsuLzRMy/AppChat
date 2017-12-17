@@ -45,37 +45,39 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	@Override
 	public void publieMessage(Message m) throws RemoteException {
 		System.out.println("Nouveau message de " + m.getAuteur());
-		this.app.publieMessage(m);
+		UtilisateurList utilisateurANotifier = this.app.publieMessage(m);
 
 		// On notifie les follower
 
 		Iterator<Utilisateur> it = null;
 		System.out.print("Notification des destinataires... ");
-		try {
-			it = this.getUtilisateur(m.getAuteur()).getFollowerList().getUtilisateurList().iterator();
-			UtilisateurServeur uDistant = null;
-			Utilisateur u = null;
-			while (it.hasNext()) {
+		// try {
+		it = utilisateurANotifier.getUtilisateurList().iterator();
+		// it =
+		// this.getUtilisateur(m.getAuteur()).getFollowerList().getUtilisateurList().iterator();
+		UtilisateurServeur uDistant = null;
+		Utilisateur u = null;
+		while (it.hasNext()) {
 
-				u = it.next();
-				// u.ajouterMessage(m);
-				try {
-					AppRMIServeurImpl.utilisateursConnectes.getUtilisateur(u.getNom()); // verification que
-																						// l'utilisateur est
-																						// connecte
-					uDistant = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(u.getNom());
-					uDistant.recevoirMessage(m);
-				} catch (UtilisateurInexistantException e) {
+			u = it.next();
+			// u.ajouterMessage(m);
+			try {
+				AppRMIServeurImpl.utilisateursConnectes.getUtilisateur(u.getNom()); // verification que
+																					// l'utilisateur est
+																					// connecte
+				uDistant = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(u.getNom());
+				uDistant.recevoirMessage(m);
+			} catch (UtilisateurInexistantException e) {
 
-				} catch (NotBoundException e) {
-					e.printStackTrace();
-				}
-
+			} catch (NotBoundException e) {
+				e.printStackTrace();
 			}
-			System.out.println("OK");
-		} catch (UtilisateurInexistantException e1) {
-			e1.printStackTrace();
+
 		}
+		System.out.println("OK");
+		/*
+		 * } catch (UtilisateurInexistantException e1) { e1.printStackTrace(); }
+		 */
 
 	}
 
