@@ -53,6 +53,8 @@ public class FenetreChat extends JFrame{
 		this.chatPanel.add(this.panneauUtilisateurConnectes, BorderLayout.EAST);
 		this.chatPanel.add(textFieldPanel, BorderLayout.SOUTH);
 		
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 	
 	

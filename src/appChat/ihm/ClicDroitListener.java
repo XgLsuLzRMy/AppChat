@@ -17,12 +17,11 @@ public class ClicDroitListener implements MouseListener {
 
 	private JPopupMenu popup;
 	private JList<Utilisateur> list;
-	private UserConsoleDistante uc;
 	private Utilisateur selectedUser;
 	private PopupMenuListener menuListener;
 
 	public ClicDroitListener(UserConsoleDistante uc) {
-		this.uc = uc;
+		
 		this.popup = new JPopupMenu();
 		this.list = new JList<Utilisateur>();
 		this.selectedUser = null;
@@ -37,6 +36,7 @@ public class ClicDroitListener implements MouseListener {
 		this.popup.add(item);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (SwingUtilities.isRightMouseButton(e)) {
