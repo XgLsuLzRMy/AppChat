@@ -21,7 +21,7 @@ public class ClicDroitListener implements MouseListener {
 	private PopupMenuListener menuListener;
 
 	public ClicDroitListener(UserConsoleDistante uc) {
-		
+
 		this.popup = new JPopupMenu();
 		this.list = new JList<Utilisateur>();
 		this.selectedUser = null;
@@ -44,11 +44,11 @@ public class ClicDroitListener implements MouseListener {
 
 			int row = this.list.locationToIndex(e.getPoint());
 			this.list.setSelectedIndex(row);
-			
+
 			this.selectedUser = this.list.getSelectedValue();
 			this.menuListener.setSelectedUser(selectedUser);
 			System.out.println("Selected user : " + this.selectedUser);
-			
+
 			this.popup.show(this.list, e.getX(), e.getY());
 
 		}

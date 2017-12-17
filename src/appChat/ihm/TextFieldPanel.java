@@ -10,34 +10,32 @@ import javax.swing.JTextField;
 
 import appChat.rmi.UserConsoleDistante;
 
-public class TextFieldPanel extends JPanel implements ActionListener{
+public class TextFieldPanel extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 5018214483472601635L;
-	
+
 	private JTextField zoneTexte;
 	private JButton boutton;
 
-	//private UserConsoleDistante uc;
-	
+	// private UserConsoleDistante uc;
+
 	public TextFieldPanel(UserConsoleDistante uc) {
 		this.zoneTexte = new JTextField(50);
 		this.boutton = new JButton("OK");
-		//this.uc = uc;
-		
+		// this.uc = uc;
+
 		this.add(this.zoneTexte, BorderLayout.CENTER);
 		this.add(this.boutton, BorderLayout.EAST);
-		
+
 		this.zoneTexte.requestFocusInWindow();
-		
-		
+
 		this.zoneTexte.addActionListener(new ListenerZoneTexte(this.zoneTexte, uc));
 		this.boutton.addActionListener(new ListenerZoneTexte(this.zoneTexte, uc));
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		
-		
+
 	}
-	
+
 }

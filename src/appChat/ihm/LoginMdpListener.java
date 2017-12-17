@@ -8,10 +8,10 @@ import javax.swing.JTextField;
 import appChat.rmi.UserConsoleDistante;
 
 public class LoginMdpListener implements ActionListener {
-	
+
 	private JTextField zoneNom, zoneMdp;
 	private UserConsoleDistante uc;
-	
+
 	public LoginMdpListener(JTextField zoneNom, JTextField zoneMdp, UserConsoleDistante uc) {
 		this.zoneNom = zoneNom;
 		this.zoneMdp = zoneMdp;
@@ -20,14 +20,14 @@ public class LoginMdpListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 		String nom = this.zoneNom.getText();
 		String mdp = this.zoneMdp.getText();
-		
+
 		if (!(nom.equals("") || mdp.equals(""))) {
 			this.uc.login(nom, mdp);
 		}
-		
+
 	}
 
 }

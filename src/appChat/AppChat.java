@@ -1,4 +1,5 @@
 package appChat;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -10,20 +11,19 @@ import java.util.Hashtable;
 import appChat.Utilisateur;
 import appChat.UtilisateurList;
 
-
 public class AppChat {
 
 	private static UtilisateurList utilisateurList = new UtilisateurList();
 	private static Hashtable<String, String> passwordTable = new Hashtable<String, String>();
 
-	public AppChat (){
-		
+	public AppChat() {
+
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public AppChat(String fichierUtilisateurList, String fichierHashTable) {
-		//System.out.println("On lit les fichiers... ");
-		//System.out.print(fichierUtilisateurList + "... ");
+		// System.out.println("On lit les fichiers... ");
+		// System.out.print(fichierUtilisateurList + "... ");
 		FileInputStream fis;
 		try {
 			fis = new FileInputStream(fichierUtilisateurList);
@@ -31,14 +31,14 @@ public class AppChat {
 				ObjectInputStream ois = new ObjectInputStream(fis);
 				try {
 					AppChat.utilisateurList = (UtilisateurList) ois.readObject();
-					//System.out.println("OK");
-					
-					//System.out.print(fichierHashTable + "... ");
+					// System.out.println("OK");
+
+					// System.out.print(fichierHashTable + "... ");
 					fis = new FileInputStream(fichierHashTable);
 					ois = new ObjectInputStream(fis);
 					AppChat.passwordTable = (Hashtable<String, String>) ois.readObject();
-					//System.out.println("OK");
-					
+					// System.out.println("OK");
+
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -50,9 +50,9 @@ public class AppChat {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void ecrirePasswordDansFichier(String nomFichier) {
 		try {
 			FileOutputStream fos = new FileOutputStream(nomFichier);
@@ -60,11 +60,11 @@ public class AppChat {
 			oos.writeObject(AppChat.passwordTable);
 			fos.close();
 			oos.close();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void ecrireUtilisateursDansFichier(String nomFichier) {
 		try {
 			FileOutputStream fos = new FileOutputStream(nomFichier);
@@ -72,38 +72,41 @@ public class AppChat {
 			oos.writeObject(AppChat.utilisateurList);
 			fos.close();
 			oos.close();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void ecrireDansFichier(String fichierUtilisateurList, String fichierHashTable) {
-		//System.out.print("Ecriture de la liste d'utilisateurs... ");
+		// System.out.print("Ecriture de la liste d'utilisateurs... ");
 		this.ecrireUtilisateursDansFichier(fichierUtilisateurList);
-		//System.out.println("OK");
-		//System.out.print("Ecriture de la hashtable... ");
+		// System.out.println("OK");
+		// System.out.print("Ecriture de la hashtable... ");
 		this.ecrirePasswordDansFichier(fichierHashTable);
-		//System.out.println("OK");
+		// System.out.println("OK");
 	}
-	
+
 	private static void ajouterUtilisateur(Utilisateur u) {
 		AppChat.utilisateurList.ajouterUtilisateur(u);
 	}
 
-	public void creerCompte (String nom,String mdp) {
+	public void creerCompte(String nom, String mdp) {
 		AppChat.ajouterUtilisateur(new Utilisateur(nom));
 		AppChat.ajouterPassword(nom, mdp);
 	}
-	
+
 	/**
 	 * Sauvegarde le mot de passe mdp de l'utilisateur nom
-	 * @param nom le nom de l'utilisateur dont le mot de passe est stocké
-	 * @param mdp le mot de passe à stocker
+	 * 
+	 * @param nom
+	 *            le nom de l'utilisateur dont le mot de passe est stocké
+	 * @param mdp
+	 *            le mot de passe à stocker
 	 */
 	private static void ajouterPassword(String nom, String mdp) {
 		AppChat.passwordTable.put(nom, mdp);
 	}
-	
+
 	public boolean verifierMdp(String nom, String mdp) {
 		return AppChat.passwordTable.get(nom).equals(mdp);
 	}
@@ -113,11 +116,10 @@ public class AppChat {
 		AppChat.passwordTable.remove(u.getNom());
 	}
 
-
-	public static UtilisateurList getUtilisateurList(){
+	public static UtilisateurList getUtilisateurList() {
 		return AppChat.utilisateurList;
 	}
-	
+
 	/**
 	 * 
 	 * @param m
@@ -132,7 +134,7 @@ public class AppChat {
 		} catch (UtilisateurInexistantException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }

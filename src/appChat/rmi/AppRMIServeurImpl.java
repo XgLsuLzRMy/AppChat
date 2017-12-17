@@ -15,7 +15,7 @@ import appChat.Utilisateur;
 import appChat.UtilisateurInexistantException;
 import appChat.UtilisateurList;
 
-public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServeur, Runnable{
+public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServeur, Runnable {
 
 	private static final long serialVersionUID = 1L;
 	private AppChat app;
@@ -27,46 +27,48 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 		System.out.print("\n\tVerification de l'existence des fichiers... ");
 		File f = new File("passwords");
 		File f2 = new File("utilisateurs");
-		if(f.exists() && !f.isDirectory() && f2.exists() && !f2.isDirectory()) { 
+		if (f.exists() && !f.isDirectory() && f2.exists() && !f2.isDirectory()) {
 			System.out.println("OK");
 			this.app = new AppChat("utilisateurs", "passwords");
-		}else {
+		} else {
 			System.out.println("Pas de fichiers");
 			this.app = new AppChat();
 		}
-		
+
 		AppRMIServeurImpl.registry = registry;
 	}
-	
-	public UtilisateurList getListeUtilisateursConnectes() throws RemoteException{
+
+	public UtilisateurList getListeUtilisateursConnectes() throws RemoteException {
 		return AppRMIServeurImpl.utilisateursConnectes;
 	}
-	
+
 	@Override
 	public void publieMessage(Message m) throws RemoteException {
 		System.out.println("Nouveau message de " + m.getAuteur());
 		this.app.publieMessage(m);
-		
+
 		// On notifie les follower
-		
+
 		Iterator<Utilisateur> it = null;
 		System.out.print("Notification des destinataires... ");
 		try {
 			it = this.getUtilisateur(m.getAuteur()).getFollowerList().getUtilisateurList().iterator();
 			UtilisateurServeur uDistant = null;
 			Utilisateur u = null;
-			while(it.hasNext()) {
+			while (it.hasNext()) {
 				try {
 					u = it.next();
 					u.ajouterMessage(m);
-					try{
-						AppRMIServeurImpl.utilisateursConnectes.getUtilisateur(u.getNom()); // verification que l'utilisateur est connecte
+					try {
+						AppRMIServeurImpl.utilisateursConnectes.getUtilisateur(u.getNom()); // verification que
+																							// l'utilisateur est
+																							// connecte
 						uDistant = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(u.getNom());
 						uDistant.recevoirMessage(m);
-					}catch(UtilisateurInexistantException e) {
-						
+					} catch (UtilisateurInexistantException e) {
+
 					}
-					
+
 				} catch (NotBoundException e) {
 					e.printStackTrace();
 				}
@@ -75,63 +77,56 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 		} catch (UtilisateurInexistantException e1) {
 			e1.printStackTrace();
 		}
-		
+
 	}
 
-
-
 	@Override
-	public void ajouterUtilisateur(String nom, String mdp)throws RemoteException {
+	public void ajouterUtilisateur(String nom, String mdp) throws RemoteException {
 		System.out.print("Ajout d'un nouvel utilisateur " + nom + "... ");
-		if(!this.utilisateurDejaExistant(nom)){
+		if (!this.utilisateurDejaExistant(nom)) {
 			this.app.creerCompte(nom, mdp);
 			System.out.println("OK");
-		}else {
+		} else {
 			System.out.println("deja existant");
 		}
 
 	}
-	
+
 	@Override
 	public boolean utilisateurDejaExistant(String nom) throws RemoteException {
 		try {
 			AppChat.getUtilisateurList().getUtilisateur(nom);
 			return true;
-		}catch(UtilisateurInexistantException e) {
+		} catch (UtilisateurInexistantException e) {
 			return false;
 		}
 	}
 
 	@Override
-	public Utilisateur login(String nom, String mdp) throws RemoteException{
-		System.out.print("Tentative de login de "+ nom + "... ");
-		if(this.app.verifierMdp(nom, mdp)) {
+	public Utilisateur login(String nom, String mdp) throws RemoteException {
+		System.out.print("Tentative de login de " + nom + "... ");
+		if (this.app.verifierMdp(nom, mdp)) {
 			System.out.println("OK");
 			Utilisateur u = null;
 			try {
 				u = AppChat.getUtilisateurList().getUtilisateur(nom);
 				AppRMIServeurImpl.utilisateursConnectes.ajouterUtilisateur(u);
-				
+
 				return u;
 			} catch (UtilisateurInexistantException e) {
 				e.printStackTrace();
 				return null;
 			}
-		}else {
+		} else {
 			System.out.println("Refuse");
 			return null;
 		}
 	}
-	
-	
+
 	@Override
-	public Utilisateur getUtilisateur(String nom)throws RemoteException, UtilisateurInexistantException  {
+	public Utilisateur getUtilisateur(String nom) throws RemoteException, UtilisateurInexistantException {
 		return AppChat.getUtilisateurList().getUtilisateur(nom);
 	}
-
-
-
-	
 
 	@Override
 	public UtilisateurList getUtilisateurList() {
@@ -141,44 +136,44 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	@Override
 	public void logout(Utilisateur utilisateur) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void follow(String nom, String nom2) throws RemoteException, UtilisateurInexistantException {
-		if(nom != nom2) {
+		if (nom != nom2) {
 			System.out.print(nom + " follow " + nom2 + "... ");
 			Utilisateur u1 = this.getUtilisateur(nom);
-			if(u1 != null) {
+			if (u1 != null) {
 				Utilisateur u2 = this.getUtilisateur(nom2);
 				u1.follow(u2);
 				System.out.println("OK");
-				try{
+				try {
 					AppRMIServeurImpl.utilisateursConnectes.getUtilisateur(nom2);
 					System.out.print("Notification de " + nom2 + "... ");
 					try {
 						UtilisateurServeur us = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(nom2);
 						System.out.println("OK");
 						us.nouveauFollower(u1);
-						
+
 					} catch (NotBoundException e) {
 						e.printStackTrace();
 					}
-				}catch(UtilisateurInexistantException e) {
-					
+				} catch (UtilisateurInexistantException e) {
+
 				}
-			}else {
+			} else {
 				System.out.println("erreur : " + nom + " n'existe pas");
 			}
-		}else {
+		} else {
 			System.out.println("impossible de se suivre soit meme");
 		}
 	}
-	
+
 	public AppChat getApp() {
 		return this.app;
 	}
-	
+
 	public static void main(String[] args) {
 		try {
 			Registry registry = null;
@@ -195,38 +190,35 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 			System.out.print("Instanciation du AppRMIServeur... ");
 			AppRMIServeurImpl a = new AppRMIServeurImpl(registry);
 			System.out.println(" AppRMIServeurImpl instancie !");
-			
+
 			System.out.print("Enregistrement de l'application dans le registre... ");
 			registry.rebind("App", a);
 			System.out.println("OK");
-			
+
 			System.out.print("Instanciation de la classe qui check les utilisateurs connectes... ");
 			CheckUtilisateursConnectes t = new CheckUtilisateursConnectes();
 			System.out.println("OK");
 			System.out.print("Lancement de la thread... ");
 			t.start();
 			System.out.println("OK");
-			
+
 			System.out.print("Instanciation de la classe qui sauvegarde regulierement... ");
 			SauvegardeReguliere t2 = new SauvegardeReguliere(a.getApp());
 			System.out.println("OK");
 			System.out.print("Lancement de la thread... ");
 			t2.start();
 			System.out.println("OK");
-			
-			
+
 		} catch (RemoteException ex) {
 			ex.printStackTrace();
 		}
-		
-		
-		
+
 	}
 
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -235,19 +227,18 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 		Utilisateur u1;
 		try {
 			u1 = this.getUtilisateur(nom);
-			if(u1 != null) {
+			if (u1 != null) {
 				Utilisateur u2 = this.getUtilisateur(nom2);
 				u1.unfollow(u2);
 				System.out.println("OK");
-			}else {
-				System.out.println("erreur : " + nom +" ou "+ nom2 + " n'existe pas");
+			} else {
+				System.out.println("erreur : " + nom + " ou " + nom2 + " n'existe pas");
 			}
 		} catch (UtilisateurInexistantException e1) {
 			System.out.println("erreur");
 			e1.printStackTrace();
 		}
-		
+
 	}
 
-	
 }

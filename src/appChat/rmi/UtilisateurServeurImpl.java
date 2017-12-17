@@ -8,13 +8,13 @@ import appChat.Utilisateur;
 import appChat.UtilisateurList;
 import appChat.ihm.FenetreChat;
 
-public class UtilisateurServeurImpl extends UnicastRemoteObject implements UtilisateurServeur{
+public class UtilisateurServeurImpl extends UnicastRemoteObject implements UtilisateurServeur {
 
 	private static final long serialVersionUID = 1L;
 	private Utilisateur utilisateur;
-	
+
 	private FenetreChat fenetre;
-	
+
 	public UtilisateurServeurImpl(Utilisateur utilisateur, UserConsoleDistante uc) throws RemoteException {
 		super();
 		System.out.println(utilisateur);
@@ -30,13 +30,14 @@ public class UtilisateurServeurImpl extends UnicastRemoteObject implements Utili
 		this.utilisateur.ajouterMessage(message);
 		this.fenetre.refreshMessages();
 	}
-	
+
 	@Override
-	public void nouveauFollower(Utilisateur follower) throws RemoteException{
+	public void nouveauFollower(Utilisateur follower) throws RemoteException {
 		System.out.println("Nouveau follower " + follower.getNom());
-		//this.utilisateur.ajouterFollower(follower); // deja fait dans Utilisateur>follow
+		// this.utilisateur.ajouterFollower(follower); // deja fait dans
+		// Utilisateur>follow
 	}
-	
+
 	@Override
 	public Utilisateur getUtilisateur() throws RemoteException {
 		return this.utilisateur;
@@ -44,7 +45,7 @@ public class UtilisateurServeurImpl extends UnicastRemoteObject implements Utili
 
 	@Override
 	public void ping() throws RemoteException {
-		
+
 	}
 
 	@Override
@@ -56,8 +57,5 @@ public class UtilisateurServeurImpl extends UnicastRemoteObject implements Utili
 	public void refreshAffichageListeutilisateursConnectes() {
 		this.fenetre.refreshListeUtilisateursConnectes();
 	}
-	
-	
-	
 
 }

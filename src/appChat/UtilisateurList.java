@@ -16,22 +16,24 @@ public class UtilisateurList implements Serializable {
 
 	/**
 	 *
-	 * @param u l'utilisateur a ajouter dans la liste
-	 * Permet d'ajouter un utilisateur dans la liste si celui-ci n'y est pas deja (s'il y est deja, on ne fait rien)
+	 * @param u
+	 *            l'utilisateur a ajouter dans la liste Permet d'ajouter un
+	 *            utilisateur dans la liste si celui-ci n'y est pas deja (s'il y est
+	 *            deja, on ne fait rien)
 	 */
 	public void ajouterUtilisateur(Utilisateur u) {
 		// On verifie que l'utilisateur u n'est pas dﾃｩjﾃ� dans la liste
-		if((u!=null) && !this.utilisateurList.contains(u)) {
+		if ((u != null) && !this.utilisateurList.contains(u)) {
 			this.utilisateurList.add(u);
 		}
 	}
-	
+
 	public Utilisateur get(int i) {
 		return this.utilisateurList.get(i);
 	}
-	
+
 	public void retirerUtilisateur(Utilisateur u) {
-		if(u!=null) {
+		if (u != null) {
 			this.utilisateurList.remove(u);
 		}
 	}
@@ -40,20 +42,20 @@ public class UtilisateurList implements Serializable {
 		return this.utilisateurList.size();
 	}
 
-	public String toString(){
+	public String toString() {
 		return this.utilisateurList.toString();
 	}
-	
+
 	public void setUtilisateurList(ArrayList<Utilisateur> utilisateurList) {
 		this.utilisateurList = utilisateurList;
 	}
-	
+
 	public Utilisateur getUtilisateur(String nomAuteur) throws UtilisateurInexistantException {
-		
+
 		Utilisateur temp = null;
-		
+
 		Iterator<Utilisateur> iterator = this.utilisateurList.iterator();
-		while(iterator.hasNext()) {
+		while (iterator.hasNext()) {
 			temp = iterator.next();
 			if (temp.getNom().equals(nomAuteur)) {
 				return temp;
@@ -61,18 +63,20 @@ public class UtilisateurList implements Serializable {
 		}
 		throw new UtilisateurInexistantException();
 	}
-	
+
 	public ArrayList<Utilisateur> getUtilisateurList() {
 		return this.utilisateurList;
 	}
-	
+
 	/**
-	 * Ajoute le message m dans la liste des messages de chaque utilisateurs dans cette liste (utile pour envoyer un message à tous ses follower) 
+	 * Ajoute le message m dans la liste des messages de chaque utilisateurs dans
+	 * cette liste (utile pour envoyer un message à tous ses follower)
+	 * 
 	 * @param m
 	 */
 	public void ajouterMessage(Message m) {
-		if(m!=null) {
-			for(Utilisateur u : this.utilisateurList) {
+		if (m != null) {
+			for (Utilisateur u : this.utilisateurList) {
 				u.ajouterMessage(m);
 			}
 		}
