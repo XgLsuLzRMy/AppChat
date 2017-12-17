@@ -256,6 +256,14 @@ public class UserConsoleDistante {
 			e.printStackTrace();
 		}
 	}
+	
+	public void unfollow(String nom) {
+		try {
+			UserConsoleDistante.appDistant.unfollow(this.utilisateurServeur.getUtilisateur().getNom(), nom);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void envoyerMessage(String str) {
 		Message m;

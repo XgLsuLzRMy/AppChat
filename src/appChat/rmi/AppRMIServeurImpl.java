@@ -146,8 +146,8 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 
 	@Override
 	public void follow(String nom, String nom2) throws RemoteException, UtilisateurInexistantException {
-		System.out.print(nom + " follow " + nom2 + "... ");
 		if(nom != nom2) {
+			System.out.print(nom + " follow " + nom2 + "... ");
 			Utilisateur u1 = this.getUtilisateur(nom);
 			if(u1 != null) {
 				Utilisateur u2 = this.getUtilisateur(nom2);
@@ -226,6 +226,26 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void unfollow(String nom, String nom2) throws RemoteException {
+		System.out.print(nom + " unfollow " + nom2 + "... ");
+		Utilisateur u1;
+		try {
+			u1 = this.getUtilisateur(nom);
+			if(u1 != null) {
+				Utilisateur u2 = this.getUtilisateur(nom2);
+				u1.unfollow(u2);
+				System.out.println("OK");
+			}else {
+				System.out.println("erreur : " + nom +" ou "+ nom2 + " n'existe pas");
+			}
+		} catch (UtilisateurInexistantException e1) {
+			System.out.println("erreur");
+			e1.printStackTrace();
+		}
 		
 	}
 

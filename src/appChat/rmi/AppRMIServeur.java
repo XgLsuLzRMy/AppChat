@@ -59,6 +59,8 @@ public interface AppRMIServeur extends Remote{
 
 	
 	public UtilisateurList getListeUtilisateursConnectes() throws RemoteException;
+
+	public void unfollow(String nom, String nom2) throws RemoteException;
 	
 	
 }

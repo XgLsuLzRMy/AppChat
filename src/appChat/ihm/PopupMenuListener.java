@@ -29,6 +29,11 @@ public class PopupMenuListener implements ActionListener{
 			break;
 		case "unfollow":
 			System.out.println("unfollow");
+			if(this.selectedUser != null) {
+				this.uc.unfollow(this.selectedUser.getNom());
+			}else {
+				System.out.println("Erreur : selectedUser = null");
+			}
 			break;
 			
 		default:
