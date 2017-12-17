@@ -68,49 +68,6 @@ public class UserConsoleDistante {
 		} else {
 			System.out.println("null");
 		}
-
-		/*
-		 * Scanner lecture = new Scanner(System.in);
-		 * System.out.print("Entrer votre nom : "); nom = lecture.nextLine(); // On ne
-		 * peut pas avoir un nom vide while(nom.equals("")) {
-		 * System.out.print("Entrer votre nom : "); nom = lecture.nextLine(); }
-		 * 
-		 * boolean correct = false; // vaut false si le mdp ne correspond pas au nom et
-		 * true sinon try { if
-		 * (UserConsoleDistante.appDistant.utilisateurDejaExistant(nom)) { // Si
-		 * l'utilisateur existe déjà dans la liste d'utilisateurs alors on // lit le mot
-		 * de passe et on essaie de se connecter
-		 * System.out.println("Utilisateur existant --> Connexion au compte"); while
-		 * (!correct) { // on boucle pour avoir plusieurs tentatives (dans l'ihm il
-		 * faudrait un moyen de // changer le nom si on s'est trompé)
-		 * System.out.print("Entrer votre mot de passe : "); mdp = lecture.nextLine();
-		 * utilisateur = UserConsoleDistante.appDistant.login(nom, mdp);
-		 * 
-		 * if (utilisateur != null) { correct = true; }else {
-		 * System.out.println("erreur lors du login"); } } } else { // Si l'utilisateur
-		 * n'a pas encore de compte
-		 * System.out.println("Utilisateur inexistant --> Creation d'un compte");
-		 * System.out.print("Creer votre mot de passe : "); mdp = lecture.nextLine(); //
-		 * On ne peut pas creer un compte avec mot de passe vide while(mdp.equals("")) {
-		 * System.out.print("Creer votre mot de passe : "); mdp = lecture.nextLine(); }
-		 * UserConsoleDistante.appDistant.ajouterUtilisateur(nom, mdp); utilisateur =
-		 * UserConsoleDistante.appDistant.login(nom, mdp);
-		 * 
-		 * if (utilisateur != null) { correct = true; }else {
-		 * System.out.println("erreur lors du login"); } }
-		 * 
-		 * System.out.print("On instancie le serveur de l'utilisateur... "); try {
-		 * utilisateurServeur = new UtilisateurServeurImpl(utilisateur, this);
-		 * System.out.print("On ajoute le serveur de l'utilisateur au registre... ");
-		 * registry.rebind(utilisateur.getNom(), utilisateurServeur);
-		 * System.out.println("OK"); } catch (RemoteException e) { e.printStackTrace();
-		 * } System.out.println("OK");
-		 * 
-		 * } catch (RemoteException e1) { // TODO Auto-generated catch block
-		 * e1.printStackTrace(); }
-		 * 
-		 * lecture.close();
-		 */
 	}
 
 	public UtilisateurList getListeUtilisateursConnectes() throws RemoteException {

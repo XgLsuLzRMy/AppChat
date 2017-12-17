@@ -56,22 +56,21 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 			UtilisateurServeur uDistant = null;
 			Utilisateur u = null;
 			while (it.hasNext()) {
-				try {
-					u = it.next();
-					u.ajouterMessage(m);
-					try {
-						AppRMIServeurImpl.utilisateursConnectes.getUtilisateur(u.getNom()); // verification que
-																							// l'utilisateur est
-																							// connecte
-						uDistant = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(u.getNom());
-						uDistant.recevoirMessage(m);
-					} catch (UtilisateurInexistantException e) {
 
-					}
+				u = it.next();
+				// u.ajouterMessage(m);
+				try {
+					AppRMIServeurImpl.utilisateursConnectes.getUtilisateur(u.getNom()); // verification que
+																						// l'utilisateur est
+																						// connecte
+					uDistant = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(u.getNom());
+					uDistant.recevoirMessage(m);
+				} catch (UtilisateurInexistantException e) {
 
 				} catch (NotBoundException e) {
 					e.printStackTrace();
 				}
+
 			}
 			System.out.println("OK");
 		} catch (UtilisateurInexistantException e1) {

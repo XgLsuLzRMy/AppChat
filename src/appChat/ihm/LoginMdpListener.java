@@ -27,7 +27,7 @@ public class LoginMdpListener implements ActionListener {
 		if (!(nom.equals("") || mdp.equals(""))) {
 			this.uc.login(nom, mdp);
 		}
-
+		this.zoneMdp.setText("");
 	}
 
 }
