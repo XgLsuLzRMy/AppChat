@@ -204,15 +204,7 @@ public class UserConsoleDistante {
 					nom = lecture.nextLine();
 				}
 				
-				try {
-					//this.utilisateurServeur.getUtilisateur().follow(appDistant.getUtilisateur(nom));
-					// On ajoute un nouveau follower sur le serveur
-					UserConsoleDistante.appDistant.follow(this.utilisateurServeur.getUtilisateur().getNom(), nom);
-					// On met a jour la liste des follower en local
-					this.utilisateurServeur.setFollowerList(UserConsoleDistante.appDistant.getUtilisateur(this.utilisateurServeur.getUtilisateur().getNom()).getFollowerList());
-				} catch (UtilisateurInexistantException e) {
-					e.printStackTrace();
-				}
+				this.follow(nom);
 				
 				break;
 				
@@ -249,6 +241,20 @@ public class UserConsoleDistante {
 			}
 		}
 		lecture.close();
+	}
+
+	public void follow(String nom) {
+		try {
+			//this.utilisateurServeur.getUtilisateur().follow(appDistant.getUtilisateur(nom));
+			// On ajoute un nouveau follower sur le serveur
+			UserConsoleDistante.appDistant.follow(this.utilisateurServeur.getUtilisateur().getNom(), nom);
+			// On met a jour la liste des follower en local
+			//this.utilisateurServeur.setFollowerList(UserConsoleDistante.appDistant.getUtilisateur(this.utilisateurServeur.getUtilisateur().getNom()).getFollowerList());
+		} catch (UtilisateurInexistantException e) {
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void envoyerMessage(String str) {

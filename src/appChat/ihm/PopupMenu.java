@@ -15,7 +15,7 @@ import javax.swing.event.PopupMenuListener;
 public class PopupMenu extends JPanel {
 
 	private static final long serialVersionUID = 3311171851094603404L;
-	public JPopupMenu popup;
+	private JPopupMenu popup;
 
 	public PopupMenu() {
 		popup = new JPopupMenu();

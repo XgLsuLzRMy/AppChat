@@ -1,12 +1,15 @@
 package appChat.ihm;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
 
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import appChat.Message;
 import appChat.Utilisateur;
@@ -62,7 +65,10 @@ public class FenetreChat extends JFrame{
 			UtilisateurList utilisateursConnectes = this.uc.getListeUtilisateursConnectes();
 			Utilisateur[] tab1 = new Utilisateur[utilisateursConnectes.length()];
 			utilisateursConnectes.getUtilisateurList().toArray(tab1);
-			this.panneauUtilisateurConnectes = new JScrollPane(new JList<Utilisateur>(tab1));
+			JList<Utilisateur> list = new JList<Utilisateur>(tab1);
+			this.panneauUtilisateurConnectes = new JScrollPane(list);
+			
+			list.addMouseListener(new ClicDroitListener(this.uc));
 			
 			this.revalidate();
 			this.chatPanel.repaint();
