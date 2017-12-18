@@ -1,16 +1,12 @@
 package appChat.ihm;
 
 import java.awt.BorderLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
 
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
-
 import appChat.Message;
 import appChat.Utilisateur;
 import appChat.UtilisateurList;
