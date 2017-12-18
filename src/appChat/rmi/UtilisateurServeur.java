@@ -21,4 +21,8 @@ public interface UtilisateurServeur extends Remote {
 
 	public void refreshAffichageListeutilisateursConnectes() throws RemoteException;
 
+	public void ajouterHashTag(String hashtag) throws RemoteException;
+	
+	public void retirerHashTag(String hashtag) throws RemoteException;
+
 }

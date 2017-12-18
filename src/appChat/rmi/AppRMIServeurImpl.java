@@ -243,4 +243,40 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 
 	}
 
+	@Override
+	public void ajouterHashTag(String nom, String hashTag) throws RemoteException {
+		try {
+			Utilisateur u = this.getUtilisateur(nom);
+			this.getUtilisateur(nom).ajouterHashTag(hashTag);
+			if (this.getListeUtilisateursConnectes().contains(u)) {
+				try {
+					UtilisateurServeur us = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(nom);
+					us.ajouterHashTag(hashTag);
+				} catch (NotBoundException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (UtilisateurInexistantException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void retirerHashTag(String nom, String hashTag) throws RemoteException {
+		try {
+			Utilisateur u = this.getUtilisateur(nom);
+			u.retirerHashTag(hashTag);
+			if (this.getListeUtilisateursConnectes().contains(u)) {
+				try {
+					UtilisateurServeur us = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(nom);
+					us.retirerHashTag(hashTag);
+				} catch (NotBoundException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (UtilisateurInexistantException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

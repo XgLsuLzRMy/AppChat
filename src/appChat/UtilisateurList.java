@@ -27,7 +27,11 @@ public class UtilisateurList implements Serializable {
 			this.utilisateurList.add(u);
 		}
 	}
-
+	
+	public boolean contains(Utilisateur u) {
+		return this.utilisateurList.contains(u);
+	}
+	
 	public Utilisateur get(int i) {
 		return this.utilisateurList.get(i);
 	}

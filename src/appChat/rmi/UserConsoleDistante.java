@@ -244,4 +244,20 @@ public class UserConsoleDistante {
 		}
 	}
 
+	public void ajouterHashTag(String hashTag){
+		try {
+			UserConsoleDistante.appDistant.ajouterHashTag(this.getUtilisateur().getNom(), hashTag);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void retirerHashTag(String hashTag){
+		try {
+			UserConsoleDistante.appDistant.retirerHashTag(this.getUtilisateur().getNom(), hashTag);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

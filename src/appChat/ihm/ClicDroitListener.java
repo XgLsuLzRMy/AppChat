@@ -24,7 +24,7 @@ public class ClicDroitListener implements MouseListener {
 		this.list = new JList<Utilisateur>();
 		this.selectedUser = null;
 
-		this.menuListener = new PopupMenuListener(uc, selectedUser);
+		this.menuListener = new PopupMenuListener(uc, this.selectedUser);
 
 		JMenuItem item = new JMenuItem("follow");
 		item.addActionListener(menuListener);

@@ -18,10 +18,10 @@ public class AppChat {
 
 	private static UtilisateurList utilisateurList = new UtilisateurList();
 	private static Hashtable<String, String> passwordTable = new Hashtable<String, String>();
-	
+
 	private LinkedList<String> hashTagsRecents;
 	private int nbMaxHashTagsRecents = 5;
-	
+
 	public AppChat() {
 		this.hashTagsRecents = new LinkedList<String>();
 	}
@@ -59,7 +59,7 @@ public class AppChat {
 		}
 
 	}
-	
+
 	public void nouveauHashTagRecent(String hashTag) {
 		this.hashTagsRecents.removeFirstOccurrence(hashTag);
 		this.hashTagsRecents.addFirst(hashTag);
@@ -67,11 +67,11 @@ public class AppChat {
 			this.hashTagsRecents.removeLast();
 		}
 	}
-	
-	public LinkedList<String> getHashTagsRecents(){
+
+	public LinkedList<String> getHashTagsRecents() {
 		return this.hashTagsRecents;
 	}
-	
+
 	public void ecrirePasswordDansFichier(String nomFichier) {
 		try {
 			FileOutputStream fos = new FileOutputStream(nomFichier);
@@ -177,15 +177,23 @@ public class AppChat {
 					res.ajouterUtilisateur(u);
 				} catch (UtilisateurInexistantException e) {
 					// Le hashtag ne correspond pas a un utilisateur
+					Iterator<Utilisateur> itu = AppChat.utilisateurList.getUtilisateurList().iterator();
+					while (itu.hasNext()) {
+						u = itu.next();
+						if (u.getHashTagList().contains(hashTag)) {
+							u.ajouterMessage(m);
+							res.ajouterUtilisateur(u);
+						}
+					}
 				}
-				
+
 				this.nouveauHashTagRecent(hashTag);
-				
+
 			}
 		} catch (UtilisateurInexistantException e) {
 			e.printStackTrace();
 		}
-		
+
 		return res;
 
 	}

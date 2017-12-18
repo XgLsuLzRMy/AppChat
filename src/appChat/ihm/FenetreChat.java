@@ -17,7 +17,7 @@ import appChat.UtilisateurList;
 import appChat.rmi.UserConsoleDistante;
 import appChat.rmi.UtilisateurServeurImpl;
 
-public class FenetreChat extends JFrame{
+public class FenetreChat extends JFrame {
 
 	private static final long serialVersionUID = 8976560413665224423L;
 
@@ -55,26 +55,23 @@ public class FenetreChat extends JFrame{
 		this.panneauUtilisateurConnectes = new JScrollPane(this.listUtilisateursConnectes);
 		this.panneauUtilisateurConnectes.setColumnHeaderView(new JLabel("Utilisateurs connectes"));
 		this.listUtilisateursConnectes.addMouseListener(new ClicDroitListener(this.uc));
-		
+
 		this.listeHashTags = new JList<String>();
 		this.listeHashTagsRecents = new JList<String>();
-		this.hashTagPanel = new HashTagPanel(this.listeHashTags, listeHashTagsRecents);
-		
+		this.hashTagPanel = new HashTagPanel(this.listeHashTags, listeHashTagsRecents, this.uc);
 
-		this.refreshMessages();
-		this.refreshListeUtilisateursConnectes();
-		this.refreshListeHashTags();
-		
+		this.refresh();
+
 		this.chatPanel.add(this.hashTagPanel, BorderLayout.WEST);
 		this.chatPanel.add(this.panneauMessages, BorderLayout.CENTER);
 		this.chatPanel.add(this.panneauUtilisateurConnectes, BorderLayout.EAST);
 		this.chatPanel.add(textFieldPanel, BorderLayout.SOUTH);
-		
+
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+
 	}
-	
+
 	public void refresh() {
 		System.out.print("\nRefresh liste hashtag... ");
 		this.refreshListeHashTags();
@@ -86,27 +83,25 @@ public class FenetreChat extends JFrame{
 		this.refreshMessages();
 		System.out.println("OK");
 	}
-	
+
 	public void refreshListeHashTags() {
 		try {
 			ArrayList<String> listeHashTags = this.uc.getHashTagList();
 			String[] hashtagTab = new String[listeHashTags.size()];
 			listeHashTags.toArray(hashtagTab);
 			this.listeHashTags.setListData(hashtagTab);
-			
-			System.out.println(listeHashTags);
-			
+
 			LinkedList<String> listeHashTagsRecents = this.uc.getHashTagsRecents();
 			hashtagTab = new String[listeHashTagsRecents.size()];
 			listeHashTagsRecents.toArray(hashtagTab);
 			this.listeHashTagsRecents.setListData(hashtagTab);
-			
+
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void refreshListeUtilisateursConnectes() {
 		try {
 			UtilisateurList utilisateursConnectes = this.uc.getListeUtilisateursConnectes();
@@ -125,7 +120,7 @@ public class FenetreChat extends JFrame{
 			Message[] tab = new Message[messageListe.getNbMessage()];
 			messageListe.getMessageList().toArray(tab);
 			this.listeMessagesRecents.setListData(tab);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

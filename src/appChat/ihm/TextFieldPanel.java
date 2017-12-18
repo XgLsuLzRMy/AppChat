@@ -24,6 +24,8 @@ public class TextFieldPanel extends JPanel implements ActionListener {
 		this.boutton = new JButton("OK");
 		// this.uc = uc;
 
+		this.setLayout(new BorderLayout());
+
 		this.add(this.zoneTexte, BorderLayout.CENTER);
 		this.add(this.boutton, BorderLayout.EAST);
 

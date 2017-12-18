@@ -75,5 +75,9 @@ public interface AppRMIServeur extends Remote {
 	public void unfollow(String nom, String nom2) throws RemoteException;
 	
 	public LinkedList<String> getHashTagsRecents() throws RemoteException;
+	
+	public void ajouterHashTag(String nom, String hashTag) throws RemoteException;
+	
+	public void retirerHashTag(String nom, String hashTag) throws RemoteException;
 
 }
