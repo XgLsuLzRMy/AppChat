@@ -9,6 +9,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import appChat.Utilisateur;
 import appChat.UtilisateurList;
@@ -17,13 +18,17 @@ public class AppChat {
 
 	private static UtilisateurList utilisateurList = new UtilisateurList();
 	private static Hashtable<String, String> passwordTable = new Hashtable<String, String>();
-
+	
+	private LinkedList<String> hashTagsRecents;
+	private int nbMaxHashTagsRecents = 5;
+	
 	public AppChat() {
-
+		this.hashTagsRecents = new LinkedList<String>();
 	}
 
 	@SuppressWarnings("unchecked")
 	public AppChat(String fichierUtilisateurList, String fichierHashTable) {
+		this.hashTagsRecents = new LinkedList<String>();
 		// System.out.println("On lit les fichiers... ");
 		// System.out.print(fichierUtilisateurList + "... ");
 		FileInputStream fis;
@@ -54,7 +59,19 @@ public class AppChat {
 		}
 
 	}
-
+	
+	public void nouveauHashTagRecent(String hashTag) {
+		this.hashTagsRecents.removeFirstOccurrence(hashTag);
+		this.hashTagsRecents.addFirst(hashTag);
+		if (this.nbMaxHashTagsRecents < this.hashTagsRecents.size()) {
+			this.hashTagsRecents.removeLast();
+		}
+	}
+	
+	public LinkedList<String> getHashTagsRecents(){
+		return this.hashTagsRecents;
+	}
+	
 	public void ecrirePasswordDansFichier(String nomFichier) {
 		try {
 			FileOutputStream fos = new FileOutputStream(nomFichier);
@@ -151,19 +168,24 @@ public class AppChat {
 			Utilisateur u;
 
 			Iterator<String> it = hashTagList.iterator();
+			String hashTag;
 			while (it.hasNext()) {
+				hashTag = it.next();
 				try {
-					u = AppChat.utilisateurList.getUtilisateur(it.next());
+					u = AppChat.utilisateurList.getUtilisateur(hashTag);
 					u.ajouterMessage(m);
 					res.ajouterUtilisateur(u);
 				} catch (UtilisateurInexistantException e) {
 					// Le hashtag ne correspond pas a un utilisateur
 				}
+				
+				this.nouveauHashTagRecent(hashTag);
+				
 			}
 		} catch (UtilisateurInexistantException e) {
 			e.printStackTrace();
 		}
-
+		
 		return res;
 
 	}

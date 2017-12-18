@@ -2,6 +2,8 @@ package appChat.rmi;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.LinkedList;
+
 import appChat.Message;
 import appChat.Utilisateur;
 import appChat.UtilisateurInexistantException;
@@ -71,5 +73,7 @@ public interface AppRMIServeur extends Remote {
 	public UtilisateurList getListeUtilisateursConnectes() throws RemoteException;
 
 	public void unfollow(String nom, String nom2) throws RemoteException;
+	
+	public LinkedList<String> getHashTagsRecents() throws RemoteException;
 
 }

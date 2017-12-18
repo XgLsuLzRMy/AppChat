@@ -2,18 +2,22 @@ package appChat.ihm;
 
 import java.awt.BorderLayout;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import appChat.Message;
+import appChat.MessageListAbstract;
 import appChat.Utilisateur;
 import appChat.UtilisateurList;
 import appChat.rmi.UserConsoleDistante;
 import appChat.rmi.UtilisateurServeurImpl;
 
-public class FenetreChat extends JFrame {
+public class FenetreChat extends JFrame{
 
 	private static final long serialVersionUID = 8976560413665224423L;
 
@@ -23,8 +27,12 @@ public class FenetreChat extends JFrame {
 	private JScrollPane panneauMessages;
 	private JScrollPane panneauUtilisateurConnectes;
 	private TextFieldPanel textFieldPanel;
-	
+	private HashTagPanel hashTagPanel;
+
 	private JList<Utilisateur> listUtilisateursConnectes;
+	private JList<Message> listeMessagesRecents;
+	private JList<String> listeHashTags;
+	private JList<String> listeHashTagsRecents;
 
 	public FenetreChat(UtilisateurServeurImpl utilisateurServeur, UserConsoleDistante uc) {
 		super("AppChat");
@@ -40,60 +48,84 @@ public class FenetreChat extends JFrame {
 		this.chatPanel = (JPanel) this.getContentPane();
 		this.chatPanel.setLayout(new BorderLayout());
 
-		this.panneauMessages = new JScrollPane(new JList<Message>());
+		this.listeMessagesRecents = new JList<Message>();
+		this.panneauMessages = new JScrollPane(this.listeMessagesRecents);
+
 		this.listUtilisateursConnectes = new JList<Utilisateur>();
 		this.panneauUtilisateurConnectes = new JScrollPane(this.listUtilisateursConnectes);
+		this.panneauUtilisateurConnectes.setColumnHeaderView(new JLabel("Utilisateurs connectes"));
 		this.listUtilisateursConnectes.addMouseListener(new ClicDroitListener(this.uc));
+		
+		this.listeHashTags = new JList<String>();
+		this.listeHashTagsRecents = new JList<String>();
+		this.hashTagPanel = new HashTagPanel(this.listeHashTags, listeHashTagsRecents);
+		
 
 		this.refreshMessages();
 		this.refreshListeUtilisateursConnectes();
-
+		this.refreshListeHashTags();
+		
+		this.chatPanel.add(this.hashTagPanel, BorderLayout.WEST);
 		this.chatPanel.add(this.panneauMessages, BorderLayout.CENTER);
 		this.chatPanel.add(this.panneauUtilisateurConnectes, BorderLayout.EAST);
 		this.chatPanel.add(textFieldPanel, BorderLayout.SOUTH);
-
+		
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
 	}
-
+	
+	public void refresh() {
+		System.out.print("\nRefresh liste hashtag... ");
+		this.refreshListeHashTags();
+		System.out.println("OK");
+		System.out.print("Refresh utilisateurs connectes... ");
+		this.refreshListeUtilisateursConnectes();
+		System.out.println("OK");
+		System.out.print("Refresh messages... ");
+		this.refreshMessages();
+		System.out.println("OK");
+	}
+	
+	public void refreshListeHashTags() {
+		try {
+			ArrayList<String> listeHashTags = this.uc.getHashTagList();
+			String[] hashtagTab = new String[listeHashTags.size()];
+			listeHashTags.toArray(hashtagTab);
+			this.listeHashTags.setListData(hashtagTab);
+			
+			System.out.println(listeHashTags);
+			
+			LinkedList<String> listeHashTagsRecents = this.uc.getHashTagsRecents();
+			hashtagTab = new String[listeHashTagsRecents.size()];
+			listeHashTagsRecents.toArray(hashtagTab);
+			this.listeHashTagsRecents.setListData(hashtagTab);
+			
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public void refreshListeUtilisateursConnectes() {
 		try {
-
 			UtilisateurList utilisateursConnectes = this.uc.getListeUtilisateursConnectes();
-			Utilisateur[] tab1 = new Utilisateur[utilisateursConnectes.length()];
-			utilisateursConnectes.getUtilisateurList().toArray(tab1);
-			this.listUtilisateursConnectes.setListData(tab1);
-
-			this.revalidate();
-			this.chatPanel.repaint();
+			Utilisateur[] tab = new Utilisateur[utilisateursConnectes.length()];
+			utilisateursConnectes.getUtilisateurList().toArray(tab);
+			this.listUtilisateursConnectes.setListData(tab);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-
 		}
 	}
 
 	public void refreshMessages() {
-
-		this.chatPanel.remove(this.panneauMessages);
-		System.out.print("On refresh... ");
-
 		try {
-			Message[] tab = new Message[this.utilisateurServeur.getUtilisateur().getListMessagesRecents()
-					.getNbMessage()];
-			this.utilisateurServeur.getUtilisateur().getListMessagesRecents().getMessageList().toArray(tab);
-
-			this.panneauMessages = new JScrollPane(new JList<Message>(tab));
-
-			this.revalidate();
-			this.chatPanel.repaint();
-
-			this.chatPanel.add(this.panneauMessages, BorderLayout.CENTER);
-
-			this.revalidate();
-			this.repaint();
-
-			System.out.println("OK");
+			MessageListAbstract messageListe = this.utilisateurServeur.getUtilisateur().getListMessagesRecents();
+			Message[] tab = new Message[messageListe.getNbMessage()];
+			messageListe.getMessageList().toArray(tab);
+			this.listeMessagesRecents.setListData(tab);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

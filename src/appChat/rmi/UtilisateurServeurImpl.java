@@ -22,6 +22,9 @@ public class UtilisateurServeurImpl extends UnicastRemoteObject implements Utili
 		this.fenetre = new FenetreChat(this, uc);
 		this.fenetre.pack();
 		this.fenetre.setVisible(true);
+		
+		AutoRefreshFenetreChatThread t = new AutoRefreshFenetreChatThread(this.fenetre);
+		t.start();
 	}
 
 	@Override

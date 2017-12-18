@@ -26,7 +26,7 @@ public class CheckUtilisateursConnectes extends Thread {
 					UtilisateurServeur us = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(u.getNom());
 					try {
 						us.ping();
-						us.refreshAffichageListeutilisateursConnectes();
+						//us.refreshAffichageListeutilisateursConnectes();
 						// System.out.println(u.getNom() + " est connecte");
 					} catch (Exception e) {
 						// System.out.println("changement");

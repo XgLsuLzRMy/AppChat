@@ -4,8 +4,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Scanner;
-
+import java.util.ArrayList;
+import java.util.LinkedList;
 import appChat.Message;
 import appChat.Utilisateur;
 import appChat.UtilisateurInexistantException;
@@ -55,12 +55,6 @@ public class UserConsoleDistante {
 				this.utilisateurServeur = new UtilisateurServeurImpl(u, this);
 				this.registry.rebind(u.getNom(), utilisateurServeur);
 
-				/*
-				 * 
-				 * try { this.run(); } catch (RemoteException e) { e.printStackTrace(); }
-				 * 
-				 */
-
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}
@@ -74,7 +68,7 @@ public class UserConsoleDistante {
 		return UserConsoleDistante.appDistant.getListeUtilisateursConnectes();
 	}
 
-	public void run() throws RemoteException {
+	/*public void run() throws RemoteException {
 		int choix = 1;
 		Scanner lecture = new Scanner(System.in);
 
@@ -173,15 +167,12 @@ public class UserConsoleDistante {
 			}
 		}
 		lecture.close();
-	}
+	}*/
 
 	public void follow(String nom) {
 		try {
-			// this.utilisateurServeur.getUtilisateur().follow(appDistant.getUtilisateur(nom));
 			// On ajoute un nouveau follower sur le serveur
 			UserConsoleDistante.appDistant.follow(this.utilisateurServeur.getUtilisateur().getNom(), nom);
-			// On met a jour la liste des follower en local
-			// this.utilisateurServeur.setFollowerList(UserConsoleDistante.appDistant.getUtilisateur(this.utilisateurServeur.getUtilisateur().getNom()).getFollowerList());
 		} catch (UtilisateurInexistantException e) {
 			e.printStackTrace();
 		} catch (RemoteException e) {
@@ -211,6 +202,23 @@ public class UserConsoleDistante {
 		}
 	}
 
+	public Utilisateur getUtilisateur() throws RemoteException {
+		return this.utilisateurServeur.getUtilisateur();
+	}
+
+	public ArrayList<String> getHashTagList() throws RemoteException {
+		if(this.utilisateurServeur == null) {
+			System.out.println("Attention hashTagList vide car le serveur utilisateur n'est pas encore instancié");
+			return new ArrayList<String>();
+		}else {
+			return this.getUtilisateur().getHashTagList();
+		}
+	}
+	
+	public LinkedList<String> getHashTagsRecents() throws RemoteException {
+		return UserConsoleDistante.appDistant.getHashTagsRecents();
+	}
+	
 	public static void main(String[] args) {
 		Registry registry = null;
 		AppRMIServeur a = null;
@@ -218,7 +226,7 @@ public class UserConsoleDistante {
 		System.out.print("On cherche le registre... ");
 		try {
 			if (args.length > 0) {
-				registry = LocateRegistry.getRegistry(args[0]);
+				registry = LocateRegistry.getRegistry(args[0],1099);
 			} else {
 				registry = LocateRegistry.getRegistry(1099);
 			}
@@ -227,7 +235,6 @@ public class UserConsoleDistante {
 			a = (AppRMIServeur) registry.lookup("App");
 			System.out.println("OK");
 
-			// UserConsoleDistante console =
 			new UserConsoleDistante(a, registry);
 
 		} catch (RemoteException ex) {
@@ -235,10 +242,6 @@ public class UserConsoleDistante {
 		} catch (NotBoundException ex) {
 			ex.printStackTrace();
 		}
-	}
-
-	public Utilisateur getUtilisateur() throws RemoteException {
-		return this.utilisateurServeur.getUtilisateur();
 	}
 
 }

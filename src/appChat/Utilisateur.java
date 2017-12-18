@@ -1,6 +1,7 @@
 package appChat;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Utilisateur implements Serializable {
 
@@ -12,6 +13,7 @@ public class Utilisateur implements Serializable {
 	private MessageListRecent listMessagesRecents; // les derniers messages recus
 	private MessageList listMessagesUtilisateur; // les messages tweetés par l'utilisateur
 	private MessageList listMessagesRetweetes; // pour ne pas retweeter 2 fois un même message
+	private ArrayList<String> hashTagList; // Liste des hashtags auxquels l'utilisateur s'est abonne
 
 	public Utilisateur(String nom) {
 		this.nom = nom;
@@ -20,7 +22,8 @@ public class Utilisateur implements Serializable {
 		this.listMessages = new MessageList();
 		this.listMessagesRecents = new MessageListRecent();
 		this.listMessagesUtilisateur = new MessageList();
-		listMessagesRetweetes = new MessageList();
+		this.listMessagesRetweetes = new MessageList();
+		this.hashTagList = new ArrayList<String>();
 	}
 
 	public void follow(Utilisateur u) {
@@ -77,6 +80,22 @@ public class Utilisateur implements Serializable {
 		}
 	}
 
+	public ArrayList<String> getHashTagList() {
+		return this.hashTagList;
+	}
+
+	public void ajouterHashTag(String hashTag) {
+		if (this.hashTagList.contains(hashTag) == false) {
+			this.hashTagList.add(hashTag);
+		}
+	}
+	
+	public void retirerHashTag(String hashTag) {
+		if (this.hashTagList.contains(hashTag)) {
+			this.hashTagList.remove(hashTag);
+		}
+	}
+	
 	public String getNom() {
 		return this.nom;
 	}

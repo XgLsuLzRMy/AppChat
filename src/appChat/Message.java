@@ -39,15 +39,12 @@ public class Message implements Serializable {
 		int indexEspace = -1;
 		String hashTag;
 		while (indexHashTag >= 0 && indexHashTag < this.getContenu().length() - 1) {
-			System.out.print("HashTag detecte : ");
 			indexEspace = this.getContenu().indexOf(' ', indexHashTag);
 			if (indexEspace == -1) {
 				indexEspace = this.getContenu().length();
 			}
-			System.out.println("indexHashTag = " + indexHashTag + " indexEspace = " + indexEspace);
 			hashTag = this.getContenu().substring(indexHashTag + 1, indexEspace);
 			this.hashTags.add(hashTag);
-			System.out.println(hashTag);
 
 			indexHashTag = this.getContenu().indexOf('#', indexHashTag + 1);
 		}

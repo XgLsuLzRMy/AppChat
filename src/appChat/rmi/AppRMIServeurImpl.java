@@ -8,6 +8,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.ExportException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import appChat.AppChat;
 import appChat.Message;
@@ -51,10 +52,8 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 
 		Iterator<Utilisateur> it = null;
 		System.out.print("Notification des destinataires... ");
-		// try {
+
 		it = utilisateurANotifier.getUtilisateurList().iterator();
-		// it =
-		// this.getUtilisateur(m.getAuteur()).getFollowerList().getUtilisateurList().iterator();
 		UtilisateurServeur uDistant = null;
 		Utilisateur u = null;
 		while (it.hasNext()) {
@@ -75,9 +74,6 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 
 		}
 		System.out.println("OK");
-		/*
-		 * } catch (UtilisateurInexistantException e1) { e1.printStackTrace(); }
-		 */
 
 	}
 
@@ -171,8 +167,39 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 		}
 	}
 
-	public AppChat getApp() {
+	private AppChat getApp() {
 		return this.app;
+	}
+
+	@Override
+	public LinkedList<String> getHashTagsRecents() throws RemoteException {
+		return this.app.getHashTagsRecents();
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void unfollow(String nom, String nom2) throws RemoteException {
+		System.out.print(nom + " unfollow " + nom2 + "... ");
+		Utilisateur u1;
+		try {
+			u1 = this.getUtilisateur(nom);
+			if (u1 != null) {
+				Utilisateur u2 = this.getUtilisateur(nom2);
+				u1.unfollow(u2);
+				System.out.println("OK");
+			} else {
+				System.out.println("erreur : " + nom + " ou " + nom2 + " n'existe pas");
+			}
+		} catch (UtilisateurInexistantException e1) {
+			System.out.println("erreur");
+			e1.printStackTrace();
+		}
+
 	}
 
 	public static void main(String[] args) {
@@ -212,32 +239,6 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 
 		} catch (RemoteException ex) {
 			ex.printStackTrace();
-		}
-
-	}
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void unfollow(String nom, String nom2) throws RemoteException {
-		System.out.print(nom + " unfollow " + nom2 + "... ");
-		Utilisateur u1;
-		try {
-			u1 = this.getUtilisateur(nom);
-			if (u1 != null) {
-				Utilisateur u2 = this.getUtilisateur(nom2);
-				u1.unfollow(u2);
-				System.out.println("OK");
-			} else {
-				System.out.println("erreur : " + nom + " ou " + nom2 + " n'existe pas");
-			}
-		} catch (UtilisateurInexistantException e1) {
-			System.out.println("erreur");
-			e1.printStackTrace();
 		}
 
 	}
