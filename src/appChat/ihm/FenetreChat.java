@@ -27,6 +27,8 @@ public class FenetreChat extends JFrame {
 	private JScrollPane panneauMessages;
 	private JScrollPane panneauUtilisateurConnectes;
 	private TextFieldPanel textFieldPanel;
+	
+	private JList<Utilisateur> listUtilisateursConnectes;
 
 	public FenetreChat(UtilisateurServeurImpl utilisateurServeur, UserConsoleDistante uc) {
 		super("AppChat");
@@ -43,8 +45,9 @@ public class FenetreChat extends JFrame {
 		this.chatPanel.setLayout(new BorderLayout());
 
 		this.panneauMessages = new JScrollPane(new JList<Message>());
-
-		this.panneauUtilisateurConnectes = new JScrollPane(new JList<Utilisateur>());
+		this.listUtilisateursConnectes = new JList<Utilisateur>();
+		this.panneauUtilisateurConnectes = new JScrollPane(this.listUtilisateursConnectes);
+		this.listUtilisateursConnectes.addMouseListener(new ClicDroitListener(this.uc));
 
 		this.refreshMessages();
 		this.refreshListeUtilisateursConnectes();
@@ -58,22 +61,13 @@ public class FenetreChat extends JFrame {
 	}
 
 	public void refreshListeUtilisateursConnectes() {
-		this.chatPanel.remove(this.panneauUtilisateurConnectes);
-		// System.out.println("On refresh le tableau");
-
 		try {
 
 			UtilisateurList utilisateursConnectes = this.uc.getListeUtilisateursConnectes();
 			Utilisateur[] tab1 = new Utilisateur[utilisateursConnectes.length()];
 			utilisateursConnectes.getUtilisateurList().toArray(tab1);
-			JList<Utilisateur> list = new JList<Utilisateur>(tab1);
-			this.panneauUtilisateurConnectes = new JScrollPane(list);
+			this.listUtilisateursConnectes.setListData(tab1);
 
-			list.addMouseListener(new ClicDroitListener(this.uc));
-
-			this.revalidate();
-			this.chatPanel.repaint();
-			this.chatPanel.add(this.panneauUtilisateurConnectes, BorderLayout.EAST);
 			this.revalidate();
 			this.chatPanel.repaint();
 

@@ -1,6 +1,7 @@
 package appChat;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Message implements Serializable {
@@ -10,12 +11,14 @@ public class Message implements Serializable {
 	private String contenu;
 	private Date date;
 	private int retweetCount;
+	private ArrayList<String> hashTags;
 
 	public Message() {
 		this.auteur = "";
 		this.contenu = "";
 		this.date = new Date();
 		this.retweetCount = 0;
+		this.hashTags = new ArrayList<String>();
 	}
 
 	public Message(String contenu, String auteur) {
@@ -23,8 +26,45 @@ public class Message implements Serializable {
 		this.contenu = contenu;
 		this.date = new Date();
 		this.retweetCount = 0;
+		this.recupererLesHashtags();
 	}
+	
+	private void recupererLesHashtags() {
+		/*
+		 * On scan le contenu du message a la recherche de hashtag On stocke les hashtag
+		 * dans un arraylist Si le hashtag est un nom d'utilisateur on leur envoie le
+		 * message
+		 */
+		/*ArrayList<String> hashTagList = new ArrayList<String>();
+		Utilisateur u;
+		int indexHashTag = m.getContenu().indexOf('#');
+		int indexEspace = -1;
+		String hashTag;
+		while (indexHashTag >= 0 && indexHashTag < m.getContenu().length() - 1) {
+			System.out.print("HashTag detecte : ");
+			indexEspace = m.getContenu().indexOf(' ', indexHashTag);
+			if (indexEspace == -1) {
+				indexEspace = m.getContenu().length();
+			}
+			hashTag = m.getContenu().substring(indexHashTag + 1, indexEspace);
+			hashTagList.add(hashTag);
+			System.out.println(hashTag);
 
+			try {
+				u = AppChat.utilisateurList.getUtilisateur(hashTag);
+				u.ajouterMessage(m);
+				res.ajouterUtilisateur(u);
+			} catch (UtilisateurInexistantException e) {
+			}
+
+			indexHashTag = m.getContenu().indexOf('#', indexHashTag + 1);
+		}
+
+	} catch (UtilisateurInexistantException e) {
+		e.printStackTrace();
+	}*/
+	}
+	
 	public String getContenu() {
 		return this.contenu;
 	}
