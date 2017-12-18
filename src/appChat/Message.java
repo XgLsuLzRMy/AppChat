@@ -26,45 +26,53 @@ public class Message implements Serializable {
 		this.contenu = contenu;
 		this.date = new Date();
 		this.retweetCount = 0;
+		this.hashTags = new ArrayList<String>();
 		this.recupererLesHashtags();
 	}
-	
+
 	private void recupererLesHashtags() {
 		/*
 		 * On scan le contenu du message a la recherche de hashtag On stocke les hashtag
-		 * dans un arraylist Si le hashtag est un nom d'utilisateur on leur envoie le
-		 * message
+		 * dans un arraylist
 		 */
-		/*ArrayList<String> hashTagList = new ArrayList<String>();
-		Utilisateur u;
-		int indexHashTag = m.getContenu().indexOf('#');
+		int indexHashTag = this.getContenu().indexOf('#');
 		int indexEspace = -1;
 		String hashTag;
-		while (indexHashTag >= 0 && indexHashTag < m.getContenu().length() - 1) {
+		while (indexHashTag >= 0 && indexHashTag < this.getContenu().length() - 1) {
 			System.out.print("HashTag detecte : ");
-			indexEspace = m.getContenu().indexOf(' ', indexHashTag);
+			indexEspace = this.getContenu().indexOf(' ', indexHashTag);
 			if (indexEspace == -1) {
-				indexEspace = m.getContenu().length();
+				indexEspace = this.getContenu().length();
 			}
-			hashTag = m.getContenu().substring(indexHashTag + 1, indexEspace);
-			hashTagList.add(hashTag);
+			System.out.println("indexHashTag = " + indexHashTag + " indexEspace = " + indexEspace);
+			hashTag = this.getContenu().substring(indexHashTag + 1, indexEspace);
+			this.hashTags.add(hashTag);
 			System.out.println(hashTag);
 
-			try {
-				u = AppChat.utilisateurList.getUtilisateur(hashTag);
-				u.ajouterMessage(m);
-				res.ajouterUtilisateur(u);
-			} catch (UtilisateurInexistantException e) {
-			}
-
-			indexHashTag = m.getContenu().indexOf('#', indexHashTag + 1);
+			indexHashTag = this.getContenu().indexOf('#', indexHashTag + 1);
 		}
+	}
 
-	} catch (UtilisateurInexistantException e) {
-		e.printStackTrace();
-	}*/
+	public ArrayList<String> getHashtags() {
+		return this.hashTags;
+	}
+
+	public void ajouterHashTag(String hashtag) {
+		if (this.hashTags.contains(hashtag) == false) {
+			this.hashTags.add(hashtag);
+		}
 	}
 	
+	public void retirerHashTag(String hashtag) {
+		if(this.hashTags.contains(hashtag)) {
+			this.hashTags.remove(hashtag);
+		}
+	}
+	
+	public void setHashTags(ArrayList<String> hashtags) {
+		this.hashTags = hashtags;
+	}
+
 	public String getContenu() {
 		return this.contenu;
 	}

@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
 
 import appChat.Utilisateur;
 import appChat.UtilisateurList;
@@ -124,8 +125,10 @@ public class AppChat {
 	/**
 	 * 
 	 * @param m
-	 * @return La liste des utilisateur qui ont recu le message et qu'il faut donc notifier
+	 * @return La liste des utilisateur qui ont recu le message et qu'il faut donc
+	 *         notifier
 	 */
+	@SuppressWarnings("unchecked")
 	public UtilisateurList publieMessage(Message m) {
 		String nomAuteur = m.getAuteur();
 		UtilisateurList res = null;
@@ -144,31 +147,19 @@ public class AppChat {
 			 * dans un arraylist Si le hashtag est un nom d'utilisateur on leur envoie le
 			 * message
 			 */
-			ArrayList<String> hashTagList = new ArrayList<String>();
+			ArrayList<String> hashTagList = m.getHashtags();
 			Utilisateur u;
-			int indexHashTag = m.getContenu().indexOf('#');
-			int indexEspace = -1;
-			String hashTag;
-			while (indexHashTag >= 0 && indexHashTag < m.getContenu().length() - 1) {
-				System.out.print("HashTag detecte : ");
-				indexEspace = m.getContenu().indexOf(' ', indexHashTag);
-				if (indexEspace == -1) {
-					indexEspace = m.getContenu().length();
-				}
-				hashTag = m.getContenu().substring(indexHashTag + 1, indexEspace);
-				hashTagList.add(hashTag);
-				System.out.println(hashTag);
 
+			Iterator<String> it = hashTagList.iterator();
+			while (it.hasNext()) {
 				try {
-					u = AppChat.utilisateurList.getUtilisateur(hashTag);
+					u = AppChat.utilisateurList.getUtilisateur(it.next());
 					u.ajouterMessage(m);
 					res.ajouterUtilisateur(u);
 				} catch (UtilisateurInexistantException e) {
+					// Le hashtag ne correspond pas a un utilisateur
 				}
-
-				indexHashTag = m.getContenu().indexOf('#', indexHashTag + 1);
 			}
-
 		} catch (UtilisateurInexistantException e) {
 			e.printStackTrace();
 		}
