@@ -1,6 +1,7 @@
 package appChat.ihm;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -31,7 +32,6 @@ public class TextFieldHashTagPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -52,8 +52,16 @@ public class TextFieldHashTagPanel extends JPanel implements ActionListener {
 				if (text.charAt(0) == '#') {
 					text = text.substring(1, text.length());
 				}
-				this.uc.ajouterHashTag(text);
-				this.zoneTexte.setText("");
+				int indexEspace = text.indexOf(' ');
+				if (indexEspace != -1) {
+					text = text.substring(0, indexEspace);
+					this.zoneTexte.setText(text);
+					this.zoneTexte.setCaretColor(Color.RED);
+				} else {
+					this.zoneTexte.setCaretColor(Color.BLACK);
+					this.uc.ajouterHashTag(text);
+					this.zoneTexte.setText("");
+				}
 			}
 		}
 
