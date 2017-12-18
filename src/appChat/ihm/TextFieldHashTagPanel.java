@@ -47,8 +47,14 @@ public class TextFieldHashTagPanel extends JPanel implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			this.uc.ajouterHashTag(this.zoneTexte.getText());
-			this.zoneTexte.setText("");
+			String text = this.zoneTexte.getText();
+			if (text.equals("") == false) {
+				if (text.charAt(0) == '#') {
+					text = text.substring(1, text.length());
+				}
+				this.uc.ajouterHashTag(text);
+				this.zoneTexte.setText("");
+			}
 		}
 
 	}
