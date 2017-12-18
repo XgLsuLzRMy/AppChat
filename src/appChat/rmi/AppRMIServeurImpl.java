@@ -7,6 +7,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.ExportException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -277,6 +278,11 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 		} catch (UtilisateurInexistantException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public ArrayList<Utilisateur> chercherUtilisateur(String text) throws RemoteException {
+		return this.app.chercherUtilisateur(text);
 	}
 
 }

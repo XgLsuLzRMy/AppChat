@@ -2,6 +2,7 @@ package appChat.rmi;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import appChat.Message;
@@ -73,11 +74,13 @@ public interface AppRMIServeur extends Remote {
 	public UtilisateurList getListeUtilisateursConnectes() throws RemoteException;
 
 	public void unfollow(String nom, String nom2) throws RemoteException;
-	
+
 	public LinkedList<String> getHashTagsRecents() throws RemoteException;
-	
+
 	public void ajouterHashTag(String nom, String hashTag) throws RemoteException;
-	
+
 	public void retirerHashTag(String nom, String hashTag) throws RemoteException;
+
+	public ArrayList<Utilisateur> chercherUtilisateur(String text) throws RemoteException;
 
 }

@@ -198,4 +198,33 @@ public class AppChat {
 
 	}
 
+	public ArrayList<Utilisateur> chercherUtilisateur(String text) {
+		ArrayList<Utilisateur> res = new ArrayList<Utilisateur>();
+		String textToLowerCase = text.toLowerCase();
+		// On essaie deja de voir si l'utilisateur existe
+		try {
+			res.add(AppChat.getUtilisateurList().getUtilisateur(text));
+		} catch (UtilisateurInexistantException e) {
+		}
+
+		Iterator<Utilisateur> it = AppChat.utilisateurList.getUtilisateurList().iterator();
+		Utilisateur u;
+		String nom;
+		while (it.hasNext()) {
+			u = it.next();
+			if (res.contains(u) == false) {
+				nom = u.getNom().toLowerCase();
+				if (nom.equals(textToLowerCase)) {
+					res.add(u);
+				} else if (nom.contains(textToLowerCase)) {
+					res.add(u);
+				} else if (textToLowerCase.contains(nom)) {
+					res.add(u);
+				}
+			}
+		}
+
+		return res;
+	}
+
 }

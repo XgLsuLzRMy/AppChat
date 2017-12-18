@@ -26,6 +26,7 @@ public class FenetreChat extends JFrame {
 	private JPanel chatPanel;
 	private JScrollPane panneauMessages;
 	private JScrollPane panneauUtilisateurConnectes;
+	private PanneauUtilisateurs panelUtilisateurConnectes;
 	private TextFieldPanel textFieldPanel;
 	private HashTagPanel hashTagPanel;
 
@@ -56,6 +57,8 @@ public class FenetreChat extends JFrame {
 		this.panneauUtilisateurConnectes.setColumnHeaderView(new JLabel("Utilisateurs connectes"));
 		this.listUtilisateursConnectes.addMouseListener(new ClicDroitListener(this.uc));
 
+		this.panelUtilisateurConnectes = new PanneauUtilisateurs(panneauUtilisateurConnectes, this.uc);
+
 		this.listeHashTags = new JList<String>();
 		this.listeHashTagsRecents = new JList<String>();
 		this.hashTagPanel = new HashTagPanel(this.listeHashTags, listeHashTagsRecents, this.uc);
@@ -64,7 +67,7 @@ public class FenetreChat extends JFrame {
 
 		this.chatPanel.add(this.hashTagPanel, BorderLayout.WEST);
 		this.chatPanel.add(this.panneauMessages, BorderLayout.CENTER);
-		this.chatPanel.add(this.panneauUtilisateurConnectes, BorderLayout.EAST);
+		this.chatPanel.add(this.panelUtilisateurConnectes, BorderLayout.EAST);
 		this.chatPanel.add(textFieldPanel, BorderLayout.SOUTH);
 
 		this.setLocationRelativeTo(null);
