@@ -31,6 +31,33 @@ public class UserConsoleDistante {
 
 	}
 
+	public boolean creerCompte(String nom, String mdp) {
+		System.out.println("Tentative de creation de compte " + nom + " " + mdp + "... \n");
+
+		String ipaddress = null;
+		try {
+			ipaddress = InetAddress.getLocalHost().toString();
+			ipaddress = ipaddress.substring(ipaddress.indexOf("/") + 1, ipaddress.length());
+			System.out.println("Adresse ip locale du client : " + ipaddress);
+
+			try {
+				if (UserConsoleDistante.appDistant.utilisateurDejaExistant(nom) == false) {
+					UserConsoleDistante.appDistant.ajouterUtilisateur(nom, mdp, ipaddress);
+					System.out.println("Creation compte OK");
+					return true;
+				}
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+
+		} catch (UnknownHostException e1) {
+			e1.printStackTrace();
+		}
+
+		return false;
+
+	}
+
 	public void login(String nom, String mdp) {
 		System.out.println("Tentative de login " + nom + " " + mdp);
 		Utilisateur u = null;
@@ -40,19 +67,20 @@ public class UserConsoleDistante {
 			ipaddress = InetAddress.getLocalHost().toString();
 			ipaddress = ipaddress.substring(ipaddress.indexOf("/") + 1, ipaddress.length());
 			System.out.println("Adresse ip locale du client : " + ipaddress);
+
+			try {
+				if (UserConsoleDistante.appDistant.utilisateurDejaExistant(nom)) {
+					u = UserConsoleDistante.appDistant.login(nom, mdp, ipaddress);
+				} else {
+					// UserConsoleDistante.appDistant.ajouterUtilisateur(nom, mdp, ipaddress);
+					// u = UserConsoleDistante.appDistant.login(nom, mdp, ipaddress);
+				}
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+
 		} catch (UnknownHostException e1) {
 			e1.printStackTrace();
-		}
-
-		try {
-			if (UserConsoleDistante.appDistant.utilisateurDejaExistant(nom)) {
-				u = UserConsoleDistante.appDistant.login(nom, mdp, ipaddress);
-			} else {
-				UserConsoleDistante.appDistant.ajouterUtilisateur(nom, mdp, ipaddress);
-				u = UserConsoleDistante.appDistant.login(nom, mdp, ipaddress);
-			}
-		} catch (RemoteException e) {
-			e.printStackTrace();
 		}
 
 		if (u != null) {

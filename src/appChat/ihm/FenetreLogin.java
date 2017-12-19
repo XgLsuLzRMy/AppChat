@@ -10,7 +10,8 @@ public class FenetreLogin extends JFrame {
 
 	private JPanel panneau;
 	private PanelLogin panelLogin;
-	private FenetreAcceuil fenetreAcceuil;
+	private PanelAcceuil panelAcceuil;
+	private PanelCreationCompte panelCreationCompte;
 	private UserConsoleDistante uc;
 
 	public FenetreLogin(UserConsoleDistante uc) {
@@ -19,10 +20,11 @@ public class FenetreLogin extends JFrame {
 
 		this.panneau = (JPanel) this.getContentPane();
 
-		this.fenetreAcceuil = new FenetreAcceuil(this);
+		this.panelAcceuil = new PanelAcceuil(this);
+		this.panelCreationCompte = new PanelCreationCompte(this, this.uc);
 		this.panelLogin = new PanelLogin(this.uc);
 
-		this.panneau.add(fenetreAcceuil);
+		this.panneau.add(panelAcceuil);
 
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -38,7 +40,7 @@ public class FenetreLogin extends JFrame {
 
 	public void changerPanneauVersCreerCompte() {
 		this.panneau.removeAll();
-		// TODO Ajouter un panneau creer compte
+		this.panneau.add(this.panelCreationCompte);
 		this.revalidate();
 		this.repaint();
 	}

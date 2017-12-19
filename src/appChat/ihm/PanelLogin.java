@@ -16,8 +16,8 @@ public class PanelLogin extends JPanel {
 
 	public PanelLogin(UserConsoleDistante uc) {
 
-		this.texteNom = new JTextField(15);
-		this.texteMdp = new JTextField(15);
+		this.texteNom = new JTextField(20);
+		this.texteMdp = new JTextField(20);
 
 		LoginMdpListener loginMdpListener = new LoginMdpListener(this.texteNom, this.texteMdp, uc);
 

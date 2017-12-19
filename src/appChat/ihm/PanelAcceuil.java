@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class FenetreAcceuil extends JPanel implements ActionListener {
+public class PanelAcceuil extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 2886278625120923051L;
 
@@ -15,7 +15,7 @@ public class FenetreAcceuil extends JPanel implements ActionListener {
 	protected JButton button2;
 	protected FenetreLogin fenetreLogin;
 
-	public FenetreAcceuil(FenetreLogin fenetreLogin) {
+	public PanelAcceuil(FenetreLogin fenetreLogin) {
 		this.fenetreLogin = fenetreLogin;
 
 		this.button1 = new JButton("Se Connecter");
