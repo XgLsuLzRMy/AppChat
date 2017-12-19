@@ -21,12 +21,21 @@ public class CheckUtilisateursConnectes extends Thread {
 			int i = 0;
 			while (i < AppRMIServeurImpl.utilisateursConnectes.length()) {
 				u = AppRMIServeurImpl.utilisateursConnectes.get(i);
+				if (u == null) {
+					System.out.println(AppRMIServeurImpl.utilisateursConnectes.length() + "\n"
+							+ AppRMIServeurImpl.utilisateursConnectes + "\n");
+				}
 				i++;
 				try {
-					UtilisateurServeur us = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(u.getNom());
+					if (u.getRegistry() == null) {
+						System.out.println("Registre null");
+					}
+					UtilisateurServeur us = (UtilisateurServeur) u.getRegistry().lookup(u.getNom());
+					// UtilisateurServeur us = (UtilisateurServeur)
+					// AppRMIServeurImpl.registry.lookup(u.getNom());
 					try {
 						us.ping();
-						//us.refreshAffichageListeutilisateursConnectes();
+						// us.refreshAffichageListeutilisateursConnectes();
 						// System.out.println(u.getNom() + " est connecte");
 					} catch (Exception e) {
 						// System.out.println("changement");
@@ -66,7 +75,7 @@ public class CheckUtilisateursConnectes extends Thread {
 
 			synchronized (this) {
 				try {
-					this.wait(1000);
+					this.wait(700);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

@@ -13,12 +13,12 @@ public class AutoRefreshFenetreChatThread extends Thread {
 	@Override
 	public void run() {
 		while (true) {
-			
+
 			this.fenetre.refresh();
-			
+
 			synchronized (this) {
 				try {
-					this.wait(1000);
+					this.wait(700);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}

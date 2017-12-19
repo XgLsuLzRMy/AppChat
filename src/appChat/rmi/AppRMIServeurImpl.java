@@ -1,6 +1,8 @@
 package appChat.rmi;
 
 import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -65,7 +67,9 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 				AppRMIServeurImpl.utilisateursConnectes.getUtilisateur(u.getNom()); // verification que
 																					// l'utilisateur est
 																					// connecte
-				uDistant = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(u.getNom());
+				// uDistant = (UtilisateurServeur)
+				// AppRMIServeurImpl.registry.lookup(u.getNom());
+				uDistant = (UtilisateurServeur) u.getRegistry().lookup(u.getNom());
 				uDistant.recevoirMessage(m);
 			} catch (UtilisateurInexistantException e) {
 
@@ -79,10 +83,10 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	}
 
 	@Override
-	public void ajouterUtilisateur(String nom, String mdp) throws RemoteException {
-		System.out.print("Ajout d'un nouvel utilisateur " + nom + "... ");
+	public void ajouterUtilisateur(String nom, String mdp, String IPAddress) throws RemoteException {
+		System.out.print("Ajout d'un nouvel utilisateur " + nom + "/" + IPAddress + "... ");
 		if (!this.utilisateurDejaExistant(nom)) {
-			this.app.creerCompte(nom, mdp);
+			this.app.creerCompte(nom, mdp, IPAddress);
 			System.out.println("OK");
 		} else {
 			System.out.println("deja existant");
@@ -101,13 +105,15 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	}
 
 	@Override
-	public Utilisateur login(String nom, String mdp) throws RemoteException {
-		System.out.print("Tentative de login de " + nom + "... ");
+	public Utilisateur login(String nom, String mdp, String IPAddress) throws RemoteException {
+		System.out.print("Tentative de login de " + nom + " | " + IPAddress + "... ");
 		if (this.app.verifierMdp(nom, mdp)) {
 			System.out.println("OK");
 			Utilisateur u = null;
 			try {
 				u = AppChat.getUtilisateurList().getUtilisateur(nom);
+				u.setIPAddress(IPAddress);
+				u.resetRegistry();
 				AppRMIServeurImpl.utilisateursConnectes.ajouterUtilisateur(u);
 
 				return u;
@@ -147,10 +153,12 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 				u1.follow(u2);
 				System.out.println("OK");
 				try {
-					AppRMIServeurImpl.utilisateursConnectes.getUtilisateur(nom2);
+					Utilisateur u = AppRMIServeurImpl.utilisateursConnectes.getUtilisateur(nom2);
 					System.out.print("Notification de " + nom2 + "... ");
 					try {
-						UtilisateurServeur us = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(nom2);
+						// UtilisateurServeur us = (UtilisateurServeur)
+						// AppRMIServeurImpl.registry.lookup(nom2);
+						UtilisateurServeur us = (UtilisateurServeur) u.getRegistry().lookup(nom2);
 						System.out.println("OK");
 						us.nouveauFollower(u1);
 
@@ -206,14 +214,25 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	public static void main(String[] args) {
 		try {
 			Registry registry = null;
+			try {
+				String ipaddress = InetAddress.getLocalHost().toString();
+				ipaddress = ipaddress.substring(ipaddress.indexOf("/") + 1, ipaddress.length());
+				System.out.println("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nAdresse ip locale du serveur : "
+						+ ipaddress + "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
 			System.out.print("Recuperation du registre RMI... ");
 			try {
+				System.out.println("1");
 				registry = LocateRegistry.createRegistry(1099);
 				System.out.println("Registre cree !");
 			} catch (ExportException ex) {
+				System.out.println("2");
 				registry = LocateRegistry.getRegistry(1099);
 				System.out.println("Registre recupere !");
 			} catch (RemoteException ex) {
+				System.out.println("3");
 				ex.printStackTrace();
 			}
 			System.out.print("Instanciation du AppRMIServeur... ");
@@ -248,10 +267,12 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	public void ajouterHashTag(String nom, String hashTag) throws RemoteException {
 		try {
 			Utilisateur u = this.getUtilisateur(nom);
-			this.getUtilisateur(nom).ajouterHashTag(hashTag);
+			u.ajouterHashTag(hashTag);
 			if (this.getListeUtilisateursConnectes().contains(u)) {
 				try {
-					UtilisateurServeur us = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(nom);
+					// UtilisateurServeur us = (UtilisateurServeur)
+					// AppRMIServeurImpl.registry.lookup(nom);
+					UtilisateurServeur us = (UtilisateurServeur) u.getRegistry().lookup(nom);
 					us.ajouterHashTag(hashTag);
 				} catch (NotBoundException e) {
 					e.printStackTrace();
@@ -269,7 +290,9 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 			u.retirerHashTag(hashTag);
 			if (this.getListeUtilisateursConnectes().contains(u)) {
 				try {
-					UtilisateurServeur us = (UtilisateurServeur) AppRMIServeurImpl.registry.lookup(nom);
+					// UtilisateurServeur us = (UtilisateurServeur)
+					// AppRMIServeurImpl.registry.lookup(nom);
+					UtilisateurServeur us = (UtilisateurServeur) u.getRegistry().lookup(nom);
 					us.retirerHashTag(hashTag);
 				} catch (NotBoundException e) {
 					e.printStackTrace();

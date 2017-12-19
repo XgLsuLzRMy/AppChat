@@ -59,13 +59,13 @@ public class Message implements Serializable {
 			this.hashTags.add(hashtag);
 		}
 	}
-	
+
 	public void retirerHashTag(String hashtag) {
-		if(this.hashTags.contains(hashtag)) {
+		if (this.hashTags.contains(hashtag)) {
 			this.hashTags.remove(hashtag);
 		}
 	}
-	
+
 	public void setHashTags(ArrayList<String> hashtags) {
 		this.hashTags = hashtags;
 	}

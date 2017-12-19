@@ -1,5 +1,7 @@
 package appChat.rmi;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -32,12 +34,22 @@ public class UserConsoleDistante {
 	public void login(String nom, String mdp) {
 		System.out.println("Tentative de login " + nom + " " + mdp);
 		Utilisateur u = null;
+
+		String ipaddress = null;
+		try {
+			ipaddress = InetAddress.getLocalHost().toString();
+			ipaddress = ipaddress.substring(ipaddress.indexOf("/") + 1, ipaddress.length());
+			System.out.println("Adresse ip locale du client : " + ipaddress);
+		} catch (UnknownHostException e1) {
+			e1.printStackTrace();
+		}
+
 		try {
 			if (UserConsoleDistante.appDistant.utilisateurDejaExistant(nom)) {
-				u = UserConsoleDistante.appDistant.login(nom, mdp);
+				u = UserConsoleDistante.appDistant.login(nom, mdp, ipaddress);
 			} else {
-				UserConsoleDistante.appDistant.ajouterUtilisateur(nom, mdp);
-				u = UserConsoleDistante.appDistant.login(nom, mdp);
+				UserConsoleDistante.appDistant.ajouterUtilisateur(nom, mdp, ipaddress);
+				u = UserConsoleDistante.appDistant.login(nom, mdp, ipaddress);
 			}
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -189,6 +201,26 @@ public class UserConsoleDistante {
 		return UserConsoleDistante.appDistant.getHashTagsRecents();
 	}
 
+	public void ajouterHashTag(String hashTag) {
+		try {
+			UserConsoleDistante.appDistant.ajouterHashTag(this.getUtilisateur().getNom(), hashTag);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void retirerHashTag(String hashTag) {
+		try {
+			UserConsoleDistante.appDistant.retirerHashTag(this.getUtilisateur().getNom(), hashTag);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public ArrayList<Utilisateur> chercherUtilisateur(String text) throws RemoteException {
+		return UserConsoleDistante.appDistant.chercherUtilisateur(text);
+	}
+
 	public static void main(String[] args) {
 		Registry registry = null;
 		AppRMIServeur a = null;
@@ -212,26 +244,6 @@ public class UserConsoleDistante {
 		} catch (NotBoundException ex) {
 			ex.printStackTrace();
 		}
-	}
-
-	public void ajouterHashTag(String hashTag) {
-		try {
-			UserConsoleDistante.appDistant.ajouterHashTag(this.getUtilisateur().getNom(), hashTag);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void retirerHashTag(String hashTag) {
-		try {
-			UserConsoleDistante.appDistant.retirerHashTag(this.getUtilisateur().getNom(), hashTag);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public ArrayList<Utilisateur> chercherUtilisateur(String text) throws RemoteException {
-		return UserConsoleDistante.appDistant.chercherUtilisateur(text);
 	}
 
 }

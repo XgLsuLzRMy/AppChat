@@ -21,7 +21,7 @@ public class UtilisateurServeurImpl extends UnicastRemoteObject implements Utili
 		this.fenetre = new FenetreChat(this, uc);
 		this.fenetre.pack();
 		this.fenetre.setVisible(true);
-		
+
 		AutoRefreshFenetreChatThread t = new AutoRefreshFenetreChatThread(this.fenetre);
 		t.start();
 	}
@@ -39,17 +39,17 @@ public class UtilisateurServeurImpl extends UnicastRemoteObject implements Utili
 		// this.utilisateur.ajouterFollower(follower); // deja fait dans
 		// Utilisateur>follow
 	}
-	
+
 	@Override
-	public void ajouterHashTag(String hashtag) throws RemoteException{
+	public void ajouterHashTag(String hashtag) throws RemoteException {
 		this.utilisateur.ajouterHashTag(hashtag);
 	}
-	
+
 	@Override
-	public void retirerHashTag(String hashtag) throws RemoteException{
+	public void retirerHashTag(String hashtag) throws RemoteException {
 		this.utilisateur.retirerHashTag(hashtag);
 	}
-	
+
 	@Override
 	public Utilisateur getUtilisateur() throws RemoteException {
 		return this.utilisateur;

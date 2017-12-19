@@ -13,28 +13,28 @@ import javax.swing.SwingUtilities;
 import appChat.rmi.UserConsoleDistante;
 
 public class ClicDroitListenerHashTags implements MouseListener {
-	
+
 	private JPopupMenu popup;
 	private JList<String> list;
 	private String selectedHashTag;
 	private PopupMenuListenerHashTags menuListener;
-	
+
 	public ClicDroitListenerHashTags(UserConsoleDistante uc) {
 		this.popup = new JPopupMenu();
-		this.list = new  JList<String>();
+		this.list = new JList<String>();
 		this.selectedHashTag = null;
-		
+
 		this.menuListener = new PopupMenuListenerHashTags(uc, this.selectedHashTag);
-		
+
 		JMenuItem item = new JMenuItem("s'abonner");
 		item.addActionListener(menuListener);
 		this.popup.add(item);
 		item = new JMenuItem("se desabonner");
 		item.addActionListener(menuListener);
 		this.popup.add(item);
-		
+
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
@@ -76,7 +76,7 @@ public class ClicDroitListenerHashTags implements MouseListener {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	public class PopupMenuListenerHashTags implements ActionListener {
 
 		private UserConsoleDistante uc;
@@ -117,5 +117,5 @@ public class ClicDroitListenerHashTags implements MouseListener {
 		}
 
 	}
-	
+
 }

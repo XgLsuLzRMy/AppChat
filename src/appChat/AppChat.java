@@ -110,7 +110,13 @@ public class AppChat {
 	}
 
 	public void creerCompte(String nom, String mdp) {
+		System.out.println("Attention creation compte sans IP");
 		AppChat.ajouterUtilisateur(new Utilisateur(nom));
+		AppChat.ajouterPassword(nom, mdp);
+	}
+
+	public void creerCompte(String nom, String mdp, String IPAdress) {
+		AppChat.ajouterUtilisateur(new Utilisateur(nom, IPAdress));
 		AppChat.ajouterPassword(nom, mdp);
 	}
 
@@ -198,6 +204,15 @@ public class AppChat {
 
 	}
 
+	/**
+	 * Permet de chercher un utilisateur a partir de son nom. La fonction cherche un
+	 * utilisateur possedant exactement ce nom mais aussi independemment de la casse
+	 * ou si le nom est contenu dans le nom d'un autre utilisateur ou inversement
+	 * 
+	 * @param text
+	 *            Le nom de l'utilisateur a chercher
+	 * @return ArrayList des utilisateurs dont le nom correspond a la recherche
+	 */
 	public ArrayList<Utilisateur> chercherUtilisateur(String text) {
 		ArrayList<Utilisateur> res = new ArrayList<Utilisateur>();
 		String textToLowerCase = text.toLowerCase();

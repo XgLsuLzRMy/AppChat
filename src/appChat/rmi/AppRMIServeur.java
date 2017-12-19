@@ -15,18 +15,18 @@ public interface AppRMIServeur extends Remote {
 	/**
 	 * 
 	 * @param nom
-	 *            le nom de l'utilisateur ﾃ� ajouter dans la liste des utilisateurs
+	 *            le nom de l'utilisateur a ajouter dans la liste des utilisateurs
 	 * @param mdp
-	 *            le mot de passe correspondant ﾃ� cet utilisateur
+	 *            le mot de passe correspondant a cet utilisateur
 	 */
-	public void ajouterUtilisateur(String nom, String mdp) throws RemoteException;
+	public void ajouterUtilisateur(String nom, String mdp, String IPAddress) throws RemoteException;
 
 	/**
 	 * 
 	 * @param nom
-	 *            le nom de l'utilisateur ﾃ� chercher dans la liste des utilisateurs
+	 *            le nom de l'utilisateur a chercher dans la liste des utilisateurs
 	 *            inscrits (UtilisateurList dans AppChat)
-	 * @return true si l'utilisateur possﾃｨde dﾃｩjﾃ� un compte, false sinon
+	 * @return true si l'utilisateur possede deja un compte, false sinon
 	 */
 	public boolean utilisateurDejaExistant(String nom) throws RemoteException;
 
@@ -39,13 +39,13 @@ public interface AppRMIServeur extends Remote {
 	 * @return les informations du compte sous la forme d'une variable Utilisateur
 	 *         si le mdp correspond au nom, sinon renvoie null
 	 */
-	public Utilisateur login(String nom, String mdp) throws RemoteException;
+	public Utilisateur login(String nom, String mdp, String IPAdress) throws RemoteException;
 
 	/**
 	 * 
 	 * @param nom
-	 *            le nom de l'utilisateur souhaitﾃｩ
-	 * @return l'utilisateur recherchﾃｩ
+	 *            le nom de l'utilisateur souhaite
+	 * @return l'utilisateur recherche
 	 * @throws UtilisateurInexistantException
 	 */
 	public Utilisateur getUtilisateur(String nom) throws RemoteException, UtilisateurInexistantException;

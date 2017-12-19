@@ -20,7 +20,7 @@ public class SauvegardeReguliere extends Thread {
 
 			synchronized (this) {
 				try {
-					this.wait(5000);
+					this.wait(3000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
