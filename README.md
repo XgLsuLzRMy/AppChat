@@ -3,7 +3,7 @@ Projet Semestriel Java GM4
 
 Appchat est un réseau social dont le fonctionnement est similaire à Twitter.
 
-lien gdoc: https://docs.google.com/document/d/1XGCc-b-qWCO5AASgBPU-eqwg_F_sP3AY8N0IMXrYHCA/edit?usp=sharing;
+ <a href="https://docs.google.com/document/d/1XGCc-b-qWCO5AASgBPU-eqwg_F_sP3AY8N0IMXrYHCA/edit?usp=sharing">lien gdoc</a>;
 
 Archive jar à importer dans Eclipse : <a href="https://raw.githubusercontent.com/XgLsuLzRMy/AppChat/master/AppChat.jar">AppChat.jar</a>
 
