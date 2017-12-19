@@ -21,6 +21,7 @@ public class Utilisateur implements Serializable {
 	private transient Registry registry;
 
 	public Utilisateur(String nom) {
+		System.out.println("\nAttention : creation d'un utilisateur sans IPAddress\n");
 		this.nom = nom;
 		this.listFollower = new UtilisateurList();
 		this.listFollow = new UtilisateurList();
