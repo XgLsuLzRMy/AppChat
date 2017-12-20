@@ -17,7 +17,7 @@ import appChat.UtilisateurList;
 public class AppChat {
 
 	private static UtilisateurList utilisateurList = new UtilisateurList();
-	private static Hashtable<String, String> passwordTable = new Hashtable<String, String>();
+	private static Hashtable<String, Integer> passwordTable = new Hashtable<String, Integer>();
 
 	private LinkedList<String> hashTagsRecents;
 	private int nbMaxHashTagsRecents = 5;
@@ -43,7 +43,7 @@ public class AppChat {
 					// System.out.print(fichierHashTable + "... ");
 					fis = new FileInputStream(fichierHashTable);
 					ois = new ObjectInputStream(fis);
-					AppChat.passwordTable = (Hashtable<String, String>) ois.readObject();
+					AppChat.passwordTable = (Hashtable<String, Integer>) ois.readObject();
 					// System.out.println("OK");
 
 				} catch (ClassNotFoundException e) {
@@ -129,11 +129,11 @@ public class AppChat {
 	 *            le mot de passe à stocker
 	 */
 	private static void ajouterPassword(String nom, String mdp) {
-		AppChat.passwordTable.put(nom, mdp);
+		AppChat.passwordTable.put(nom, mdp.hashCode());
 	}
 
 	public boolean verifierMdp(String nom, String mdp) {
-		return AppChat.passwordTable.get(nom).equals(mdp);
+		return AppChat.passwordTable.get(nom).equals(mdp.hashCode());
 	}
 
 	public void supprimerCompte(Utilisateur u) {
