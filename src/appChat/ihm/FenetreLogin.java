@@ -44,5 +44,12 @@ public class FenetreLogin extends JFrame {
 		this.revalidate();
 		this.repaint();
 	}
-
+	
+	public void changerPanneauVersAcceuil() {
+		this.panneau.removeAll();
+		this.panneau.add(this.panelCreationCompte);
+		this.revalidate();
+		this.repaint();
+	}
+	
 }

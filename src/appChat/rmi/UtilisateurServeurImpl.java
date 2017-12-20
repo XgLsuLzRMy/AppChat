@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import appChat.Message;
 import appChat.Utilisateur;
+import appChat.UtilisateurInexistantException;
 import appChat.UtilisateurList;
 import appChat.ihm.FenetreChat;
 
@@ -52,6 +53,11 @@ public class UtilisateurServeurImpl extends UnicastRemoteObject implements Utili
 
 	@Override
 	public Utilisateur getUtilisateur() throws RemoteException {
+		try {
+			this.utilisateur = UserConsoleDistante.appDistant.getUtilisateur(this.utilisateur.getNom());
+		} catch (UtilisateurInexistantException e) {
+			e.printStackTrace();
+		}
 		return this.utilisateur;
 	}
 

@@ -93,7 +93,6 @@ public class FenetreChat extends JFrame {
 			String[] hashtagTab = new String[listeHashTags.size()];
 			listeHashTags.toArray(hashtagTab);
 			this.listeHashTags.setListData(hashtagTab);
-
 			LinkedList<String> listeHashTagsRecents = this.uc.getHashTagsRecents();
 			hashtagTab = new String[listeHashTagsRecents.size()];
 			listeHashTagsRecents.toArray(hashtagTab);

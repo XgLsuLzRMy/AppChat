@@ -31,6 +31,8 @@ public class PanelLogin extends JPanel {
 		this.add(new JLabel("Mot de passe : "));
 		this.add(this.texteMdp);
 
+		this.texteNom.requestFocus();
+
 	}
 
 }

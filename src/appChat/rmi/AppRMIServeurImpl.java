@@ -242,18 +242,18 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 			System.out.print("Enregistrement de l'application dans le registre... ");
 			registry.rebind("App", a);
 			System.out.println("OK");
-
+/*
 			System.out.print("Instanciation de la classe qui check les utilisateurs connectes... ");
 			CheckUtilisateursConnectes t = new CheckUtilisateursConnectes();
 			System.out.println("OK");
-			System.out.print("Lancement de la thread... ");
+			System.out.print("Lancement du check des utilisateurs connectes... ");
 			t.start();
-			System.out.println("OK");
+			System.out.println("OK");*/
 
 			System.out.print("Instanciation de la classe qui sauvegarde regulierement... ");
 			SauvegardeReguliere t2 = new SauvegardeReguliere(a.getApp());
 			System.out.println("OK");
-			System.out.print("Lancement de la thread... ");
+			System.out.print("Lancement de la sauvegarde reguliere... ");
 			t2.start();
 			System.out.println("OK");
 
