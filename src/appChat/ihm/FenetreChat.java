@@ -1,6 +1,6 @@
 package appChat.ihm;
 
-import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -10,8 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import appChat.Message;
-import appChat.MessageListAbstract;
 import appChat.Utilisateur;
 import appChat.UtilisateurList;
 import appChat.rmi.UserConsoleDistante;
@@ -21,36 +19,35 @@ public class FenetreChat extends JFrame {
 
 	private static final long serialVersionUID = 8976560413665224423L;
 
-	private UtilisateurServeurImpl utilisateurServeur;
 	private UserConsoleDistante uc;
-	private JPanel chatPanel;
-	private JScrollPane panneauMessages;
+	private JPanel panneau;
+	private PanelChat panelChat;
 	private JScrollPane panneauUtilisateurConnectes;
 	private PanneauUtilisateurs panelUtilisateurConnectes;
-	private TextFieldPanel textFieldPanel;
+	
 	private HashTagPanel hashTagPanel;
 
 	private JList<Utilisateur> listUtilisateursConnectes;
-	private JList<Message> listeMessagesRecents;
+	
 	private JList<String> listeHashTags;
 	private JList<String> listeHashTagsRecents;
 
 	public FenetreChat(UtilisateurServeurImpl utilisateurServeur, UserConsoleDistante uc) {
 		super("AppChat");
-		this.utilisateurServeur = utilisateurServeur;
 		this.uc = uc;
 		try {
 			super.setTitle("AppChat " + utilisateurServeur.getUtilisateur().getNom());
 		} catch (RemoteException e1) {
 		}
+		
+		this.panelChat = new PanelChat(utilisateurServeur, uc);
+		
 
-		this.textFieldPanel = new TextFieldPanel(uc);
+		this.panneau = (JPanel) this.getContentPane();
+		//this.chatPanel.setLayout(new BorderLayout());
+		this.panneau.setLayout(new GridLayout(1,3));
 
-		this.chatPanel = (JPanel) this.getContentPane();
-		this.chatPanel.setLayout(new BorderLayout());
-
-		this.listeMessagesRecents = new JList<Message>();
-		this.panneauMessages = new JScrollPane(this.listeMessagesRecents);
+		
 
 		this.listUtilisateursConnectes = new JList<Utilisateur>();
 		this.panneauUtilisateurConnectes = new JScrollPane(this.listUtilisateursConnectes);
@@ -65,13 +62,26 @@ public class FenetreChat extends JFrame {
 
 		this.refresh();
 
-		this.chatPanel.add(this.hashTagPanel, BorderLayout.WEST);
+		/*this.chatPanel.add(this.hashTagPanel, BorderLayout.WEST);
 		this.chatPanel.add(this.panneauMessages, BorderLayout.CENTER);
 		this.chatPanel.add(this.panelUtilisateurConnectes, BorderLayout.EAST);
-		this.chatPanel.add(textFieldPanel, BorderLayout.SOUTH);
+		this.chatPanel.add(textFieldPanel, BorderLayout.SOUTH);*/
+		/*
+		 * |------------------------------
+		 * |		|		|			 |
+		 * |hashtags| chat	|Utilisateurs|
+		 * |		|		|			 |
+		 * |------------------------------
+		*/
+		this.panneau.add(this.hashTagPanel);
+		this.panneau.add(this.panelChat);
+		this.panneau.add(this.panelUtilisateurConnectes);
+		
+		this.panelChat.requestFocus();
 
-		this.setLocationRelativeTo(null);
+		//this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
 
 	}
 
@@ -117,15 +127,7 @@ public class FenetreChat extends JFrame {
 	}
 
 	public void refreshMessages() {
-		try {
-			MessageListAbstract messageListe = this.utilisateurServeur.getUtilisateur().getListMessagesRecents();
-			Message[] tab = new Message[messageListe.getNbMessage()];
-			messageListe.getMessageList().toArray(tab);
-			this.listeMessagesRecents.setListData(tab);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		this.panelChat.refreshMessages();
 	}
 
 }

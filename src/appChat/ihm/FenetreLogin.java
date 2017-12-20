@@ -22,7 +22,7 @@ public class FenetreLogin extends JFrame {
 
 		this.panelAcceuil = new PanelAcceuil(this);
 		this.panelCreationCompte = new PanelCreationCompte(this, this.uc);
-		this.panelLogin = new PanelLogin(this.uc);
+		this.panelLogin = new PanelLogin(this.uc, this);
 
 		this.panneau.add(panelAcceuil);
 
@@ -47,7 +47,7 @@ public class FenetreLogin extends JFrame {
 	
 	public void changerPanneauVersAcceuil() {
 		this.panneau.removeAll();
-		this.panneau.add(this.panelCreationCompte);
+		this.panneau.add(this.panelAcceuil);
 		this.revalidate();
 		this.repaint();
 	}
