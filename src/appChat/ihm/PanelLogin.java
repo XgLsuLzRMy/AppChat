@@ -22,8 +22,9 @@ public class PanelLogin extends JPanel {
 		this.texteNom = new JTextField(20);
 		this.texteMdp = new JTextField(20);
 		this.boutonRetour = new JButton("Retour");
-		
-		LoginMdpListener loginMdpListener = new LoginMdpListener(this.texteNom, this.texteMdp, uc, this.boutonRetour, this.fenetreLogin);
+
+		LoginMdpListener loginMdpListener = new LoginMdpListener(this.texteNom, this.texteMdp, uc, this.boutonRetour,
+				this.fenetreLogin);
 
 		this.texteNom.addActionListener(loginMdpListener);
 		this.texteMdp.addActionListener(loginMdpListener);

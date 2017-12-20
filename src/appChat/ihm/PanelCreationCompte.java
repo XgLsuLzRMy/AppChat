@@ -45,20 +45,20 @@ public class PanelCreationCompte extends JPanel implements ActionListener {
 		this.add(new JLabel("Repeter : "));
 		this.add(this.texteMdpRepetition);
 		this.add(boutonRetour);
-		
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 		if (e.getSource() == this.boutonRetour) {
 			this.fenetreLogin.changerPanneauVersAcceuil();
 		} else {
-		
+
 			String nom = this.texteNom.getText();
 			String mdp = this.texteMdp.getText();
 			String mdpRepetition = this.texteMdpRepetition.getText();
-	
+
 			if (!(nom.equals("") || mdp.equals("") || mdpRepetition.equals(""))) {
 				if (mdp.equals(mdpRepetition)) {
 					int indexEspace = nom.indexOf(' ');

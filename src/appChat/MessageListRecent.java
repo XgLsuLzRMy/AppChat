@@ -9,7 +9,7 @@ public class MessageListRecent extends MessageListAbstract implements Serializab
 
 	public MessageListRecent() {
 		super();
-		this.nbMaxMessage = 5;
+		this.nbMaxMessage = 20;
 	}
 
 	// Renvoie le message dépilé pour l'ajouter à la liste de tous les messages

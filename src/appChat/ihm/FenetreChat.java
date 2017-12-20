@@ -24,11 +24,11 @@ public class FenetreChat extends JFrame {
 	private PanelChat panelChat;
 	private JScrollPane panneauUtilisateurConnectes;
 	private PanneauUtilisateurs panelUtilisateurConnectes;
-	
+
 	private HashTagPanel hashTagPanel;
 
 	private JList<Utilisateur> listUtilisateursConnectes;
-	
+
 	private JList<String> listeHashTags;
 	private JList<String> listeHashTagsRecents;
 
@@ -39,15 +39,11 @@ public class FenetreChat extends JFrame {
 			super.setTitle("AppChat " + utilisateurServeur.getUtilisateur().getNom());
 		} catch (RemoteException e1) {
 		}
-		
+
 		this.panelChat = new PanelChat(utilisateurServeur, uc);
-		
 
 		this.panneau = (JPanel) this.getContentPane();
-		//this.chatPanel.setLayout(new BorderLayout());
-		this.panneau.setLayout(new GridLayout(1,3));
-
-		
+		this.panneau.setLayout(new GridLayout(1, 3));
 
 		this.listUtilisateursConnectes = new JList<Utilisateur>();
 		this.panneauUtilisateurConnectes = new JScrollPane(this.listUtilisateursConnectes);
@@ -62,26 +58,20 @@ public class FenetreChat extends JFrame {
 
 		this.refresh();
 
-		/*this.chatPanel.add(this.hashTagPanel, BorderLayout.WEST);
-		this.chatPanel.add(this.panneauMessages, BorderLayout.CENTER);
-		this.chatPanel.add(this.panelUtilisateurConnectes, BorderLayout.EAST);
-		this.chatPanel.add(textFieldPanel, BorderLayout.SOUTH);*/
-		/*
-		 * |------------------------------
+		/* |------------------------------
 		 * |		|		|			 |
 		 * |hashtags| chat	|Utilisateurs|
 		 * |		|		|			 |
 		 * |------------------------------
-		*/
+		 */
 		this.panneau.add(this.hashTagPanel);
 		this.panneau.add(this.panelChat);
 		this.panneau.add(this.panelUtilisateurConnectes);
-		
+
 		this.panelChat.requestFocus();
 
-		//this.setLocationRelativeTo(null);
+		// this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
 
 	}
 
