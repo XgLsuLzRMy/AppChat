@@ -18,22 +18,27 @@ public class ClicDroitListener implements MouseListener {
 	private Utilisateur selectedUser;
 	private PopupMenuListener menuListener;
 
-	public ClicDroitListener(UserConsoleDistante uc) {
-
+	public ClicDroitListener(UserConsoleDistante uc, PanelChat panelChat) {
 		this.popup = new JPopupMenu();
 		this.list = new JList<Utilisateur>();
 		this.selectedUser = null;
 
-		this.menuListener = new PopupMenuListener(uc, this.selectedUser);
+		this.menuListener = new PopupMenuListener(uc, this.selectedUser, panelChat);
 
 		JMenuItem item = new JMenuItem("follow");
 		item.addActionListener(menuListener);
 		this.popup.add(item);
+		
 		item = new JMenuItem("unfollow");
+		item.addActionListener(menuListener);
+		this.popup.add(item);
+		
+		item = new JMenuItem("afficher les messages");
 		item.addActionListener(menuListener);
 		this.popup.add(item);
 	}
 
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void mousePressed(MouseEvent e) {

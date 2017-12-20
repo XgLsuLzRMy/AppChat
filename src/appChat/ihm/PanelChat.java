@@ -31,6 +31,8 @@ public class PanelChat extends JPanel implements ActionListener{
 	private char refreshType;
 
 	public PanelChat(UtilisateurServeurImpl utilisateurServeur, UserConsoleDistante uc) {
+		super();
+		
 		this.utilisateurServeur = utilisateurServeur;
 		
 		this.refreshType = 1;
@@ -105,16 +107,29 @@ public class PanelChat extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		if(arg0.getSource() == this.boutonAffichageCompletMessages) {
 			if(this.refreshType == 2) {
-				System.out.println("switch");
 				this.boutonAffichageCompletMessages.setText("Afficher l'historique des messages");
 				this.refreshType = 1;
-			}else {
-				System.out.println("switch");
+			}else if(this.refreshType == 1){
 				this.boutonAffichageCompletMessages.setText("Afficher les messages recents");
 				this.refreshType = 2;
+			}else {
+				if(this.boutonAffichageCompletMessages.getText().equals("Afficher l'historique des messages")) {
+					this.boutonAffichageCompletMessages.setText("Afficher les messages recents");
+					this.refreshType = 2;
+				}else {
+					this.boutonAffichageCompletMessages.setText("Afficher l'historique des messages");
+					this.refreshType = 1;
+				}
 			}
 		}
 		this.refreshMessages();
 	}
-
+	
+	public void setListeMessages(LinkedList<Message> liste) {
+		Message[] tab = new Message[liste.size()];
+		liste.toArray(tab);
+		this.listeDansLePanneauMessages.setListData(tab);
+		this.refreshType = 3;
+	}
+	
 }

@@ -304,5 +304,20 @@ public class UserConsoleDistante {
 			ex.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Cherche sur le serveur l'utilisateur possedant le nom <nom>
+	 * @param nom Le nom de l'utilisateur que l'on cherche
+	 * @return L'utilisateur que l'on cherche
+	 */
+	public Utilisateur getUtilisateur(String nom) {
+		Utilisateur res = null;
+		try {
+			res = UserConsoleDistante.appDistant.getUtilisateur(nom);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		} catch (UtilisateurInexistantException e) { }
+		return res;
+	}
 
 }

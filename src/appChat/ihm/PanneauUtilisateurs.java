@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import appChat.Utilisateur;
+import appChat.UtilisateurList;
 import appChat.rmi.UserConsoleDistante;
 
 public class PanneauUtilisateurs extends JPanel {
@@ -26,29 +27,39 @@ public class PanneauUtilisateurs extends JPanel {
 	private JScrollPane panneauUtilisateurRecherche;
 	private JList<Utilisateur> listUtilisateursRecherche;
 
-	public PanneauUtilisateurs(JScrollPane panneauUtilisateurConnectes, UserConsoleDistante uc) {
+	private JScrollPane panneauUtilisateurConnectes;
+	
+	private JList<Utilisateur> listUtilisateursConnectes;
+	
+	private UserConsoleDistante uc;
+
+	public PanneauUtilisateurs(UserConsoleDistante uc, PanelChat panelChat) {
 		super();
-
-		panneauUtilisateurConnectes.setColumnHeaderView(new JLabel("Utilisateurs connectes"));
-
+		
+		this.uc = uc;
+		
+		this.listUtilisateursConnectes = new JList<Utilisateur>();
+		this.listUtilisateursConnectes.addMouseListener(new ClicDroitListener(this.uc, panelChat));
+		this.panneauUtilisateurConnectes = new JScrollPane(this.listUtilisateursConnectes);
+		this.panneauUtilisateurConnectes.setColumnHeaderView(new JLabel("Utilisateurs connectes"));
+		
 		this.listUtilisateursRecherche = new JList<Utilisateur>();
-		this.listUtilisateursRecherche.addMouseListener(new ClicDroitListener(uc));
-
+		this.listUtilisateursRecherche.addMouseListener(new ClicDroitListener(this.uc, panelChat));
 		this.panneauUtilisateurRecherche = new JScrollPane(this.listUtilisateursRecherche);
 		this.panneauUtilisateurRecherche.setColumnHeaderView(new JLabel("Resutlats de recherche"));
 
 		this.recherchePanel = new JPanel();
-
+		this.recherchePanel.setLayout(new BorderLayout());
+		
 		this.rechercheButton = new JButton("Chercher");
 		this.zoneTexte = new JTextField(15);
-
+		
+		ListenerZoneTexteRecherche listenerZoneTexteRecherche = new ListenerZoneTexteRecherche(this.zoneTexte, this.listUtilisateursRecherche, uc);
 		this.rechercheButton
-				.addActionListener(new ListenerZoneTexteRecherche(this.zoneTexte, this.listUtilisateursRecherche, uc));
+				.addActionListener(listenerZoneTexteRecherche);
 		this.zoneTexte
-				.addActionListener(new ListenerZoneTexteRecherche(this.zoneTexte, this.listUtilisateursRecherche, uc));
-
-		this.recherchePanel.setLayout(new BorderLayout());
-
+				.addActionListener(listenerZoneTexteRecherche);
+		
 		this.recherchePanel.add(this.zoneTexte, BorderLayout.CENTER);
 		this.recherchePanel.add(this.rechercheButton, BorderLayout.EAST);
 		this.recherchePanel.add(this.panneauUtilisateurRecherche, BorderLayout.SOUTH);
@@ -88,6 +99,17 @@ public class PanneauUtilisateurs extends JPanel {
 			}
 		}
 
+	}
+	
+	public void refresh() {
+		try {
+			UtilisateurList utilisateursConnectes = this.uc.getListeUtilisateursConnectes();
+			Utilisateur[] tab = new Utilisateur[utilisateursConnectes.length()];
+			utilisateursConnectes.getUtilisateurList().toArray(tab);
+			this.listUtilisateursConnectes.setListData(tab);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

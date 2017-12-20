@@ -6,12 +6,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import appChat.Utilisateur;
-import appChat.UtilisateurList;
 import appChat.rmi.UserConsoleDistante;
 import appChat.rmi.UtilisateurServeurImpl;
 
@@ -22,13 +18,8 @@ public class FenetreChat extends JFrame {
 	private UserConsoleDistante uc;
 	private JPanel panneau;
 	private PanelChat panelChat;
-	private JScrollPane panneauUtilisateurConnectes;
-	private PanneauUtilisateurs panelUtilisateurConnectes;
-
 	private HashTagPanel hashTagPanel;
-
-	private JList<Utilisateur> listUtilisateursConnectes;
-
+	private PanneauUtilisateurs panelUtilisateurConnectes;
 	private JList<String> listeHashTags;
 	private JList<String> listeHashTagsRecents;
 
@@ -45,12 +36,7 @@ public class FenetreChat extends JFrame {
 		this.panneau = (JPanel) this.getContentPane();
 		this.panneau.setLayout(new GridLayout(1, 3));
 
-		this.listUtilisateursConnectes = new JList<Utilisateur>();
-		this.panneauUtilisateurConnectes = new JScrollPane(this.listUtilisateursConnectes);
-		this.panneauUtilisateurConnectes.setColumnHeaderView(new JLabel("Utilisateurs connectes"));
-		this.listUtilisateursConnectes.addMouseListener(new ClicDroitListener(this.uc));
-
-		this.panelUtilisateurConnectes = new PanneauUtilisateurs(panneauUtilisateurConnectes, this.uc);
+		this.panelUtilisateurConnectes = new PanneauUtilisateurs(this.uc, this.panelChat);
 
 		this.listeHashTags = new JList<String>();
 		this.listeHashTagsRecents = new JList<String>();
@@ -105,15 +91,7 @@ public class FenetreChat extends JFrame {
 	}
 
 	public void refreshListeUtilisateursConnectes() {
-		try {
-			UtilisateurList utilisateursConnectes = this.uc.getListeUtilisateursConnectes();
-			Utilisateur[] tab = new Utilisateur[utilisateursConnectes.length()];
-			utilisateursConnectes.getUtilisateurList().toArray(tab);
-			this.listUtilisateursConnectes.setListData(tab);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		this.panelUtilisateurConnectes.refresh();
 	}
 
 	public void refreshMessages() {
