@@ -1,3 +1,4 @@
 cd src
-javadoc appChat appChat.rmi appChat.ihm
+javadoc -d "../javadoc/" appChat appChat.rmi appChat.ihm
 cmd /c "%~dp0/src/index.html"
+pause
