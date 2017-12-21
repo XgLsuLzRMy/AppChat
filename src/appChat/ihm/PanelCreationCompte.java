@@ -14,6 +14,13 @@ import javax.swing.JTextField;
 
 import appChat.rmi.UserConsoleDistante;
 
+/**
+ * PanelCreationCompte correspond a l'interface permettant a l'utilisateur de
+ * saisir son nom et de choisir un mot de passe et de le valider en l'ecrivant
+ * une seconde fois. Si la creation du compte se passe bien, l'utilisateur est
+ * alors redirige vers le PanelLogin.
+ *
+ */
 public class PanelCreationCompte extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = -4762372221425260220L;
@@ -40,28 +47,24 @@ public class PanelCreationCompte extends JPanel implements ActionListener {
 		this.boutonRetour.addActionListener(this);
 
 		JPanel panneauConnexion = new JPanel();
-		
+
 		panneauConnexion.setLayout(new GridLayout(4, 2));
 
 		panneauConnexion.add(new JLabel("Nom : "));
-		panneauConnexion .add(this.texteNom);
+		panneauConnexion.add(this.texteNom);
 		panneauConnexion.add(new JLabel("Mot de passe : "));
 		panneauConnexion.add(this.texteMdp);
 		panneauConnexion.add(new JLabel("Repeter : "));
 		panneauConnexion.add(this.texteMdpRepetition);
 		panneauConnexion.add(boutonRetour);
-		
-		
 
 		ImageIcon imageConnexion = new ImageIcon("..\\src\\appChat\\ihm\\ressources\\connexion.jpg");
 		JLabel imageConnex = new JLabel(imageConnexion);
-		
-		this.setLayout(new GridLayout(2,1));
-		
+
+		this.setLayout(new GridLayout(2, 1));
+
 		this.add(imageConnex);
 		this.add(panneauConnexion);
-		
-		
 
 	}
 
@@ -73,9 +76,9 @@ public class PanelCreationCompte extends JPanel implements ActionListener {
 		} else {
 
 			String nom = this.texteNom.getText();
-			//String mdp = this.texteMdp.getText();
+			// String mdp = this.texteMdp.getText();
 			String mdp = new String(this.texteMdp.getPassword());
-			//String mdpRepetition = this.texteMdpRepetition.getText();
+			// String mdpRepetition = this.texteMdpRepetition.getText();
 			String mdpRepetition = new String(this.texteMdpRepetition.getPassword());
 
 			if (!(nom.equals("") || mdp.equals("") || mdpRepetition.equals(""))) {

@@ -11,6 +11,11 @@ import javax.swing.SwingUtilities;
 import appChat.Utilisateur;
 import appChat.rmi.UserConsoleDistante;
 
+/**
+ * ClicDroitListener permet de recuperer les evenements lorsque l'utilisateur
+ * effectue un clic droit sur la liste des utilisateurs
+ *
+ */
 public class ClicDroitListener implements MouseListener {
 
 	private JPopupMenu popup;
@@ -28,17 +33,16 @@ public class ClicDroitListener implements MouseListener {
 		JMenuItem item = new JMenuItem("follow");
 		item.addActionListener(menuListener);
 		this.popup.add(item);
-		
+
 		item = new JMenuItem("unfollow");
 		item.addActionListener(menuListener);
 		this.popup.add(item);
-		
+
 		item = new JMenuItem("afficher les messages");
 		item.addActionListener(menuListener);
 		this.popup.add(item);
 	}
 
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void mousePressed(MouseEvent e) {

@@ -7,6 +7,13 @@ import javax.swing.JTextField;
 
 import appChat.rmi.UserConsoleDistante;
 
+/**
+ * ListenerZoneTexte permet de recuperer le contenu de la zone de texte pour
+ * envoyer un message lorsque l'utilisateur apuie sur "entree"
+ * 
+ * @author Lucas
+ *
+ */
 public class ListenerZoneTexte implements ActionListener {
 
 	private JTextField zoneTexte;

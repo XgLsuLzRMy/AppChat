@@ -6,6 +6,11 @@ import java.awt.event.ActionListener;
 import appChat.Utilisateur;
 import appChat.rmi.UserConsoleDistante;
 
+/**
+ * PopupMenuListener permet de recuperer les evenements lors de la selection
+ * d'un item dans le popu menu qui se declenche lors du clic droit.
+ *
+ */
 public class PopupMenuListener implements ActionListener {
 
 	private UserConsoleDistante uc;
@@ -27,24 +32,25 @@ public class PopupMenuListener implements ActionListener {
 			} else {
 				System.out.println("Erreur : selectedUser = null");
 			}
-		break;
-			
+			break;
+
 		case "unfollow":
 			if (this.selectedUser != null) {
 				this.uc.unfollow(this.selectedUser.getNom());
 			} else {
 				System.out.println("Erreur : selectedUser = null");
 			}
-		break;
-			
+			break;
+
 		case "afficher les messages":
 			if (this.selectedUser != null) {
-				this.panelChat.setListeMessages(this.uc.getUtilisateur(this.selectedUser.getNom()).getListMessagesUtilisateur().getMessageList());
+				this.panelChat.setListeMessages(this.uc.getUtilisateur(this.selectedUser.getNom())
+						.getListMessagesUtilisateur().getMessageList());
 			} else {
 				System.out.println("Erreur : selectedUser = null");
 			}
-		break;
-		
+			break;
+
 		default:
 			System.out.println("Action pas definie : " + event.getActionCommand());
 		}

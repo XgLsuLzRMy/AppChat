@@ -1,5 +1,11 @@
 package appChat;
 
+/**
+ * SauvegardeReguliere permet de sauvegarder les donnees des utilisateurs et les
+ * mots de passes a intervalles reguliers dans des fichiers
+ * 
+ *
+ */
 public class SauvegardeReguliere extends Thread {
 
 	private AppChat a;

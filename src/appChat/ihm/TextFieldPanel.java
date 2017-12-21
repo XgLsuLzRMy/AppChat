@@ -10,6 +10,11 @@ import javax.swing.JTextField;
 
 import appChat.rmi.UserConsoleDistante;
 
+/**
+ * TextFieldPanel permet d'afficher une zone de texte et un bouton pour pouvoir
+ * saisir et envoyer un message.
+ *
+ */
 public class TextFieldPanel extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 5018214483472601635L;

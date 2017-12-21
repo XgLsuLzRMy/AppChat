@@ -11,6 +11,11 @@ import javax.swing.JTextField;
 
 import appChat.rmi.UserConsoleDistante;
 
+/**
+ * TextFieldHashTagPanel permet d'afficher une zone de texte et un bouton afin
+ * de s'abonner a un nouveau hashtag.
+ *
+ */
 public class TextFieldHashTagPanel extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 3792707519605459619L;

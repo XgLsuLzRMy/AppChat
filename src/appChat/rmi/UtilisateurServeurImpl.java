@@ -9,6 +9,10 @@ import appChat.UtilisateurList;
 import appChat.ihm.AutoRefreshFenetreChatThread;
 import appChat.ihm.FenetreChat;
 
+/**
+ * UtilisateurServeurImpl est une implementation de UtilisateurServeur
+ *
+ */
 public class UtilisateurServeurImpl extends UnicastRemoteObject implements UtilisateurServeur {
 
 	private static final long serialVersionUID = 1L;

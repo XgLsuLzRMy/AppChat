@@ -17,6 +17,12 @@ import appChat.Utilisateur;
 import appChat.UtilisateurList;
 import appChat.rmi.UserConsoleDistante;
 
+/**
+ * PanneauUtilisateurs correspond a l'affichage de la liste des utilisateurs
+ * connectes et de la liste des utilisateurs correspondant a la recherche (si il y
+ * a une recherche)
+ *
+ */
 public class PanneauUtilisateurs extends JPanel {
 
 	private static final long serialVersionUID = 2242977600425695449L;
@@ -28,21 +34,21 @@ public class PanneauUtilisateurs extends JPanel {
 	private JList<Utilisateur> listUtilisateursRecherche;
 
 	private JScrollPane panneauUtilisateurConnectes;
-	
+
 	private JList<Utilisateur> listUtilisateursConnectes;
-	
+
 	private UserConsoleDistante uc;
 
 	public PanneauUtilisateurs(UserConsoleDistante uc, PanelChat panelChat) {
 		super();
-		
+
 		this.uc = uc;
-		
+
 		this.listUtilisateursConnectes = new JList<Utilisateur>();
 		this.listUtilisateursConnectes.addMouseListener(new ClicDroitListener(this.uc, panelChat));
 		this.panneauUtilisateurConnectes = new JScrollPane(this.listUtilisateursConnectes);
 		this.panneauUtilisateurConnectes.setColumnHeaderView(new JLabel("Utilisateurs connectes"));
-		
+
 		this.listUtilisateursRecherche = new JList<Utilisateur>();
 		this.listUtilisateursRecherche.addMouseListener(new ClicDroitListener(this.uc, panelChat));
 		this.panneauUtilisateurRecherche = new JScrollPane(this.listUtilisateursRecherche);
@@ -50,16 +56,15 @@ public class PanneauUtilisateurs extends JPanel {
 
 		this.recherchePanel = new JPanel();
 		this.recherchePanel.setLayout(new BorderLayout());
-		
+
 		this.rechercheButton = new JButton("Chercher");
 		this.zoneTexte = new JTextField(15);
-		
-		ListenerZoneTexteRecherche listenerZoneTexteRecherche = new ListenerZoneTexteRecherche(this.zoneTexte, this.listUtilisateursRecherche, uc);
-		this.rechercheButton
-				.addActionListener(listenerZoneTexteRecherche);
-		this.zoneTexte
-				.addActionListener(listenerZoneTexteRecherche);
-		
+
+		ListenerZoneTexteRecherche listenerZoneTexteRecherche = new ListenerZoneTexteRecherche(this.zoneTexte,
+				this.listUtilisateursRecherche, uc);
+		this.rechercheButton.addActionListener(listenerZoneTexteRecherche);
+		this.zoneTexte.addActionListener(listenerZoneTexteRecherche);
+
 		this.recherchePanel.add(this.zoneTexte, BorderLayout.CENTER);
 		this.recherchePanel.add(this.rechercheButton, BorderLayout.EAST);
 		this.recherchePanel.add(this.panneauUtilisateurRecherche, BorderLayout.SOUTH);
@@ -100,7 +105,7 @@ public class PanneauUtilisateurs extends JPanel {
 		}
 
 	}
-	
+
 	public void refresh() {
 		try {
 			UtilisateurList utilisateursConnectes = this.uc.getListeUtilisateursConnectes();

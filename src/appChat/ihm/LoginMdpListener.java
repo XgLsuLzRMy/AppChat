@@ -10,6 +10,12 @@ import javax.swing.JTextField;
 
 import appChat.rmi.UserConsoleDistante;
 
+/**
+ * LoginMdpListener permet de contacter le serveur pour connecter l'utilisateur
+ * lorqu'il a rempli les champs de nom et mot de passe.
+ * 
+ *
+ */
 public class LoginMdpListener implements ActionListener {
 
 	private JTextField zoneNom;
@@ -35,7 +41,7 @@ public class LoginMdpListener implements ActionListener {
 		} else {
 
 			String nom = this.zoneNom.getText();
-			//String mdp = this.zoneMdp.getText();
+			// String mdp = this.zoneMdp.getText();
 			String mdp = new String(this.zoneMdp.getPassword());
 
 			if (!(nom.equals("") || mdp.equals(""))) {

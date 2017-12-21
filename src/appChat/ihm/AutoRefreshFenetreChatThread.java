@@ -1,5 +1,10 @@
 package appChat.ihm;
 
+/**
+ * AutoRefreshFenetreChatThread permet de mettre a jour l'interface principale a
+ * intervalle regulier
+ *
+ */
 public class AutoRefreshFenetreChatThread extends Thread {
 
 	private FenetreChat fenetre;

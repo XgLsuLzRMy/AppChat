@@ -10,6 +10,10 @@ import javax.swing.JScrollPane;
 import appChat.AppChat;
 import appChat.Utilisateur;
 
+/**
+ * Classe non utilisee par manque de temps
+ *
+ */
 public class FenetreServeur extends JFrame {
 
 	private static final long serialVersionUID = -7993813074760302584L;

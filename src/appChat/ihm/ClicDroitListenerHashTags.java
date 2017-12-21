@@ -12,6 +12,11 @@ import javax.swing.SwingUtilities;
 
 import appChat.rmi.UserConsoleDistante;
 
+/**
+ * ClicDroitListenerHashTags permet de recuperer les evenements lorsque l'utilisateur
+ * effectue un clic droit sur la liste des hashtags
+ *
+ */
 public class ClicDroitListenerHashTags implements MouseListener {
 
 	private JPopupMenu popup;

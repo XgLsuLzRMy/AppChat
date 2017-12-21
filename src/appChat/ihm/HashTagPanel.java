@@ -8,6 +8,11 @@ import javax.swing.JScrollPane;
 
 import appChat.rmi.UserConsoleDistante;
 
+/**
+ * HashTagPanel regroupe l'affichage des hastags recemment utilises et ceux
+ * auxquels l'utilisateur est abonne
+ *
+ */
 public class HashTagPanel extends JPanel {
 
 	private static final long serialVersionUID = -5453864867617888167L;
