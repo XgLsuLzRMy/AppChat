@@ -1,11 +1,16 @@
 @startuml
-actor User
-participant UserConsoleDistante
-participant AppRMIServeur
-participant AppChat
-database login_Password_List
+box "Client" #white
+    actor User
+    participant FenetreChat
+    participant UserConsoleDistante
+end box
+box "Serveur" #white
+    participant AppRMIServeur
+    participant AppChat
+    database login_Password_List
+end box
 
-User -> UserConsoleDistante : Séléctionne "créer un compte"
+User -> UserConsoleDistante : lancement du programme
 activate UserConsoleDistante
 
 UserConsoleDistante -> AppRMIServeur : lookup("App")
@@ -13,12 +18,19 @@ activate AppRMIServeur
 AppRMIServeur -> UserConsoleDistante
 deactivate AppRMIServeur
 
-UserConsoleDistante -> User : Affiche zone de texte\npour rentrer le login/mdp
+UserConsoleDistante -> FenetreChat
 deactivate UserConsoleDistante
+activate FenetreChat
 
-User -> UserConsoleDistante : Entre son login
+FenetreChat -> User : Affiche zone de texte\npour rentrer le login/mdp
+deactivate FenetreChat
+
+User -> FenetreChat: Entre son login
+activate FenetreChat
+User -> FenetreChat: Entre son mot de passe
+
+FenetreChat -> UserConsoleDistante
 activate UserConsoleDistante
-User -> UserConsoleDistante : Entre son mot de passe
 
 UserConsoleDistante -> AppRMIServeur : ajouterUtilisateur(login, password, IPAddress, port_utilisateur)
 activate AppRMIServeur
@@ -38,6 +50,9 @@ deactivate AppChat
 AppRMIServeur -> UserConsoleDistante
 deactivate AppRMIServeur
 
-UserConsoleDistante -> User : Accès au login
+UserConsoleDistante -> FenetreChat
 deactivate UserConsoleDistante
+
+FenetreChat -> User : accès au login
+deactivate FenetreChat
 @enduml

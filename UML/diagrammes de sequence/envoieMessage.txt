@@ -1,0 +1,62 @@
+@startuml
+actor User
+participant FenetreChat
+participant UserConsoleDistante
+participant AppRMIServeur
+participant AppChat
+collections "destinataires : UtilisateurList"
+
+User -> FenetreChat : Saisie ses identifiants
+activate FenetreChat
+
+
+FenetreChat-> UserConsoleDistante : connecte l'utilisateur\n(voir schémas précédents)
+activate UserConsoleDistante
+
+UserConsoleDistante -> AppRMIServeur : login(nom, mdp, IPAdress, port)
+activate AppRMIServeur
+
+AppRMIServeur -> AppChat : getUtilisateur(nom)
+activate AppChat
+AppChat -> AppRMIServeur
+deactivate AppChat
+
+AppRMIServeur -> UserConsoleDistante
+deactivate AppRMIServeur
+
+UserConsoleDistante -> FenetreChat
+deactivate UserConsoleDistante
+
+FenetreChat -> User : Affiche zone de texte\npour écrire le message
+deactivate FenetreChat
+
+User -> FenetreChat: écrit le message puis appuie sur "envoyer"
+activate FenetreChat
+
+FenetreChat -> UserConsoleDistante : envoyerMessage(texte)
+activate UserConsoleDistante
+
+UserConsoleDistante -> AppRMIServeur : publieMessage(message)
+activate AppRMIServeur
+
+AppRMIServeur -> AppChat : publieMessage(message)
+activate AppChat
+
+AppChat -> "destinataires : UtilisateurList" : ajouterMessage(message)
+activate "destinataires : UtilisateurList"
+
+"destinataires : UtilisateurList" -> AppChat
+deactivate "destinataires : UtilisateurList"
+
+AppChat -> AppRMIServeur
+deactivate AppChat
+
+AppRMIServeur -> UserConsoleDistante
+deactivate AppRMIServeur
+
+UserConsoleDistante -> FenetreChat
+deactivate UserConsoleDistante
+
+FenetreChat -> User
+deactivate FenetreChat
+@enduml
