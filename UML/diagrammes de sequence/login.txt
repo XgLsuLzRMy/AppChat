@@ -5,7 +5,7 @@ participant AppRMIServeur
 participant AppChat
 database login_Password_List
 
-User -> UserConsoleDistante : Séléctionne "créer un compte"
+User -> UserConsoleDistante : Séléctionne "login"
 activate UserConsoleDistante
 
 UserConsoleDistante -> AppRMIServeur : lookup("App")
@@ -20,15 +20,27 @@ User -> UserConsoleDistante : Entre son login
 activate UserConsoleDistante
 User -> UserConsoleDistante : Entre son mot de passe
 
-UserConsoleDistante -> AppRMIServeur : ajouterUtilisateur(login, password, IPAddress, port_utilisateur)
+UserConsoleDistante -> AppRMIServeur : login(nom, mdp, IPAddress, port_utilisateur)
 activate AppRMIServeur
 
-AppRMIServeur -> AppChat : creerCompte(nom, mdp, IPAddress, port_utilisateur)
+AppRMIServeur -> AppChat : verifierMdp(nom, mdp)
 activate AppChat
 
-AppChat -> login_Password_List : ajouterUtilisateur(nom, IPAdress, port_utilisateur)
+AppChat -> login_Password_List : mdp.hashCode() == login_Password_List.get(nom)
 activate login_Password_List
-AppChat -> login_Password_List : ajouterPassword(nom, mdp)
+
+login_Password_List -> AppChat
+deactivate login_Password_List
+
+AppChat -> AppRMIServeur
+deactivate AppChat
+
+AppRMIServeur -> AppChat : getUtilisateur(nom)
+activate AppChat
+
+AppChat -> login_Password_List : getUtilisateur(nom)
+activate login_Password_List
+
 login_Password_List -> AppChat
 deactivate login_Password_List
 
@@ -38,6 +50,6 @@ deactivate AppChat
 AppRMIServeur -> UserConsoleDistante
 deactivate AppRMIServeur
 
-UserConsoleDistante -> User : Accès au login
+UserConsoleDistante -> User : Accès au compte
 deactivate UserConsoleDistante
 @enduml
