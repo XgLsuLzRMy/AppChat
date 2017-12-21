@@ -6,6 +6,7 @@ import appChat.Message;
 import appChat.Utilisateur;
 import appChat.UtilisateurInexistantException;
 import appChat.UtilisateurList;
+import appChat.ihm.AutoRefreshFenetreChatThread;
 import appChat.ihm.FenetreChat;
 
 public class UtilisateurServeurImpl extends UnicastRemoteObject implements UtilisateurServeur {

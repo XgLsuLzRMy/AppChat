@@ -15,6 +15,7 @@ import java.util.LinkedList;
 
 import appChat.AppChat;
 import appChat.Message;
+import appChat.SauvegardeReguliere;
 import appChat.Utilisateur;
 import appChat.UtilisateurInexistantException;
 import appChat.UtilisateurList;
@@ -192,7 +193,10 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 			System.out.println("impossible de se suivre soit meme");
 		}
 	}
-
+	/**
+	 * Accesseur permettant de recuperer AppChat
+	 * @return
+	 */
 	private AppChat getApp() {
 		return this.app;
 	}

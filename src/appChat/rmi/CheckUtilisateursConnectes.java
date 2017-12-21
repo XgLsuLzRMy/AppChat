@@ -5,8 +5,19 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import appChat.Utilisateur;
 
+/**
+ * CheckUtilisateursConnectes permet de mettre a jour la liste des utilisateurs
+ * connectes a intervalles reguliers.
+ *
+ */
 public class CheckUtilisateursConnectes extends Thread {
 
+	/**
+	 * Constructeur de CheckUtilisateursConnectes On parcourt la liste des
+	 * utilisateurs connectes et on verifie s'ils le sont toujours en executant la
+	 * fonction ping. Si la fonction est exectutee alors l'utilisateur est en ligne
+	 * sinon il est deconnecte.
+	 */
 	public CheckUtilisateursConnectes() {
 
 	}
