@@ -19,6 +19,12 @@ import appChat.Utilisateur;
 import appChat.UtilisateurInexistantException;
 import appChat.UtilisateurList;
 
+/**
+ * Implementation de AppRMIServeur. Permet de gerer le serveur RMI. C'est
+ * l'objet recupere par le client via le registre.
+ * 
+ *
+ */
 public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServeur, Runnable {
 
 	private static final long serialVersionUID = 1L;
@@ -30,9 +36,13 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	private AppChat app;
 	public static Registry registry;
 	public static UtilisateurList utilisateursConnectes = new UtilisateurList();
-
+	/**
+	 * Constructeur de AppRMIServeurImpl
+	 * @param registry Le registre local sur lequel cet objet est bind
+	 * @throws RemoteException
+	 */
 	public AppRMIServeurImpl(Registry registry) throws RemoteException {
-		//super();
+		// super();
 		super(PORT_SERVEUR);
 		System.out.print("\n\tVerification de l'existence des fichiers... ");
 		File f = new File("passwords");
@@ -89,7 +99,8 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	}
 
 	@Override
-	public void ajouterUtilisateur(String nom, String mdp, String IPAddress, int port_utilisateur) throws RemoteException {
+	public void ajouterUtilisateur(String nom, String mdp, String IPAddress, int port_utilisateur)
+			throws RemoteException {
 		System.out.print("Ajout d'un nouvel utilisateur " + nom + "/" + IPAddress + "... ");
 		if (!this.utilisateurDejaExistant(nom)) {
 			this.app.creerCompte(nom, mdp, IPAddress, port_utilisateur);
@@ -217,60 +228,7 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 
 	}
 
-	public static void main(String[] args) {
-		try {
-			Registry registry = null;
-			try {
-				String ipaddress = InetAddress.getLocalHost().toString();
-				ipaddress = ipaddress.substring(ipaddress.indexOf("/") + 1, ipaddress.length());
-				System.out.println("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nAdresse ip locale du serveur : "
-						+ ipaddress + "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-			}
-			System.out.print("Recuperation du registre RMI... ");
-			try {
-				System.out.println("1");
-				registry = LocateRegistry.createRegistry(PORT_SERVEUR);
-				System.out.println("Registre cree !");
-			} catch (ExportException ex) {
-				System.out.println("2");
-				//registry = LocateRegistry.getRegistry(PORT_SERVEUR);
 
-				System.out.println("Registre recupere !");
-			} catch (RemoteException ex) {
-				System.out.println("3");
-				ex.printStackTrace();
-			}
-
-
-			System.out.print("Instanciation du AppRMIServeur... ");
-			AppRMIServeurImpl.a = new AppRMIServeurImpl(registry);
-			System.out.println(" AppRMIServeurImpl instancie !");
-
-			System.out.print("Enregistrement de l'application dans le registre... ");
-			registry.rebind("App", AppRMIServeurImpl.a);
-			System.out.println("OK");
-
-			System.out.print("Instanciation de la classe qui check les utilisateurs connectes... ");
-			CheckUtilisateursConnectes t = new CheckUtilisateursConnectes();
-			System.out.println("OK");
-			System.out.print("Lancement du check des utilisateurs connectes... ");
-			t.start();
-			System.out.println("OK");
-
-			System.out.print("Instanciation de la classe qui sauvegarde regulierement... ");
-			SauvegardeReguliere t2 = new SauvegardeReguliere(a.getApp());
-			System.out.println("OK");
-			System.out.print("Lancement de la sauvegarde reguliere... ");
-			t2.start();
-			System.out.println("OK");
-
-		} catch (RemoteException ex) {
-			ex.printStackTrace();
-		}
-
-	}
 
 	@Override
 	public void ajouterHashTag(String nom, String hashTag) throws RemoteException {
@@ -315,6 +273,60 @@ public class AppRMIServeurImpl extends UnicastRemoteObject implements AppRMIServ
 	@Override
 	public ArrayList<Utilisateur> chercherUtilisateur(String text) throws RemoteException {
 		return this.app.chercherUtilisateur(text);
+	}
+	
+	public static void main(String[] args) {
+		try {
+			Registry registry = null;
+			try {
+				String ipaddress = InetAddress.getLocalHost().toString();
+				ipaddress = ipaddress.substring(ipaddress.indexOf("/") + 1, ipaddress.length());
+				System.out.println("\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nAdresse ip locale du serveur : "
+						+ ipaddress + "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
+			System.out.print("Recuperation du registre RMI... ");
+			try {
+				System.out.println("1");
+				registry = LocateRegistry.createRegistry(PORT_SERVEUR);
+				System.out.println("Registre cree !");
+			} catch (ExportException ex) {
+				System.out.println("2");
+				// registry = LocateRegistry.getRegistry(PORT_SERVEUR);
+
+				System.out.println("Registre recupere !");
+			} catch (RemoteException ex) {
+				System.out.println("3");
+				ex.printStackTrace();
+			}
+
+			System.out.print("Instanciation du AppRMIServeur... ");
+			AppRMIServeurImpl.a = new AppRMIServeurImpl(registry);
+			System.out.println(" AppRMIServeurImpl instancie !");
+
+			System.out.print("Enregistrement de l'application dans le registre... ");
+			registry.rebind("App", AppRMIServeurImpl.a);
+			System.out.println("OK");
+
+			System.out.print("Instanciation de la classe qui check les utilisateurs connectes... ");
+			CheckUtilisateursConnectes t = new CheckUtilisateursConnectes();
+			System.out.println("OK");
+			System.out.print("Lancement du check des utilisateurs connectes... ");
+			t.start();
+			System.out.println("OK");
+
+			System.out.print("Instanciation de la classe qui sauvegarde regulierement... ");
+			SauvegardeReguliere t2 = new SauvegardeReguliere(a.getApp());
+			System.out.println("OK");
+			System.out.print("Lancement de la sauvegarde reguliere... ");
+			t2.start();
+			System.out.println("OK");
+
+		} catch (RemoteException ex) {
+			ex.printStackTrace();
+		}
+
 	}
 
 }

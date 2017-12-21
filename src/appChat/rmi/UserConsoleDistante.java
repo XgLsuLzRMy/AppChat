@@ -297,7 +297,7 @@ public class UserConsoleDistante {
 		Registry registry = null;
 		AppRMIServeur a = null;
 
-		System.out.print("On cherche le registre... ");
+		System.out.print("On cherche le registre distant... ");
 		try {
 			if (args.length > 0) {
 				//registry = LocateRegistry.getRegistry(args[0], PORT_SERVEUR);
@@ -307,7 +307,7 @@ public class UserConsoleDistante {
 				registry = LocateRegistry.getRegistry();
 			}
 			System.out.println("OK");
-			System.out.print("On recupere le registre... ");
+			System.out.print("On recupere le serveur distant... ");
 			a = (AppRMIServeur) registry.lookup("App");
 			System.out.println("OK");
 
