@@ -1,0 +1,56 @@
+@startuml
+
+package "appChat" #DDDDDD {
+  AppChat - UtilisateurList 
+  class Message {
+}
+  Utilisateur "*" *--> UtilisateurList
+}  
+
+
+package "appChat.ihm" #DDDDDD {
+  class FenetreLogin { 
+}
+  class FenetreChat {
+}
+  class PopupMenuListener {
+}
+}      
+package "appChat.rmi" #DDDDDD {
+  class UserConsoleDistante {
+} 
+  class UtilisateurServeurImpl {
+} 
+  interface UtilisateurServeur {
+}  
+  class AppRMIServeurImpl {
+}
+  interface AppRMIServeur {
+} 
+    class CheckUtilisateursConnectes {
+}    
+
+}
+
+AppRMIServeurImpl ..|> AppRMIServeur
+AppRMIServeurImpl *..> UtilisateurList
+AppRMIServeurImpl *..> AppChat
+UserConsoleDistante ..|> AppRMIServeur
+CheckUtilisateursConnectes --|> Utilisateur
+UserConsoleDistante --|> Message
+
+UserConsoleDistante --|> UtilisateurList
+
+UtilisateurServeurImpl o--> Utilisateur
+
+
+UtilisateurServeurImpl ..|> UtilisateurServeur
+
+UserConsoleDistante *--> FenetreLogin
+FenetreChat <--* UtilisateurServeurImpl
+PopupMenuListener o--> Utilisateur
+
+
+
+
+@enduml
