@@ -25,32 +25,31 @@ public class PanelChat extends JPanel implements ActionListener{
 	private JList<Message> listeDansLePanneauMessages;
 	private JList<Message> listeMessagesRecents;
 	private JList<Message> listeMessagesComplet;
-	private JList<Message> listeMessagesAutreUtilisateur;
 	private UtilisateurServeurImpl utilisateurServeur;
 	private JButton boutonAffichageCompletMessages;
 	private char refreshType;
 
 	public PanelChat(UtilisateurServeurImpl utilisateurServeur, UserConsoleDistante uc) {
 		super();
-		
+
 		this.utilisateurServeur = utilisateurServeur;
-		
+
 		this.refreshType = 1;
-		
+
 		this.setLayout(new BorderLayout());
-		
+
 		this.boutonAffichageCompletMessages = new JButton("Afficher l'historique des messages");
 		this.boutonAffichageCompletMessages.addActionListener(this);
-		
+
 		this.textFieldPanel = new TextFieldPanel(uc);
-		
-		this.listeMessagesAutreUtilisateur = new JList<Message>();
+
+		new JList<Message>();
 		this.listeMessagesComplet = new JList<Message>();
 		this.listeMessagesRecents = new JList<Message>();
-		
+
 		this.listeDansLePanneauMessages = this.listeMessagesRecents;
 		this.panneauMessages = new JScrollPane(this.listeDansLePanneauMessages);
-		
+
 		this.add(this.boutonAffichageCompletMessages, BorderLayout.NORTH);
 		this.add(this.panneauMessages, BorderLayout.CENTER);
 		this.add(textFieldPanel, BorderLayout.SOUTH);
@@ -65,7 +64,7 @@ public class PanelChat extends JPanel implements ActionListener{
 			this.refreshMessagesUtilisateur();
 		}
 	}
-	
+
 	private void refreshMessagesRecents() {
 		try {
 			MessageListAbstract messageListe = this.utilisateurServeur.getUtilisateur().getListMessagesRecents();
@@ -78,31 +77,31 @@ public class PanelChat extends JPanel implements ActionListener{
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void refreshMessagesUtilisateur() {
 		MessageListAbstract messageListe1;
 		MessageListAbstract messageListe2;
 		try {
 			messageListe1 = this.utilisateurServeur.getUtilisateur().getListMessagesUtilisateur();
 			messageListe2 = this.utilisateurServeur.getUtilisateur().getListMessagesRecents();
-			
+
 			@SuppressWarnings("unchecked")
 			LinkedList<Message> list = (LinkedList<Message>) messageListe1.getMessageList().clone();
 			list.addAll(messageListe2.getMessageList());
-			
+
 			Message[] tab = new Message[messageListe1.getNbMessage() + messageListe2.getNbMessage()];
-			
+
 			list.toArray(tab);
-			
+
 			this.listeMessagesComplet.setListData(tab);
-			
+
 			this.listeDansLePanneauMessages.setListData(tab);
-			
+
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if(arg0.getSource() == this.boutonAffichageCompletMessages) {
@@ -124,12 +123,12 @@ public class PanelChat extends JPanel implements ActionListener{
 		}
 		this.refreshMessages();
 	}
-	
+
 	public void setListeMessages(LinkedList<Message> liste) {
 		Message[] tab = new Message[liste.size()];
 		liste.toArray(tab);
 		this.listeDansLePanneauMessages.setListData(tab);
 		this.refreshType = 3;
 	}
-	
+
 }

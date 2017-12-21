@@ -5,18 +5,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import appChat.rmi.UserConsoleDistante;
 
 public class LoginMdpListener implements ActionListener {
 
-	private JTextField zoneNom, zoneMdp;
+	private JTextField zoneNom;
+	private JPasswordField zoneMdp;
 	private UserConsoleDistante uc;
 	private JButton boutonRetour;
 	private FenetreLogin fenetrelogin;
 
-	public LoginMdpListener(JTextField zoneNom, JTextField zoneMdp, UserConsoleDistante uc, JButton boutonRetour,
+	public LoginMdpListener(JTextField zoneNom, JPasswordField zoneMdp, UserConsoleDistante uc, JButton boutonRetour,
 			FenetreLogin fenetreLogin) {
 		this.zoneNom = zoneNom;
 		this.zoneMdp = zoneMdp;
@@ -33,7 +35,8 @@ public class LoginMdpListener implements ActionListener {
 		} else {
 
 			String nom = this.zoneNom.getText();
-			String mdp = this.zoneMdp.getText();
+			//String mdp = this.zoneMdp.getText();
+			String mdp = new String(this.zoneMdp.getPassword());
 
 			if (!(nom.equals("") || mdp.equals(""))) {
 				int indexEspace = nom.indexOf(' ');

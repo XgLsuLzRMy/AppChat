@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import appChat.rmi.UserConsoleDistante;
@@ -16,7 +17,8 @@ public class PanelCreationCompte extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = -4762372221425260220L;
 
-	private JTextField texteNom, texteMdp, texteMdpRepetition;
+	private JTextField texteNom;
+	private JPasswordField texteMdp, texteMdpRepetition;
 	private UserConsoleDistante uc;
 	private FenetreLogin fenetreLogin;
 	private JButton boutonRetour;
@@ -27,8 +29,8 @@ public class PanelCreationCompte extends JPanel implements ActionListener {
 		this.uc = uc;
 
 		this.texteNom = new JTextField(20);
-		this.texteMdp = new JTextField(20);
-		this.texteMdpRepetition = new JTextField(20);
+		this.texteMdp = new JPasswordField(20);
+		this.texteMdpRepetition = new JPasswordField(20);
 		this.boutonRetour = new JButton("Retour");
 
 		this.texteNom.addActionListener(this);
@@ -56,8 +58,10 @@ public class PanelCreationCompte extends JPanel implements ActionListener {
 		} else {
 
 			String nom = this.texteNom.getText();
-			String mdp = this.texteMdp.getText();
-			String mdpRepetition = this.texteMdpRepetition.getText();
+			//String mdp = this.texteMdp.getText();
+			String mdp = new String(this.texteMdp.getPassword());
+			//String mdpRepetition = this.texteMdpRepetition.getText();
+			String mdpRepetition = new String(this.texteMdpRepetition.getPassword());
 
 			if (!(nom.equals("") || mdp.equals("") || mdpRepetition.equals(""))) {
 				if (mdp.equals(mdpRepetition)) {

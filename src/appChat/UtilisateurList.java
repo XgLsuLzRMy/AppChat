@@ -75,7 +75,7 @@ public class UtilisateurList implements Serializable {
 	/**
 	 * Ajoute le message m dans la liste des messages de chaque utilisateurs dans
 	 * cette liste (utile pour envoyer un message à tous ses follower)
-	 * 
+	 *
 	 * @param m
 	 */
 	public void ajouterMessage(Message m) {
@@ -83,6 +83,13 @@ public class UtilisateurList implements Serializable {
 			for (Utilisateur u : this.utilisateurList) {
 				u.ajouterMessage(m);
 			}
+		}
+	}
+
+	public void resetRegistry() {
+		Iterator<Utilisateur> it = this.utilisateurList.iterator();
+		while(it.hasNext()){
+			it.next().resetRegistry();
 		}
 	}
 }

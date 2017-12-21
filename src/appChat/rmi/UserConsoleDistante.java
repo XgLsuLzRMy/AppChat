@@ -14,7 +14,12 @@ import appChat.UtilisateurInexistantException;
 import appChat.UtilisateurList;
 import appChat.ihm.FenetreLogin;
 
+
+
 public class UserConsoleDistante {
+
+	public static final int PORT_SERVEUR = 1099;
+	public  int port_utilisateur;
 
 	public static AppRMIServeur appDistant;
 	private UtilisateurServeur utilisateurServeur;
@@ -25,11 +30,19 @@ public class UserConsoleDistante {
 		this.utilisateurServeur = null;
 		UserConsoleDistante.appDistant = a;
 		// this.registry = registry;
-		try {
-			UserConsoleDistante.registry = LocateRegistry.getRegistry(1099);
-		} catch (RemoteException e) {
-			e.printStackTrace();
+		this.port_utilisateur = 1099;
+		boolean reussi = false;
+		while(!reussi){
+			try {
+				//UserConsoleDistante.registry = LocateRegistry.getRegistry(PORT_UTILISATEUR);
+				UserConsoleDistante.registry = LocateRegistry.getRegistry(this.port_utilisateur);
+				reussi = true;
+			} catch (RemoteException e) {
+				this.port_utilisateur++;
+				//e.printStackTrace();
+			}
 		}
+		System.out.println("port_utilisateur = "+this.port_utilisateur);
 		this.fenetreLogin = new FenetreLogin(this);
 		this.fenetreLogin.pack();
 		this.fenetreLogin.setVisible(true);
@@ -50,7 +63,7 @@ public class UserConsoleDistante {
 			try {
 				if (UserConsoleDistante.appDistant.utilisateurDejaExistant(nom) == false) {
 					UserConsoleDistante.appDistant.ajouterUtilisateur(nom, mdp,
-							ipaddress);
+							ipaddress, this.port_utilisateur);
 					System.out.println("Creation compte OK");
 					return true;
 				}
@@ -84,7 +97,7 @@ public class UserConsoleDistante {
 		try {
 			if (UserConsoleDistante.appDistant.utilisateurDejaExistant(nom)) {
 				System.out.println("1");
-				u = UserConsoleDistante.appDistant.login(nom, mdp, ipaddress);
+				u = UserConsoleDistante.appDistant.login(nom, mdp, ipaddress, port_utilisateur);
 				System.out.println("2");
 
 				if (u != null) {
@@ -103,7 +116,7 @@ public class UserConsoleDistante {
 
 						// System.setProperty("java.rmi.server.hostname",this.utilisateurServeur.getUtilisateur().getIPAddress());
 						System.out.println("On rebind");
-						UserConsoleDistante.registry.rebind(u.getNom(), utilisateurServeur);
+						UserConsoleDistante.registry.rebind(u.getNom(), this.utilisateurServeur);
 
 					} catch (RemoteException e) {
 						e.printStackTrace();
@@ -287,9 +300,11 @@ public class UserConsoleDistante {
 		System.out.print("On cherche le registre... ");
 		try {
 			if (args.length > 0) {
-				registry = LocateRegistry.getRegistry(args[0], 1099);
+				//registry = LocateRegistry.getRegistry(args[0], PORT_SERVEUR);
+				registry = LocateRegistry.getRegistry(args[0]);
 			} else {
-				registry = LocateRegistry.getRegistry(1099);
+				//registry = LocateRegistry.getRegistry(PORT_SERVEUR);
+				registry = LocateRegistry.getRegistry();
 			}
 			System.out.println("OK");
 			System.out.print("On recupere le registre... ");
@@ -304,7 +319,7 @@ public class UserConsoleDistante {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Cherche sur le serveur l'utilisateur possedant le nom <nom>
 	 * @param nom Le nom de l'utilisateur que l'on cherche

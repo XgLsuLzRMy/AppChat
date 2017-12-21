@@ -9,6 +9,9 @@ import java.util.ArrayList;
 public class Utilisateur implements Serializable {
 
 	private static final long serialVersionUID = -2477264913071934274L;
+
+
+
 	private String nom;
 	private UtilisateurList listFollower;
 	private UtilisateurList listFollow;
@@ -18,6 +21,7 @@ public class Utilisateur implements Serializable {
 	private MessageList listMessagesRetweetes; // pour ne pas retweeter 2 fois un même message
 	private ArrayList<String> hashTagList; // Liste des hashtags auxquels l'utilisateur s'est abonne
 	private String IPAddress;
+	private int port_utilisateur;
 	private transient Registry registry;
 
 	public Utilisateur(String nom) {
@@ -32,9 +36,10 @@ public class Utilisateur implements Serializable {
 		this.hashTagList = new ArrayList<String>();
 		this.IPAddress = "localhost";
 		this.resetRegistry();
+		this.port_utilisateur = 1099;
 	}
 
-	public Utilisateur(String nom, String IPAddress) {
+	public Utilisateur(String nom, String IPAddress, int port_utilisateur) {
 		this.nom = nom;
 		this.listFollower = new UtilisateurList();
 		this.listFollow = new UtilisateurList();
@@ -44,6 +49,7 @@ public class Utilisateur implements Serializable {
 		this.listMessagesRetweetes = new MessageList();
 		this.hashTagList = new ArrayList<String>();
 		this.IPAddress = IPAddress;
+		this.port_utilisateur = port_utilisateur;
 		this.resetRegistry();
 	}
 
@@ -54,7 +60,8 @@ public class Utilisateur implements Serializable {
 	public void resetRegistry() {
 		System.out.print("\nUtilisateur " + this.getNom() + "/" + this.IPAddress + " resetRegistry... ");
 		try {
-			this.registry = LocateRegistry.getRegistry(this.IPAddress, 1099);
+			//this.registry = LocateRegistry.getRegistry(this.IPAddress, PORT_UTILISATEUR);
+			this.registry = LocateRegistry.getRegistry(this.IPAddress, this.port_utilisateur);
 			System.out.println("OK");
 		} catch (RemoteException e) {
 			e.printStackTrace();
@@ -65,8 +72,9 @@ public class Utilisateur implements Serializable {
 		return this.IPAddress;
 	}
 
-	public void setIPAddress(String IPAddress) {
+	public void setIPAddress(String IPAddress, int port_utilisateur) {
 		this.IPAddress = IPAddress;
+		this.port_utilisateur = port_utilisateur;
 	}
 
 	public void follow(Utilisateur u) {

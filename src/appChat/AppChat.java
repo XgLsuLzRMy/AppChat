@@ -46,6 +46,8 @@ public class AppChat {
 					AppChat.passwordTable = (Hashtable<String, Integer>) ois.readObject();
 					// System.out.println("OK");
 
+					AppChat.utilisateurList.resetRegistry();
+
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -115,14 +117,14 @@ public class AppChat {
 		AppChat.ajouterPassword(nom, mdp);
 	}
 
-	public void creerCompte(String nom, String mdp, String IPAdress) {
-		AppChat.ajouterUtilisateur(new Utilisateur(nom, IPAdress));
+	public void creerCompte(String nom, String mdp, String IPAdress, int port_utilisateur) {
+		AppChat.ajouterUtilisateur(new Utilisateur(nom, IPAdress, port_utilisateur));
 		AppChat.ajouterPassword(nom, mdp);
 	}
 
 	/**
 	 * Sauvegarde le mot de passe mdp de l'utilisateur nom
-	 * 
+	 *
 	 * @param nom
 	 *            le nom de l'utilisateur dont le mot de passe est stocké
 	 * @param mdp
@@ -146,7 +148,7 @@ public class AppChat {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param m
 	 * @return La liste des utilisateur qui ont recu le message et qu'il faut donc
 	 *         notifier
@@ -208,7 +210,7 @@ public class AppChat {
 	 * Permet de chercher un utilisateur a partir de son nom. La fonction cherche un
 	 * utilisateur possedant exactement ce nom mais aussi independemment de la casse
 	 * ou si le nom est contenu dans le nom d'un autre utilisateur ou inversement
-	 * 
+	 *
 	 * @param text
 	 *            Le nom de l'utilisateur a chercher
 	 * @return ArrayList des utilisateurs dont le nom correspond a la recherche
@@ -224,7 +226,7 @@ public class AppChat {
 				res.add(AppChat.getUtilisateurList().getUtilisateur(text));
 			} catch (UtilisateurInexistantException e) {
 			}
-	
+
 			Iterator<Utilisateur> it = AppChat.utilisateurList.getUtilisateurList().iterator();
 			Utilisateur u;
 			String nom;

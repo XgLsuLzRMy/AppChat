@@ -13,16 +13,16 @@ import appChat.UtilisateurList;
 public interface AppRMIServeur extends Remote {
 
 	/**
-	 * 
+	 *
 	 * @param nom
 	 *            le nom de l'utilisateur a ajouter dans la liste des utilisateurs
 	 * @param mdp
 	 *            le mot de passe correspondant a cet utilisateur
 	 */
-	public void ajouterUtilisateur(String nom, String mdp, String IPAddress) throws RemoteException;
+	public void ajouterUtilisateur(String nom, String mdp, String IPAddress, int port_utilisateur) throws RemoteException;
 
 	/**
-	 * 
+	 *
 	 * @param nom
 	 *            le nom de l'utilisateur a chercher dans la liste des utilisateurs
 	 *            inscrits (UtilisateurList dans AppChat)
@@ -31,7 +31,7 @@ public interface AppRMIServeur extends Remote {
 	public boolean utilisateurDejaExistant(String nom) throws RemoteException;
 
 	/**
-	 * 
+	 *
 	 * @param nom
 	 *            le nom de l'utilisateur qui se connecte
 	 * @param mdp
@@ -39,10 +39,10 @@ public interface AppRMIServeur extends Remote {
 	 * @return les informations du compte sous la forme d'une variable Utilisateur
 	 *         si le mdp correspond au nom, sinon renvoie null
 	 */
-	public Utilisateur login(String nom, String mdp, String IPAdress) throws RemoteException;
+	public Utilisateur login(String nom, String mdp, String IPAdress, int port_utilisateur) throws RemoteException;
 
 	/**
-	 * 
+	 *
 	 * @param nom
 	 *            le nom de l'utilisateur souhaite
 	 * @return l'utilisateur recherche
@@ -51,7 +51,7 @@ public interface AppRMIServeur extends Remote {
 	public Utilisateur getUtilisateur(String nom) throws RemoteException, UtilisateurInexistantException;
 
 	/**
-	 * 
+	 *
 	 * @param str
 	 * @throws RemoteException
 	 */
@@ -63,7 +63,7 @@ public interface AppRMIServeur extends Remote {
 
 	/**
 	 * L'utilisateur nom veut follow l'utilisateur nom2
-	 * 
+	 *
 	 * @param nom
 	 * @param nom2
 	 * @throws RemoteException

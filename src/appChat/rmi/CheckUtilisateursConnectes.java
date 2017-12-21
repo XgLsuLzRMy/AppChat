@@ -42,14 +42,14 @@ public class CheckUtilisateursConnectes extends Thread {
 						System.out.println("Registre null");
 					} else {
 						System.out.println("7");
-						//UtilisateurServeur us = (UtilisateurServeur) u.getRegistry().lookup(u.getNom());
-						//UtilisateurServeur us = (UtilisateurServeur) LocateRegistry.getRegistry(u.getIPAddress(), 1099).lookup(u.getNom());
-						Registry reg = LocateRegistry.getRegistry(u.getIPAddress(), 1099);
+						UtilisateurServeur us = (UtilisateurServeur) u.getRegistry().lookup(u.getNom());
+						//UtilisateurServeur us = (UtilisateurServeur) LocateRegistry.getRegistry(u.getIPAddress(), 1098).lookup(u.getNom());
+						/*Registry reg = LocateRegistry.getRegistry(u.getIPAddress(), 1098);
 						System.out.println("8");
 						System.out.println(u.getNom() + "/" + u.getIPAddress());
 						reg.lookup(u.getNom());
-						System.out.println("8.5");
-						UtilisateurServeur us = (UtilisateurServeur) reg.lookup(u.getNom());
+						System.out.println("8.5");*/
+						//UtilisateurServeur us = (UtilisateurServeur) reg.lookup(u.getNom());
 						// UtilisateurServeur us = (UtilisateurServeur)
 						// AppRMIServeurImpl.registry.lookup(u.getNom());
 						try {
