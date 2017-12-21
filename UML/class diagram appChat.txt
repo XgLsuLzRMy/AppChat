@@ -1,0 +1,146 @@
+@startuml
+class AppChat {
+  -{static} utilisateurList : UtilisateurList
+  -{static} passwordTable : Hashtable<String, String>
+  -hashTagsRecents : LinkedList<String> 
+  -nbMaxHashTagsRecents : Integer
+  +AppChat()
+  +AppChat(fichierUtilisateurList : String, fichierHashTable : String)
+  +nouveauHashTagRecent(hashTag : String) 
+  +getHashTagsRecents() : LinkedList<String>
+  +ecrirePasswordDansFichier(nomFichier : String)  
+  +ecrireUtilisateursDansFichier(nomFichier : String) 
+  +ecrireDansFichier(fichierUtilisateurList : String, fichierHashTable : String) 
+  -{static} ajouterUtilisateur(u : Utilisateur) 
+  +creerCompte(nom : String, mdp : String) 
+  -{static} ajouterPassword(nom : String, mdp : String) 
+  +verifierMdp(nom : String, mdp : String) : boolean
+  +supprimerCompte(u : Utilisateur) 
+  +{static} getUtilisateurList() : UtilisateurList
+  +publieMessage(m : Message) : UtilisateurList
+  +chercherUtilisateur(text : String) : ArrayList<Utilisateur>
+}
+class Message <<Serializable>> {
+  -{static} serialVersionUID : Long
+  -auteur : String
+  -contenu : String
+  -date : Date
+  -retweetCount : int
+  -hashTags : ArrayList<String>
+  +Message()
+  +Message(contenu : String, auteur : String)
+  -recupererLesHashtags() 
+  +getHashTags() : ArrayList<String>
+  +ajouterHashTag(hashtag : String) 
+  +retirerHashTag(hashTag : String) 
+  +setHashTags(hashtags : ArrayList<String>) 
+  +getContenu() : String 
+  +getDate() : Date
+  +getRetweetCount() : int
+  +getAuteur() : String
+  +setContenu(contenu : String) 
+  +incrementerRetweetCount()
+  +to String() : String 
+}
+class MessageList <<Serializable>> {
+  -{static} sericalVersionUID : long
+  +MessageList()
+  +ajouterMessage(m : Message) : Message
+  +getMessageList() : LinkedList<Message>
+  +getNbMessage() : int  
+}
+abstract class MessageListAbstract <<Serializable>> {
+  -{static} serialVersionUID : long
+  #list : LinkedList<Message>
+  #nbMessage : int
+  +{abstract} ajouterMessage(m : Message) : Message
+  +MessageListAbstract()
+  +supprimerMessage(m : Message) 
+  +setList(list : LinkedList<Message>) 
+  +getNbMessage() : int
+  +toString() : String
+}
+class MessageListRecent <<Serializable>> { 
+  -{static} serialVersionUID : long
+  -nbMaxMessage : int
+  +MessageListRecent()
+  +ajouterMessage(m : Message) : Message
+  +setNbMaxMessage(nbMaxMessage : int )
+  +getNbMaxMessage() : int
+}
+class Utilisateur {
+  -{static} serialVersionUID : long
+  -nom : String
+  -listFollower : UtilisateurList
+  -listFollow : UtilisateurList
+  -listMessages : MessageList
+  -listMessagesRecents : MessageListRecent
+  -listMessagesUtilisateur : MessageList
+  -listMessagesRetweetes : MessageList
+  -hashTagList : ArrayList<String>
+  -IPAddress : String
+  -registry : Registry 
+  +Utilisateur(nom : String)
+  +follow(u : Utilisateur)
+  +unfollow(u : Utilisateur)
+  -ajouterFollower(follower : Utilisateur)
+  -retirerFollower(follower : Utilisateur)
+  +publierMessage(m : Message)
+  +retweetMessage(m : Message)
+  +setListMessagesRetweetes(listMessagesRetweetes : MessageList) 
+  +getListMessagesRetweetes() : MessageList
+  +equals(u : Utilisateur)
+  +getHashTagList() : ArrayList<String>
+  +ajouterHashTag(hashTah : String)
+  +retirerHashTag(hashTag : String)
+  +getNom() : String
+  +toString() : String
+  +getFollowerCount() : int
+  +getFollowCount() : int
+  +getFollowerList() : UtilisateurList
+  +ajouterMessage(m : Message)
+  +ajouterMessageUtilisateur(m : Message)
+  +getListMessagesRecents() : MessageListRecent
+  +getListMessages() : MessageList
+  +getListMessagesUtilisateur() : MessageList
+  +setFollowerList(followerList : UtilisateurList)
+   
+}
+class UtilisateurList <<Serializable>> {
+  -{static} serialVersionUID : long
+  -utilisateurList : ArrayList<Utilisateur>
+  +UtilisateurList()
+  +ajouterUtilisateur(u : Utilisateur)
+  +contains(u : Utilisateur) : boolean
+  +get(i : int) : Utilisateur
+  +retirerUtilisateur(u : Utilisateur) 
+  +length() : int
+  +toString() : String 
+  +setUtilisateurList(utilisateurList : ArrayList<Utilisateur>)
+  +getUtilisateur(nomAuteur : String) : Utilisateur
+  +getUtilisateurList() : ArrayList<Utilisateur>
+  +ajouterMessage(m : Message) 
+}
+class UtilisateurInexistantException {
+  -{static} serialVersionUID : long
+  +printStackTrace() 
+}
+Class Exception {
+}
+
+
+MessageListAbstract <|-- MessageListRecent
+MessageListAbstract <|-- MessageList
+Utilisateur - MessageListAbstract 
+AppChat - UtilisateurList 
+Exception <|-- UtilisateurInexistantException
+Serializable <|-- Utilisateur
+Serializable <|-- Message
+Serializable <|-- MessageListAbstract
+Serializable <|-- UtilisateurList
+Utilisateur "*" *--> UtilisateurList
+Utilisateur "*" *--> MessageList
+Utilisateur "*" *--> MessageListRecent
+UtilisateurList <|-- UtilisateurInexistantException
+MessageListAbstract --> Message
+@enduml

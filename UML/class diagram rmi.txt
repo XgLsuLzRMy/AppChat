@@ -1,0 +1,117 @@
+@startuml
+
+interface AppRMIServeur {
+  +ajouterUtilisateur(nom : String, mdp : String, IPAddress : String)
+  +utilisateurDejaExistant(nom : String) : boolean
+  +login(nom : String, mdp : String, IPAdressString) : Utilisateur
+  +getUtilisateur(nom : String) : Utilisateur 
+  +publieMessage(m : message)
+  +getUtilisateurList() : UtilisateurList
+  +logout(utilisateur : Utilisateur) 
+  +follow(nom : String, nom2 : String)
+  +getListeUtilisateurConnectes() : UtilisateurList
+  +unfollow(nom : String, nom2 : String)
+  +getHashTagsRecents() : LinkedList<String>
+  +ajouterHashTag(nom : String, hashTag : String)
+  +retirerHashTag(nom : String, hashTag: String)
+  +chercherUtilisateur(text : String ) : ArrayList<Utilisateur>
+}
+class AppRMIServeurImpl { 
+  -{static}serialVersionUID : long
+  -app : AppChat 
+  +{static}registry : Registry 
+  +{static}utilisateursConnectes : UtilisateurList  
+  +AppRMIServeurImpl(registry : Registry)
+  +getListeUtilisateursConnectes() : UtilisateurList
+  +publieMessage(m : Message)
+  +ajouterUtilisateur(nom : String, mdp : String, IPAddress : String )
+  +utilisateurDejaExistant(nom : String) : boolean
+  +login(nom : String, mdp : String, IPAddress : String ) : Utilisateur
+  +getUtilisateur(nom : String) : Utilisateur
+  +getUtilisateurList() : UtilisateurList
+  +logout(utilisateur : Utilisateur)
+  +follow(nom : String, nom2 : String)
+  -getApp() : AppChat 
+  +getHashTagsRecents() : LinkedList<String> 
+  +run()
+  +unfollow(nom : String , nom2 : String) 
+  +{static}main(args : String[] )
+  +ajouterHashTag(nom : String , hashTag : String)
+  +retirerHashTag(nom : String , hashTag : String)
+  +chercherUtilisateur(text : String) : ArrayList<Utilisateur> 
+}
+class AutoRefreshFenetreChatThread { 
+  -fenetre : FenetreChat 
+  +AutoRefreshFenetreChatThread(fenetre : FenetreChat)
+  +run()
+}
+class UserConsoleDistante {
+  +{static}appDistant :  AppRMIServeur
+  -utilisateurServeur : UtilisateurServeur
+  -registry : Registry 
+  -fenetreLogin : FenetreLogin
+  +UserConsoleDistante(a : AppRMIServeur , registry : Registry)
+  +creerCompte(nom : String, mdp : String) : boolean
+  +login(nom : String, mdp : String) 
+  +getListeUtilisateursConnectes() : UtilisateurList
+  +follow(nom : String)
+  +unfollow(nom : String)
+  +envoyerMessage(str : String)
+  +getUtilisateur() : Utilisateur
+  +getHashTagList() : ArrayList<String> 
+  +getHashTagsRecents() : LinkedList<String> 
+  +ajouterHashTag(hashTag : String)
+  +retirerHashTag(hashTag : String)
+  +chercherUtilisateur(text : String) : ArrayList<Utilisateur> 
+  +{static}main( args : String[])
+}
+class CheckUtilisateursConnectes { 
+  +CheckUtilisateursConnectes()
+  +run()
+}
+class SauvegardeReguliere {
+  -a : AppChat 
+  +SauvegardeReguliere(a : AppChat)
+  +run()
+}
+interface UtilisateurServeur { 
+  +recevoirMessage(message : Message)  
+  +nouveauFollower(follower : Utilisateur)
+  +getUtilisateur() : Utilisateur 
+  +setFollowerList(followerList : UtilisateurList)
+  +ping()
+  +refreshAffichageListeutilisateursConnectes()
+  +ajouterHashTag(hashtag : String)
+  +retirerHashTag(hashtag : String)
+}
+class UtilisateurServeurImpl {
+  -{static}serialVersionUID : long
+  -utilisateur :  Utilisateur 
+  -fenetre : FenetreChat
+  +UtilisateurServeurImpl(utilisateur : Utilisateur , uc : UserConsoleDistante)
+  +recevoirMessage(message : Message)
+  +nouveauFollower(follower : Utilisateur)
+  +ajouterHashTag(hashtag : String)
+  +retirerHashTag(hashtag : String)
+  +getUtilisateur() : Utilisateur
+  +ping() 
+  +setFollowerList(followerList : UtilisateurList)
+  +refreshAffichageListeutilisateursConnectes()
+}
+AppRMIServeurImpl ..|> AppRMIServeur
+AppRMIServeurImpl ..|> Runnable
+UnicastRemoteObject <|-- AppRMIServeurImpl
+Thread <|-- AutoRefreshFenetreChatThread
+Thread <|-- CheckUtilisateursConnectes
+AppRMIServeurImpl -- CheckUtilisateursConnectes
+Thread <|-- SauvegardeReguliere
+UserConsoleDistante o--> UtilisateurServeur 
+UserConsoleDistante o--> AppRMIServeur
+Remote <|-- AppRMIServeur
+Remote <|-- UtilisateurServeur
+UtilisateurServeurImpl ..|> AppRMIServeur
+UnicastRemoteObject <|-- UtilisateurServeurImpl
+Runnable  <|.. Thread 
+Remote <|.. UnicastRemoteObject
+
+@enduml
