@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -38,15 +39,29 @@ public class PanelCreationCompte extends JPanel implements ActionListener {
 		this.texteMdpRepetition.addActionListener(this);
 		this.boutonRetour.addActionListener(this);
 
-		this.setLayout(new GridLayout(4, 2));
+		JPanel panneauConnexion = new JPanel();
+		
+		panneauConnexion.setLayout(new GridLayout(4, 2));
 
-		this.add(new JLabel("Nom : "));
-		this.add(this.texteNom);
-		this.add(new JLabel("Mot de passe : "));
-		this.add(this.texteMdp);
-		this.add(new JLabel("Repeter : "));
-		this.add(this.texteMdpRepetition);
-		this.add(boutonRetour);
+		panneauConnexion.add(new JLabel("Nom : "));
+		panneauConnexion .add(this.texteNom);
+		panneauConnexion.add(new JLabel("Mot de passe : "));
+		panneauConnexion.add(this.texteMdp);
+		panneauConnexion.add(new JLabel("Repeter : "));
+		panneauConnexion.add(this.texteMdpRepetition);
+		panneauConnexion.add(boutonRetour);
+		
+		
+
+		ImageIcon imageConnexion = new ImageIcon("..\\src\\appChat\\ihm\\ressources\\connexion.jpg");
+		JLabel imageConnex = new JLabel(imageConnexion);
+		
+		this.setLayout(new GridLayout(2,1));
+		
+		this.add(imageConnex);
+		this.add(panneauConnexion);
+		
+		
 
 	}
 

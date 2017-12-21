@@ -1,10 +1,13 @@
 package appChat.ihm;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class PanelAcceuil extends JPanel implements ActionListener {
@@ -20,14 +23,22 @@ public class PanelAcceuil extends JPanel implements ActionListener {
 
 		this.button1 = new JButton("Se Connecter");
 		this.button2 = new JButton("Creer un compte");
-
-		this.setLayout(new GridLayout(2, 1, 0, 10));
-
+		
+		this.setLayout(new BorderLayout());
+	
+		ImageIcon image = new ImageIcon("..\\src\\appChat\\ihm\\ressources\\imageAccueil.png");
+		JLabel imag = new JLabel(image);
+		this.add(imag, BorderLayout.CENTER);
+		
+		JPanel panneauBoutton = new JPanel();
+		panneauBoutton.setLayout(new GridLayout(2, 1, 0, 10));
 		this.button1.addActionListener(this);
 		this.button2.addActionListener(this);
-
-		this.add(button1);
-		this.add(button2);
+		
+		panneauBoutton.add(button1);
+		panneauBoutton.add(button2);
+		
+		this.add(panneauBoutton, BorderLayout.SOUTH);
 
 	}
 

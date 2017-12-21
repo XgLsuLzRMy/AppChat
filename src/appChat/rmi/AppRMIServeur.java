@@ -10,6 +10,11 @@ import appChat.Utilisateur;
 import appChat.UtilisateurInexistantException;
 import appChat.UtilisateurList;
 
+/**
+ * 
+ * 
+ *
+ */
 public interface AppRMIServeur extends Remote {
 
 	/**

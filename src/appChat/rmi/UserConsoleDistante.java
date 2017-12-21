@@ -168,7 +168,7 @@ public class UserConsoleDistante {
 	 * case 0: appDistant.logout(this.utilisateurServeur.getUtilisateur());
 	 * break;
 	 *
-	 * case 1: System.out.print("Ecrire le contenu du tweet à publier : "); str
+	 * case 1: System.out.print("Ecrire le contenu du tweet a publier : "); str
 	 * = lecture.nextLine(); while (str.isEmpty() == true) { str =
 	 * lecture.nextLine(); }
 	 *
@@ -192,7 +192,7 @@ public class UserConsoleDistante {
 	 * this.utilisateurServeur.getUtilisateur().getFollowerCount() +
 	 * " utilisateurs"); System.out.println("Vous avez poste " +
 	 * this.utilisateurServeur.getUtilisateur().getListMessages().getNbMessage()
-	 * + " messages"); System.out.println("Vous avez fixe à " +
+	 * + " messages"); System.out.println("Vous avez fixe a " +
 	 * this.utilisateurServeur.getUtilisateur().getListMessagesRecents().
 	 * getNbMaxMessage() + " le nombre maximal de messages recents\n"); break;
 	 *
@@ -321,7 +321,7 @@ public class UserConsoleDistante {
 	}
 
 	/**
-	 * Cherche sur le serveur l'utilisateur possedant le nom <nom>
+	 * Cherche sur le serveur l'utilisateur possedant le nom donne en argument
 	 * @param nom Le nom de l'utilisateur que l'on cherche
 	 * @return L'utilisateur que l'on cherche
 	 */
