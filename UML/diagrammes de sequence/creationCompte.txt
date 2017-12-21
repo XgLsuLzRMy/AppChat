@@ -1,0 +1,36 @@
+@startuml
+actor User
+participant UserConsoleDistante
+participant AppRMIServeur
+database login_Password_List
+
+User -> UserConsoleDistante : Séléctionne "créer un compte"
+activate UserConsoleDistante
+
+UserConsoleDistante -> AppRMIServeur : lookup("App")
+activate AppRMIServeur
+AppRMIServeur -> UserConsoleDistante
+deactivate AppRMIServeur
+
+UserConsoleDistante -> User : Affiche zone de texte\npour rentrer le login/mdp
+deactivate UserConsoleDistante
+
+User -> UserConsoleDistante : Entre son login
+activate UserConsoleDistante
+User -> UserConsoleDistante : Entre son mot de passe
+
+UserConsoleDistante -> AppRMIServeur : creerCompte(login, password)
+activate AppRMIServeur
+
+AppRMIServeur -> login_Password_List : ajouterUtilisateur(nom, mdp, IPAddress, port_utilisateur)
+activate login_Password_List
+
+login_Password_List -> AppRMIServeur
+deactivate login_Password_List
+
+AppRMIServeur -> UserConsoleDistante
+deactivate AppRMIServeur
+
+UserConsoleDistante -> User : Accès au compte
+deactivate UserConsoleDistante
+@enduml
