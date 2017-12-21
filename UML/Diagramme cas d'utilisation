@@ -1,1 +1,63 @@
 
+@startuml
+:Utilisateur: 
+left to right direction
+skinparam packageStyle rectangle
+actor Utilisateur
+
+rectangle AppChat {
+
+
+usecase A2 as (Creer un compte)
+
+Utilisateur -- A2
+
+usecase A4 as (Se connecter)
+
+Utilisateur -- A4
+
+usecase A5 as (Publie un message)
+Utilisateur -- A5
+
+usecase A1 as (Rechercher un utilisateur)
+Utilisateur -- A1
+
+usecase B1 as (S'abonner à un événement)
+Utilisateur -- B1
+
+usecase B2 as (Afficher l'historique des messages)
+
+Utilisateur -- B2
+
+usecase U1 as (Selectionner un utilisateur dans une des listes de la platforme)
+usecase U2 as (Suivre un utilisateur)
+usecase U3 as (ne plus suivre un utilisateur)
+usecase U4 as (Afficher les messages d'un utilisateur)
+
+Utilisateur -- U1
+Utilisateur --U2
+Utilisateur --U3
+Utilisateur -- U4
+
+U2 .> U1
+U3 .> U1
+U4 .> U1
+U1 .> A1
+A4 .> A2
+
+A5 .> A4
+A1 .> A4
+U1 .> A4
+U2 .> A4
+U3 .> A4
+U4 .> A4
+B1 .> A4
+B2 .> A4
+
+
+
+
+
+
+}
+@enduml
