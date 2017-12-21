@@ -1,10 +1,15 @@
 @startuml
-actor User
-participant FenetreChat
-participant UserConsoleDistante
-participant AppRMIServeur
-participant AppChat
-collections "destinataires : UtilisateurList"
+box "Client" #white
+    actor User
+    participant FenetreChat
+    participant UserConsoleDistante
+end box
+box "Serveur" #white
+    participant AppRMIServeur
+    participant AppChat
+    collections "destinataires : UtilisateurList"
+end box
+
 
 User -> FenetreChat : Saisie ses identifiants
 activate FenetreChat
